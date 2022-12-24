@@ -1,0 +1,54 @@
+						React Native
+================================================================
+-React Native lets you build mobile apps using only JavaScript. 
+-It uses the same design as React, letting you compose a rich mobile UI from declarative components.
+-With React Native, you don't build a mobile web app, an HTML5 app, or a hybrid app; 
+-you build a real mobile app that's indistinguishable from an app built using Objective-C or Java. 
+-React Native uses the same fundamental UI building blocks as regular iOS and Android apps. 
+-You just put those building blocks together using JavaScript and React.
+
+React Native Features
+=====================
+React − This is a Framework for building web and mobile apps using JavaScript.
+Native − You can use native components controlled by JavaScript.
+Platforms − React Native supports IOS and Android platform.
+
+React Native Advantages
+=======================
+JavaScript − You can use the existing JavaScript knowledge to build native mobile apps.
+Code sharing − You can share most of your code on different platforms.
+Community − The community around React and React Native is large, and you will be able to find any answer you need.
+
+React Native Limitations
+=========================
+Native Components − If you want to create native functionality which is not created yet, you will need 
+to write some platform specific code.
+
+
+
+Environment Setup
+=================
+1. download Nodejs and install
+   https://nodejs.org/en/download/
+
+2. check nodejs is installed?
+   node -v
+
+3. check if NPM is installed? (NPM-Node Package Manager)
+   npm -v 
+   
+4.  install create-react-native-app package
+	npm install -g create-react-native-app
+
+5. go to the folder where you want to create project
+	create-react-native-app projectName
+	
+6. Python, Jdk8 Installation
+   Make sure you have Python and jdk8 installed in your system
+   
+7. Install React Native CLI
+   npm install -g react-native-cli
+   
+8. Start react native from your project folder
+   
+   
