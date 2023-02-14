@@ -66,31 +66,30 @@ React Project with Typescript
 create-react-app
 ================
 -It is a React application boilerplate generator created by Facebook. 
--This CLI tool will install React as well as other third-party libraries you will need.
+-This CLI tool installs React,ReactDOM & other libraries required for a react project.
 -It provides a development environment configured for ease-of-use with minimal setup.
+-It creates a frontend build pipeline. Under the hood, it uses Babel and webpack.
 
 
 
 NPX
 ===
--NPX : node package executer
--download and execute Node.js commands without installing them.
--This is good because you will never have an outdated version on your system, 
- and every time you run it, you're getting the latest version.
--Global installs of create-react-app is not recomended to ensure that npx always uses the latest version.
-
+-NPX : node package executer. 
+-Its a Package runner/executer tool.
+-It can execute any package that you want from the npm registry without even installing that package.
+ ex: npx create-react-app my-app
+ 
 
  
 What React is
 =============
 -React is a JavaScript library for building user interfaces.
--It is an open-source, component based library responsible only for the view layer of the application. 
+-It is an open-source, component based library. 
 -It is created & maintained by Facebook.
 -React is used to build single page applications.
 -React allows us to create reusable UI components.
 -ReactJS uses virtual DOM based mechanism to fill in data (views) in HTML DOM. 
--The virtual DOM works faster with the fact that it only changes individual DOM elements 
- instead of reloading complete DOM every time.
+
 
 
 
@@ -167,7 +166,7 @@ What Virtual DOM is
  
 How does React Work? (Virtual DOM)
 ====================
--A virtual DOM is a lightweight JavaScript object which originally is just a copy of the
+-A virtual DOM is a lightweight JavaScript object which is just a copy of the
  real DOM. It is a node tree that lists the elements, their attributes and content as 
  Objects and their properties.
 -React creates a VIRTUAL DOM in memory.
@@ -199,10 +198,8 @@ What is the difference between Shadow DOM and Virtual DOM?
 ReactDOM
 ========
 -ReactDOM is the glue between React and the DOM.
--React creates a virtual representation of your User Interface (what we call a Virtual DOM) and 
- then ReactDOM is the library that efficiently updates the DOM based on that Virtual DOM.
--The reason why the Virtual DOM exists is to figure out which parts of the UI need to be updated and 
- then batch these changes together. 
+-React creates a virtual representation of your User Interface (what we call a Virtual DOM) and then ReactDOM is the library that efficiently updates the DOM based on the Virtual DOM.
+-The reason why the Virtual DOM exists is to figure out which parts of the UI need to be updated and then batch these changes together. 
 -ReactDOM receives those instructions from React and then efficiently updates the DOM.
 
 
@@ -225,7 +222,7 @@ React Reconciliation
 -It's a step that happens between the render() function being called and the displaying of elements on the screen. This entire process is called reconciliation.
 
 
-Stack reconciler
+Stack Reconciler
 ================
 -Synchronous
 -works like a stack
@@ -271,8 +268,7 @@ React Project Flow
 2. index.js    --> root = ReactDOM.createRoot(document.getElementById('root'));
 				   root.render(<App />)
                    where        what
-3. App.js      -->  export default function Comp1() { return (<div>this is a comp</div>)} 
-
+3. App.js      -->  AppComponent Code
 
 
 
@@ -290,6 +286,8 @@ JSX
  <img>  		invalid
  <img></img>    valid
  <img /> 		valid
+-Since JSX is closer to JavaScript than to HTML, React DOM uses camelCase property naming convention instead of HTML attribute names.
+-ex: class becomes className in JSX, and tabindex becomes tabIndex.
 
 
 
@@ -340,15 +338,25 @@ const hello = React.createElement(
  Whereas React.createElement() returns an object that represents the DOM element.
  
 
+Module Systems
+==============
+1. CommonJS
+   module.exports = {member1,member2};
+   const member1 = require('Library/file name');
+2. ECMASCRIPT
+   export member1;
+   export default member2;
+   import DefaultMember , {Namedmember} from 'file'
+
 
 imports & exports
 =================
 -Default import:
-  import localName from 'src/my_lib';
+  import DefaultMember from 'src/my_lib';
 -Named imports:
   import { name1, name2 } from 'src/my_lib';
 -Combining a default import with named imports
-  import theDefault, { name1, name2 } from 'src/my_lib';
+  import DefaultMember, { name1, name2 } from 'src/my_lib';
 
 
 Named Export vs Default Export
@@ -360,7 +368,7 @@ Named Export vs Default Export
 -The name of imported module has to be the same as the name of the exported module for named exports.
 -The naming of import is completely independent in default export and we can use any name we like.
 ex: import MyReact, { MyComponent } from "react";
-           correct     wrong-namedExport
+           correct    wrong-namedExport
 
 
  
@@ -398,14 +406,16 @@ REN - render() { return( ) }
 SST - this.setState({ })
 
 
-vscode extensions
-=================
+extensions
+===========
 1. React Snippet
 2. ESLint
 3. prettier
 4. code spell checker
 5. gitlens
-6. vscode-icons / Material Icon Theme
+6. vscode-icons
+7. json viewer (browser extension)
+
 
 
 
@@ -480,8 +490,8 @@ class Welcome extends React.Component {
 1. No 'this' keyword				1. More feature rich
 2. solution without state			2. Maintain own private data- state
 3. Mainly for UI 					3. Complex UI Logic
-4. Stateless/dumb/					4. Provide Life cycle hooks
-	Presentational
+4. Stateless/dumb/Presentational    4. Provide Life cycle hooks
+	
 
 
 
@@ -491,7 +501,7 @@ When to use a Class Component over a Function Component?
  otherwise use function component. 
 -However, from React 16.8 with the addition of Hooks, you could use state , 
  lifecycle methods and other features  that were only available in class component 
- right in your function component. 
+ in function component also. 
 -So, it is always recommended to use Function components, unless you need a React functionality whose Function component equivalent is not present yet, like Error Boundaries.
 
 
@@ -519,6 +529,14 @@ How to Use Bootstrap in a React application using CDN Link
  
 
 
+How to use Bootstrap icons
+==========================
+<i className="bi-alarm"></i>
+<i className="bi-airplane" style={{ fontSize: "2rem", color: "cornflowerblue" }}></i>
+
+
+
+
 How to use React-icons
 ======================
 1. install react-icons
@@ -526,15 +544,15 @@ How to use React-icons
 2. use react-icons in component
    import { FaEdit, FaTrash } from 'react-icons/fa';
    import { BsFillCalendarDateFill,BsFillClockFill } from 'react-icons/bs';
-
+3. use the Icons
+   <FaEdit /> <FaTrash />
 
 
 
 Fragments
 ==========
 -While returning elements in JSX, we can only return 1 element at a time.
- That element can have children but we have to ensure that we are only returning 1 element 
- at a time, or else we will get a syntax error. (ex: a function can return 1 value)
+ That element can have children but we have to ensure that we are only returning 1 element at a time, or else we will get a syntax error. (ex: a function can return 1 value)
 -Fragments are way to render multiple elements without using a wrapper element.
 -Fragment acts a wrapper without adding unnecessary divs to the DOM. 
 -We can use it directly from the React import, or deconstruct it.
@@ -544,7 +562,7 @@ Fragments
         <button>I am another element</button>
       </React.Fragment>
 -// Deconstructed
-	import React, { Component, Fragment } from 'react';
+	import { Fragment } from 'react';
 	<Fragment>
         <div>I am an element!</div>
         <button>I am another element</button>
@@ -564,6 +582,7 @@ different ways to add CSS:
 2. External CSS
 3. global css(index.css)
 4. CSS Modules
+5. Conditional CSS 
 
 
 CSS Modules
@@ -612,7 +631,6 @@ List Items - Lists and Keys
 -There will be a warning message in the console if the key prop is not present on list items.
 -'Key' gives the elements a stable unique Identity.	
 -'Key' helps react to identify which items have changed,are added, or removed.	
--Helps in efficient update of user interface.	
 -React relies on the key to identify items in the list.
  React uses a virtual DOM, and it only re-draws the components that changed since the last render.
 -The first time a component like IdiomaticReactList is rendered, React will see that you want to render a bunch of items, and it will create DOM nodes for them.
@@ -687,7 +705,7 @@ Props De-structuring
 -It’s a JavaScript feature that allows us to extract multiple pieces of data from an array or object and assign them to their own variables.
 -we de-structure props in the render() function.(class Component)
 -Improves readability.
--we can get rid of props/this.props in front of each prop.
+-we can get rid of props/this.props in front of each property.
 -ex: 
   let { pId, name, price } = this.props.product;
   
@@ -730,15 +748,14 @@ PropTypes
 
 Requiring Props
 ===============
--If prop values are not passed to a certain component, an error will not be thrown.
- Instead, within the component that prop will have a value of undefined
+-If prop values are not passed to a certain component, no error will be thrown.Instead, within the component that prop will have a value of undefined.
 -Apart from specifying the type of the prop that can be passed to the component, 
  we can also make sure the prop is always provided to the component by chaining 
  isRequired at the end of the prop validator.
 
 Student.propTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.number
+  name: PropTypes.string.isRequired, // Required Prop
+  age: PropTypes.number  // Optional Prop
 }
 
 
@@ -773,22 +790,19 @@ Greet.propTypes = {
 
 Default props
 =============
--defaultProps allows you to set default values for your component props. 
--defaultProps are useful when you call components from different views with fixed props,
- but in some views you need to pass different value.
+-defaultProps allows to set default value for props. 
 -ex: 	
 	Greet.defaultProps = {	
 		msg: 'this is my default message'	
 	}	
--Functional Component
+-Functional Component & destructuring
  export default function Greet({name , msg='good morning'}) {
  }
 
 
 Prop Drilling
 =============
--Prop drilling is the process in a React app where props are passed from one component 
- to another by going through other parts that do not need the data, but only help in passing it through the intermediate components.
+-Prop drilling is the process in a React app where props are passed from one component to another by going through other parts that do not need the data, but only help in passing it through the intermediate components.
 -The problem with this approach is that most of the components through which this data is passed have no actual need for this data. 
 -They are simply used as mediums for transporting this data to its destination component.
 -as the components are forced to take in unrelated data and pass it to the next component, which in turn passes it, and so on, until it reaches its destination. 
@@ -847,8 +861,7 @@ State in Functional Component
     setCount(count + 1);
 	console.log(count);  // this will be executed before state update
   };
--If a piece of code needs to be executed only after the state has been updated, then 
- place that code in the 'useEffect()'
+-If a piece of code needs to be executed only after the state has been updated, then place that code in the 'useEffect()'
 -when we want to update the state based on the previous State value,pass a callBack to setter
  ex: setCount((prevState) => prevState + 1);
 	 setCount(count + 1);
@@ -859,7 +872,7 @@ State in Functional Component
 1. Props are immutable.					1. State is mutable/modifiable.
 2. pass data from parent component 		2. contains own data & changes over time
    to child component
-3. communicate between components		3. rendering dynamic changes with the component
+3. communicate between components		3. rendering dynamic changes
 4. props - Functional Comp				4. useState()      - Functional Comp
    this.props - class comp		  		   this.state={}   - Class Comp
 
@@ -980,8 +993,7 @@ React Events
 -That is why we should use arrow functions. 
  With arrow functions, 'this' will always represent the object that defined the arrow function.
 -In class components, the this keyword is not defined by default, 
- so with regular functions the this keyword represents the object that called the method,
- which can be the global window object, a HTML button, or whatever.
+ so with regular functions the this keyword represents the object that called the method, which can be the global window object, a HTML button, or whatever.
 -If you must use regular functions instead of arrow functions you have to
  bind 'this' to the component instance using the bind() method.
     constructor(props) {
@@ -1015,6 +1027,7 @@ React Events
 
 -If you send arguments without using the bind method, (this.shoot(this, "Goal") instead of this.shoot.bind(this, "Goal")), 
 the shoot function will be executed when the page is loaded instead of waiting for the button to be clicked.
+ 
  
 Single Event Handler for multiple input elements	
 =================================================	
@@ -1057,10 +1070,12 @@ Component vs PureComponent
 -PureComponent is exactly the same as Component except that it handles the 
  'shouldComponentUpdate' method for us. 
 -When props or state changes, PureComponent will do a shallow comparison on both props and state.if there is a change in state/props, then only render() will be called. 
--A normal component always calls render() when we update the state. even though there is no change in the last state data and current state data.
+-A normal Component always calls render() when we update the state. even though there is no change in the last state data and current state data.
 -Class components that extend the React.PureComponent class are treated as pure components.
 	Ex: class myComp extends React.PureComponent {
 		}
+-in Functional components, re-render happens only if the state changes. 
+-Every Functional Component is a Pure-Component.
 
 
 
@@ -1069,7 +1084,6 @@ React Memo Component
 -Introduced in React v16.6.  This improves performance.
 -React.memo() is a higher-order component.
 -React.memo() can be used for both class & function components.
--Component only re-renders when the data that are passed to it through props are updated.
 -When a component is wrapped in React.memo(), React renders the component only if the props those are passed to that component changes.
 -React always re-renders the component if the state changes, even if the component is wrapped in React.memo()
 -ex: export default React.memo(MyComponent);
@@ -1167,9 +1181,7 @@ render()
 componentDidMount()
 ------------------
 -The componentDidMount() method is called after the component is rendered.
--This is where you run statements that requires that the component is already placed in the DOM.
 -This is a good place to initiate the network request.
--This method is a good place to set up any subscriptions.to unsubscribe use componentWillUnmount().
 -if we are going to fetch any data from an API then API call should be placed in this lifecycle method,and then we get the response, we can call the setState() method and render the element with updated data.
 -good place for DOM manipulation.
 
@@ -1193,25 +1205,20 @@ getDerivedStateFromProps()
 
 shouldComponentUpdate()
 ----------------------
--In the shouldComponentUpdate() method you can return a Boolean value that specifies whether
- React should continue with the rendering or not.
+-In the shouldComponentUpdate() method a boolean value should be returned that specifies whether React should continue with the rendering or not.
 -The default value is true.
--shouldComponentUpdate() lifecycle shouldn't be added if the class is extending React.PureComponent
+-shouldComponentUpdate() lifecycle shouldn't be added if the class is extending React.PureComponent.
 
 
 getSnapshotBeforeUpdate(prevProps, prevState)
 ------------------------
--In the getSnapshotBeforeUpdate(prevProps, prevState) method you have access to the props and state before the update,
- meaning that even after the update, you can check what the values were before the update.
--If the getSnapshotBeforeUpdate() method is present, you should also include the componentDidUpdate() method, 
-otherwise you will get an error.
+-In the getSnapshotBeforeUpdate(prevProps, prevState) method we have access to the props and state before the update,meaning that even after the update, we can check what the values were before the update.
+-If the getSnapshotBeforeUpdate() method is present, we should also include the componentDidUpdate() method,otherwise we will get an error.
 
 example:
 -When the component is mounting it is rendered with the favorite color "red".
--When the component has been mounted, a timer changes the state, and after one second, 
- the favorite color becomes "yellow".
--This action triggers the update phase, and since this component has a getSnapshotBeforeUpdate() method, 
- this method is executed, and writes a message to the empty DIV1 element.
+-When the component has been mounted, a timer changes the state, and after one second,the favorite color becomes "yellow".
+-This action triggers the update phase, and since this component has a getSnapshotBeforeUpdate() method,this method is executed, and writes a message to the empty DIV1 element.
 
 
 componentDidUpdate()
@@ -1234,18 +1241,19 @@ componentWillUnmount()
 -Called immediately before a component is destroyed. 
 -Perform any necessary cleanup in this method, such as cancel network requests, 
  or cleaning up any DOM elements created in componentDidMount.
--clearTimeout, ClearInterval , Unsubscribe()
+-clearTimeout, ClearInterval , Unsubscribe, detachEventHandlers
 
 
 
 useEffect()
 ----------
 -useEffect serves the same purpose as componentDidMount, componentDidUpdate, and componentWillUnmount.
--pass a callBack Function as 1st arguement & an empty array as a second argument to useEffect().
+-useEffect() takes a callBack Function as 1st argument and an arrray as 2nd argument.
  ex: useEffect(()=>{} , []);
 -array contains so called dependencies for useEffect, that is, variables on which useEffect depends on to re-run.
 -When the array is empty, the effect runs only once.(on component load)
--If 2nd arguement is present, effect will only activate if the values in the list change. 
+-If 2nd arguement is present, effect will only activate if the values in the list change.
+-If 2nd argument is not present, effect runs everytime there is a state change.
 -we can have many useEffects() in a component to track changes for diff variables.
 
 
@@ -1261,24 +1269,24 @@ const ComponentExample => () => {
     }, [])
 }
 
+Note: When the state is updated, the component gets re-rendered, Hence the component gets unmounted and gets rendered again.
+
 
 useLayoutEffect
 ===============
--The signature is identical to useEffect, but it fires synchronously after all DOM mutations.
--Use this to read layout from the DOM and synchronously re-render
--useLayoutEffect function is triggered synchronously before the DOM mutations are painted. 
-However, the useEffect function is called after the DOM mutations are painted
--
-
+-useLayoutEffect is a version of useEffect that fires before the browser repaints the screen.
+-This runs synchronously immediately after React has performed all DOM mutations.
+-useLayoutEffect(callBack, dependencies?)
+-useLayoutEffect: If you need to mutate the DOM inside the effect()
 
 
 
 Refs (Template Reference Variable)
 ==================================
 -reference variables: help  to use data from one part of a template in another part of the template.
--with reference variables, you can perform tasks such as respond to user input or 
- finely tune your application's forms.
--Refs provide a way to access DOM nodes or React elements created in the render method.
+-with reference variables, we can perform tasks such as respond to user input or
+ fine tune your application's forms.
+-Refs provide a way to access DOM nodes or React elements.
 -used to modify child comp (OR) DOM.
 -Managing focus, text selection , animations.
 -ex: this.myRef1 = React.createRef();  (class component)
@@ -1286,18 +1294,17 @@ Refs (Template Reference Variable)
      
 
 -React supports another way to set refs called “callback refs”, 
- which gives more fine-grain control over when refs are set and unset.
+ which gives more fine-grain control over normal refs when refs are set and unset.
  ex: <input ref={x => inputRef1=x} />
      alert(inputRef1.value)
 	 
--'Ref forwarding' is a feature that lets some components take a ref they receive, 
- and pass/forward it further down to a child.
+-'Ref forwarding' is a feature that lets some components take a ref they receive,and pass/forward it further down to a child.
 
 
 
 
 Forms
-======
+=====
 -React uses forms to allow users to interact with the web page.(Collect User Data)
 -get the field value by using the 'event.target.value', 
  get the field name by using 'event.target.name'
@@ -1350,8 +1357,7 @@ dynamic inputs								no					yes
 -Uncontrolled inputs are like traditional HTML form inputs.
 -Form data is handled by the DOM itself.
 -They remember what you typed. You can then get their value using a ref.
--To write an uncontrolled component, instead of writing an event handler for every state update, 
- you can use a ref to get form values from the DOM.
+-To write an uncontrolled component, instead of writing an event handler for every state update, you can use a ref to get form values from the DOM.
 -you have to ‘pull’ the value from the field when you need it.(ex:-form submit)
 -there is no updating of any state when you change the input-box value.
 -Let React to specify the initial value, but leave subsequent updates uncontrolled.
@@ -1362,7 +1368,7 @@ dynamic inputs								no					yes
 -value of controlled input is managed by React, 
 -With a controlled component, the input’s value is always driven by the React state.
 -component state and the input value is in sync at all the times.
- <input id='name-input' onChange={this.onChange} value={this.state.name} />
+ <input onChange={this.onChange} value={this.state.name} />
  
 
 
@@ -1392,13 +1398,15 @@ HTTP Methods
 GET - Retrieve a resource/Retrieve data from DB
 	  search
 	  
-POST - to send data to server  ( sign up ) (create a resource/create a new record in DB)
+POST - to send data to server  ( sign up ) 
+       (create a resource/create a new record in DB)
 	   to fetch data securly    (send params in body not in URL)
 
 PUT - update data/create or replace a resource  
-	  update password/update mobile number 
+	  update user's profile information 
 	  
 PATCH - update/modify a particular resource(partial update)
+        update user password
 
 DELETE - Remove a resource/delete a record from DB 
 		 Delete naukri account
@@ -1437,6 +1445,8 @@ POSTMAN
 -Application, used to Test REST APIs. (chrome://apps/)
 -Send requests, get responses, and easily debug REST APIs.
 -Browser Extension / Application
+ https://www.postman.com/downloads/
+-Thunder Client(VSCode Extension) is an alternate to postman
 
 
 
@@ -1463,6 +1473,7 @@ https://medium.com/codingthesmartway-com-blog/create-a-rest-api-with-json-server
 3. start json server
    json-server --watch db.json --port=4000
    
+   
 http://localhost:3000/employees   
 GET    /employees
 GET    /employees/{id}
@@ -1477,8 +1488,8 @@ Ways of Fetching Data
 =====================
 There are many ways to extract data from API in React:
 1. using Fetch API
-2. using Axios library
-3. using async-await syntax
+2. using async-await syntax
+3. using Axios library
 4. using custom hooks
 
 
@@ -1487,7 +1498,18 @@ HTTP with fetch()
 =================
 fetch('https://jsonplaceholder.typicode.com/todos/1')
   .then(response => response.json())
-  .then(json => console.log(json))
+  .then(finaldata => console.log(finaldata))
+
+
+
+Async Await
+===========
+ const fetchProducts = async function () {
+    const products = await fetch("https://fakestoreapi.com/products");
+    const productsJSON = await products.json();
+    setProducts(productsJSON);
+  };
+
 
 
 
@@ -1495,19 +1517,14 @@ HTTP with axios
 ===============
 1. install axios
    npm i axios
-
 2. import axios to component
-   import axios from 'axios';
-   
+   import axios from 'axios';   
 3. Use the http methods
-   componentDidMount() {
-    axios.get(`https://jsonplaceholder.typicode.com/users`)
-      .then(res => {	  
-        const persons = res.data;
-        this.setState({ persons });
-      })
-	  .catch(err=>console.log(err)
-  }
+    const fetchUsers = async () => {
+		const url = "https://jsonplaceholder.typicode.com/users";
+		const response = await axios.get(url);
+		setUsers(response.data);
+    };
   
 
 
@@ -1535,37 +1552,21 @@ Create an Axios Instance
 	
 2. Once the default instance is set up, it can then be used anywhere
    import client from 'api.js'
-   client.get('/users').then()
+   client.get('/users')
 
 
 
 Making multiple requests with axios  
 ===================================
-axios.all([
-  axios.get('https://api.github.com/users/defunkt'),
-  axios.get('https://api.github.com/users/evanphx')
- ]).then(([response1, response2])=>console.log(response1,response2))
-
-
-
-Async Await
-===========
-async function fetchData() {
-    try {
-      const result = await axios.get("https://randomuser.me/api/")
-      console.log(result.data));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  
+const promise1 = axios.get('https://api.github.com/users/defunkt')
+const promise2 = axios.get('https://api.github.com/users/evanphx')
+const [response1, response2] = await axios.all([promise1, promise2]);
   
 
 
-Axios Interceptors
+Http Interceptors
 ==================
--Interceptor is a feature that allows an application to intercept/modify requests or 
- responses before they are handled by  .then() or the .catch()
+-Interceptor is a feature that allows an application to intercept/modify requests or  responses before they are handled by  .then() or the .catch()
  
  httpRequest ----> Interceptor ----> ModifiedRequest ----> Server
  ModifiedResponse<---- Interceptor <---- httpResponse <---- Server
@@ -1594,7 +1595,7 @@ response interceptor use cases -
  So, you can trigger an alert from the response interceptor saying that the user is not allowed. 
  This way you'll be saved from the unauthorized API error handling that you would have to perform on every Axios request that you made.
  
-url-->response-->interceptor-->modifiedResponse-->comp
+url-->response-->interceptor-->modifiedResponse-->component
 
 axios.interceptors.response.use(
   res => res,
@@ -1613,6 +1614,14 @@ remove an interceptor
 const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
 axios.interceptors.request.eject(myInterceptor);
 
+
+
+add interceptors to a custom instance of axios
+-----------------------------------------------
+const instance = axios.create();
+instance.interceptors.request.use((req) => { 
+	// Logic
+});
 
 
 
@@ -1758,10 +1767,7 @@ Query params
   const navigateHandler = (title, price) => {
     navigate({
       pathname: "/productdetails",
-      search: `?${createSearchParams({
-        title: title,
-        price: price,
-      })}`,
+      search: `?${createSearchParams({ title, price })}`,
     });
   };
    <button className="btn btn-secondary" onClick={() => {
@@ -1769,7 +1775,7 @@ Query params
             }}>query param</button>
 
 3. collect params data and display
-   const [searchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   useEffect(() => {
     const currentParams = Object.fromEntries([...searchParams]);
     console.log(currentParams); // get new values onchange
@@ -1786,12 +1792,14 @@ Nested Routing
         <Route path="featured" element={<FeaturedProducts />} />
         <Route path="new" element={<NewProducts/>}/>
     </Route>
--add a nav in products component, and a outlet	
+-add a nav in Parent(products) component, and a outlet	
      <div className="courses-nav">
         <Link to="/products/featured">featured</Link>
         <Link to="/products/new">New</Link>
       </div>
       <Outlet />
+	  
+	  
 
 	  
 Index Route
@@ -1827,6 +1835,8 @@ navigate(to, { replace: true })
 Exact
 =====
 -The exact param disables the partial matching for a route and makes sure that it only  returns the route if the path is an EXACT match to the current url.
+	
+	
 	
 	
 	
@@ -1884,27 +1894,31 @@ Build and Deploy React App
 -Install a server and deploy our project
  1. install a server
 	npm i -g serve 
- 2. go to project folder open command prompt and run the below command
+ 2. go to project folder, open command prompt and run the below command
     'serve'  or  'serve -l 7000'
 
 	
-Deploy React in GitHub
-======================
-https://create-react-app.dev/docs/deployment/#github-pages	
 
 
 
 Generated Files:
-	main.[hash].chunk.js  -  	This is your application code
+	main.[hash].js  -  	This is your application code
     [number].[hash].chunk.js  -  vendor code
 	runtime-main.[hash].js  -   webpack runtime logic which is used to load and run your application
+
+
+
+Deploy React in GitHub
+======================
+https://create-react-app.dev/docs/deployment/#github-pages	
 	
-	
+
+
 
 WebPack
 -------
 -Webpack is an open-source JavaScript module bundler.
--It is made primarily for JavaScript, but it can transform front-end assets like 
+-It is made primarily for JavaScript, but it can transform front-end assets like
  HTML, CSS, and images if the corresponding loaders are included.
 -webpack takes modules with dependencies and generates static assets 
  representing those modules.
@@ -1927,8 +1941,7 @@ package.json vs package-lock.json
 
 Dependencies VS Dev-Dependencies
 ================================
-- if we need any libraries only at the time of development but not in production, 
-  those libraries should be added to DevDependencies.
+- if we need any libraries only at the time of development but not in production, those libraries should be added to DevDependencies.
   (karma,jasmine,tslint,eslint,cli,jest)
   ex: npm i --save-dev eslint
   
@@ -1955,8 +1968,32 @@ Available Scripts
 
 
 
+ESLint
+======
+1. npm i eslint -g
+2. npm init @eslint/config   
+         (OR) 
+   npx eslint --init
+3. eslint .
+
+
 Environment Variables
 =====================
+-Environment variables allow to define values on a system-wide level. 
+-Avoid the hassle of where to put them in code. 
+-It keeps sensitive data separated from code.
+-There is a built-in environment variable called NODE_ENV,we can read it from process.env.NODE_ENV
+  npm start     NODE_ENV   development
+  npm test      NODE_ENV   test
+  npm run build NODE_ENV   production
+-follow the below steps to create custom environment variables/
+ 1. create .env file in project
+ 2. Add variables in that file
+    Note:create custom environment variables beginning with REACT_APP_
+ 3. use environemnt variable in any component
+    console.log(process.env.REACT_APP_MY_NAME);
+	<h1>Your name is: {process.env.REACT_APP_MY_NAME}</h1>
+
 https://create-react-app.dev/docs/adding-custom-environment-variables/
 
 
@@ -1970,6 +2007,7 @@ Context API
  components at different nesting levels.
 -Context is designed to share data that can be considered “global” for a tree 
  of React components.
+-useful and ideal for small applications where state changes are minimal.
 -ex: current authenticated user, theme, or preferred language.
 
 -There are 3 main steps to use the React context:
@@ -1996,15 +2034,12 @@ const myContextObj = useContext(myContext);
 
 React Flux
 ==========
--Flux is an application architecture that Facebook uses internally for building the client-side 
- web application with React. 
--It is not a library nor a framework. It is a kind of architecture that complements React as 
- view and follows the concept of Unidirectional Data Flow model
+-Flux is an application architecture that Facebook uses internally for building the client-side web application with React. 
+-It is not a library nor a framework. It is a kind of architecture that complements React as view and follows the concept of Unidirectional Data Flow model
 -Flux is a programming concept, where the data is uni-directional. 
 -This data enters the app and flows through it in one direction until it is rendered on the screen.
 -Flux is a pattern for managing how data flows through a React application. 
--As we've seen, the preferred method of working with React components is through passing data 
- from one parent component to it's children components. 
+-As we've seen, the preferred method of working with React components is through passing data from one parent component to it's children components. 
 -The Flux pattern makes this model the default method for handling data.
 
 Flux Benefits
@@ -2036,8 +2071,7 @@ Redux
 -Redux is a state management library.
 -Redux stores the state of our application.
 -With Redux the state is maintained outside the React component,not in a particular component.
--if a component wants to update the state, it communicates with the state container,
- the state container updates the state.
+-if a component wants to update the state, it communicates with the state container,the state container updates the state.
 -Redux 1.0 August 2015
 -React-Redux is the library that provides binding to use React and Redux together in an application.
 -In a typical Redux app there is just a single store with a single Root Reducing function.
@@ -2386,3 +2420,5 @@ developers.facebook.com
 
 1. https://github.com/sudheerj/reactjs-interview-questions
 2. https://www.freakyjolly.com/reactjs-create-todo-application-in-reactjs-using-class-components/
+3. https://github.com/Asabeneh/30-Days-Of-React
+4. shimmer UI

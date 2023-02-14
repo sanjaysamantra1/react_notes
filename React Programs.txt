@@ -1,14 +1,77 @@
-program-1 : Component
+Program-1 : Hello World Without Create-react-app
+************************************************
+<html>
+<head>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script>
+        const reactEle = React.createElement('h1', {}, 'My First React App');
+		const domEle = document.getElementById('example');
+        const root = ReactDOM.createRoot(domEle); 
+        root.render(reactEle);
+    </script>
+</body>
+</html>
+Note: React object is available(can be used in console like other objects)
+
+
+
+Program-2 : Nested Element Without Create-react-app
+***************************************************
+<html>
+<head>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script>
+        const title = React.createElement('h1', {}, 'My First React Code');
+        const paragraph = React.createElement('p', {}, 'Writing some more HTML');
+        const containerDiv = React.createElement('div', {}, [title, paragraph]);
+        const domEle = document.getElementById('example');
+        const root = ReactDOM.createRoot(domEle); 
+        root.render(containerDiv);
+    </script>
+</body>
+</html>
+
+
+Program-3 : Nested Element using JSX 
+************************************
+<html>
+<head>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+	<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script type="text/babel">
+        const reactEle = <div>
+            <h1>Hello World</h1>
+            <p>This is a paragraph</p>
+            <div>This is a div</div>
+          </div>
+        const domEle = document.getElementById('example');
+
+        const root = ReactDOM.createRoot(domEle);
+        root.render(reactEle)
+    </script>
+</body>
+</html>
+
+
+program-4 : Component 
 **********************
 export default function Header() {
-  return (
-    <div>
-      Hello ReactJS
-    </div>
-  )
+  return <div>Hello ReactJS</div>
 }
-------------------------
-import React, { Component } from "react";
+-----------------------------------
+import { Component } from "react";
 export default class Header extends Component {
   render() {
     return <div>Hello ReactJS</div>;
@@ -17,54 +80,36 @@ export default class Header extends Component {
 
 
 
+Program-5: use Bootstrap
+***********************
+1. install bootstrap
+	npm i  bootstrap@3.3.7  (particular version)
+	       (OR)
+	npm i bootstrap			(latest version)
+	
+2. add to index.js file
+   import 'bootstrap/dist/css/bootstrap.min.css';
 
-program-2: React Without JSX
-****************************
-import React from 'react';
 
-class Header extends React.Component {
-    render() {
-        //return React.createElement('h1', null, 'Hellooooo'); //One element
-        const title = React.createElement('h1', {}, 'My First React Code');
-        const paragraph = React.createElement('p', {}, 'Writing some more HTML. Cool stuff!');
-        const container = React.createElement('div', {}, [title, paragraph]);
-        return container;
-    }
+
+
+
+Program-6: React Rendering Elements
+*********************************
+export default function tick() {
+  const element = (
+    <div>
+      <h1>Hello, world!</h1>
+      <h2>Now The Time is {new Date().toLocaleTimeString()}.</h2>
+    </div>
+  );
+  root.render(element);
 }
-export default Header;
+setInterval(tick, 1000);
 
 
 
-program-3 : Nested Component
-**************************
-import React from 'react';
-class Header extends React.Component {
-   render() {
-      return (
-         <h1>This is My Header</h1>
-      );
-   }
-}
-export default Header;
------------------
-import React from 'react';
-import Header from './header/header.js';
-class App extends React.Component {
-   render() {
-      return (
-         <div>
-            <Header/>
-            <h2>Content</h2>
-            <p>This is the content!!!</p>
-         </div>
-      );
-   }
-}
-export default App;
-
-
-
-Program-4:  Fragments
+Program-7:  Fragments
 *********************
 import React from 'react';
 class Header extends React.Component {
@@ -78,24 +123,12 @@ class Header extends React.Component {
     }
 }
 export default Header;
-		(OR)
-// Deconstructed
-import React, { Component, Fragment } from 'react';
-class MyComponent extends Component {
-  render(){
-    return (
-      <Fragment>
-        <div>I am an element!</div>
-        <button>I am another element</button>
-      </Fragment>
-    );
-  }
-}
-export default MyComponent;
 
 
 
-program-5: Expression
+
+
+program-8: Expression
 **********************
 import React from 'react';
 class App extends React.Component {
@@ -121,19 +154,21 @@ export default App;
 
 
 
-program-6 display Image
+
+
+program-9 display Image
 *************************
 1. place the image inside 'public' folder
 2. use it in HTML file
    <img src='images/sachin.jpg' />   
 		(OR)
-1. import sachin from './sachin.jpg'
+1. import sachin from './sachin.jpg'; (OR) const sachin = require('./sachin.jpg') 
 2. <img src={sachin} />
 
 
 
 
-program-7 : CSS
+program-10 : CSS
 ***************
 import React from 'react';
 class App extends React.Component {
@@ -155,21 +190,22 @@ class App extends React.Component {
 export default App;
 
 
-program-8 CSS Modules
+program-11 CSS Modules
 *********************
 DashedBox.module.css
 -------------------
 .container {
-   margin: 40px;
-   border: 5px dashed pink;
+  margin: 40px;
+  border: 5px dashed pink;
 }
 .content {
-   font-size: 15px;
-   text-align: center;
- }
- .error{
-  color:red;
+  font-size: 15px;
+  text-align: center;
 }
+.error {
+  color: red;
+}
+
 -------------
 DashedBox2.css
 --------------
@@ -183,15 +219,16 @@ import styles from './DashedBox.module.css';
 import './DashedBox2.css';
 
 const DashedBox = () => (
+	console.log(styles)
     <div className={styles.container}>
-    <p className={styles.content}>Get started with CSS Modules style</p>
-	<div className={styles.error}>this is a div</div>
-  </div>
+     <p className={styles.content}>Get started with CSS Modules style</p>
+	 <div className={styles.error}>this is a div</div>
+    </div>
 );
 export default DashedBox;
  
 
-program-9 : External CSS
+program-12 : External CSS
 ************************
 mystyles.css
 -------------
@@ -220,40 +257,32 @@ class Externalcss extends React.Component {
 export default Externalcss;
 
 
-Program-10 conditional CSS
-***************************
+Program-13 conditional CSS
+**************************
 import React from 'react';
 export default function Demo1() {
     let num = 5;
     let style1 = { color: 'blue' }
     let style2 = { color: 'red' }
     return (
-        <div>
-            <div style={num % 2 == 0 ? style1 : style2}>
-                Number {num} is {num % 2 == 0 ? 'Even' : 'Odd'}
-            </div>
-            <button className={`btn ${num % 2 == 0 ? 'btn-success' : 'btn-danger'}`}>
-                add a class dynamically
-            </button>
-        </div>
+        <>
+		  <div style={num % 2 === 0 ? { color: "green" } : { color: "red" }}>
+			Number {num} is {num % 2 === 0 ? "even" : "odd"}
+		  </div>
+		  <div style={num % 2 === 0 ? style1 : style2}>
+			Number {num} is {num % 2 === 0 ? "even" : "odd"}
+		  </div>
+		  <button className={`btn btn-lg ${num % 2 === 0 ? "btn-success" : "btn-danger"}`}>
+			add a class dynamically
+		  </button>
+		</>
     )
 }
 
-
-
-Program-11 use Bootstrap
-***********************
-1. install bootstrap
-	npm i  bootstrap@3.3.7  (particular version)
-	       (OR)
-	npm i bootstrap			(latest version)
-	
-2. add to index.js file
-   import 'bootstrap/dist/css/bootstrap.min.css';
    
    
    
-program-12 : Conditional Operator
+program-14 : Conditional Operator
 *********************************
 import React from 'react';
 class Conditional extends React.Component {
@@ -268,7 +297,7 @@ export default Conditional;
 
 
 
-Program-13 : if else
+Program-15 : if else
 *******************
 import React from 'react';
 class Conditional extends React.Component {
@@ -286,41 +315,25 @@ export default Conditional;
 
 
 
-Program-14 if else
-*****************
+Program-16 Logical &&
+**********************
 import React, { Component } from 'react'
 export default class Conditional extends Component {
     render() {
-        let x = 5;
-        function f1() {
-            return <div>
-                <h2>Hiiiii</h2>
-                <h2>Hiiiii-2</h2>
-                <h2>Hiiiii-3</h2>
-            </div>
-        }
-        if (x % 2 == 0) {
-            return (
-                <div>
-                    {f1()}
-                    <h2>{x} is even</h2>
-                </div>
-            )
-        }
-        else {
-            return (
-                <div>
-                    {f1()}
-                    <h2>{x} is odd</h2>
-                </div>
-            )
-        }
+       <div>
+		  <h1>Hello!</h1>
+		  {unreadMessages.length > 0 &&
+			<h2>
+			  You have {unreadMessages.length} unread messages.
+			</h2>
+		  }
+      </div>
     }
 }
 
 
 
-program- switch case
+program-17 switch case
 ********************
 import React from "react";
 
@@ -348,7 +361,7 @@ export default function ConditionalDemo2() {
 
 
 
-program-15 List of items
+program-18 List of items
 ************************
 import React from 'react';
 class List extends React.Component {
@@ -375,7 +388,7 @@ export default List;
 
 
 
-program-16 List of Items & condition
+program-19 List of Items & condition
 ***********************************
 import React, { Component } from 'react'
 
@@ -391,9 +404,34 @@ export default class Demo extends Component {
 }
 
 
+Program:20 Countries DropDown & Datalist
+**************************************
+export default function ListDemo2() {
+	const countries = ["Afghanistan","Albania","Algeria"]
+  return <>
+    <h2>Countries Dropdown</h2>
+    Dropdown: 
+    <select>
+        {countries.map((country,ind)=>{
+            return <option key={ind}>{country}</option>
+        })}
+    </select>
+    <hr/>
+    datalist:
+    <input list="countries" name="country" id="country" />
+    <datalist id="countries">
+        {countries.map((country,ind)=>{
+            return <option key={ind} value={country} />
+        })}
+    </datalist>
+  </>
+}
+
+
+
 
  
-program-17 List of Objects
+program-21 List of Objects
 ************************
 import React from 'react';
 
@@ -462,7 +500,7 @@ export default class Demo extends Component {
 
 
 
-Program-18 Iterate objects
+Program-22 Iterate objects
 **************************
 import React, { Component } from 'react'
 
@@ -502,7 +540,7 @@ export default class Demo1 extends Component {
 
 
 		
-Program-19 productList & Product
+Program-23 productList & Product
 ********************************
 import React, { Component } from 'react'
 import Product from './product'
@@ -540,7 +578,7 @@ export default class Product extends Component {
 }
 
 
-program-20 problem with Local Variables declared inside render()
+program-24 problem with Local Variables declared inside render()
 *********************************************************
 import React, { Component } from 'react'
 export default class Test extends Component {
@@ -561,7 +599,7 @@ export default class Test extends Component {
 // render() method gets invoked only if there is a change in props/state
 
 
-program-21  Force Update
+program-25  Force Update
 ************************
 import React, { Component } from 'react'
 export default class Conditional extends Component {
@@ -583,11 +621,10 @@ export default class Conditional extends Component {
 
 
 
-program-22: Props
+program-26: Props
 ******************
 import React from 'react';
-import Child from '../child/child'
-
+import Child from '../child/child';
 class Parent extends React.Component {
     render() {
         let user = { name: 'sachin', age: 35 }
@@ -618,7 +655,7 @@ export default Child;
 
 
 
-Program-23  Props De-structuring
+Program-27  Props De-structuring
 ******************************
 import React, { Component } from 'react'
 
@@ -642,7 +679,7 @@ export default class Product extends Component {
 
 
 
-Program-24 propTypes
+Program-28 propTypes
 *******************
 import React from 'react';
 import { PropTypes } from 'prop-types';
@@ -666,7 +703,7 @@ export default Student;
 
 
 
-Program-25 Requiring Single Child
+Program-29 Requiring Single Child
 *******************************
 import React from 'react';
 import { PropTypes } from 'prop-types';
@@ -703,7 +740,7 @@ export default App;
 
 
 
-Program-26: props.children
+Program-30: props.children
 **************************
 import React from 'react';
 import Greet from '../greet/greet';
@@ -742,8 +779,8 @@ export default Greet;
 
 
 
-Program-27: Methods as props
-**************************
+Program-31: Methods as props
+****************************
 import React, { Component } from 'react';
 import Child from '../child/child';
 
@@ -789,14 +826,14 @@ export default Child;
 
 
 
-Program-28: States
+Program-32: States
 ********************
 class Counter extends React.Component {
    constructor(props) {
      super(props);
      this.state = {count: 0 };
   }
-  fun1 = () => {
+  increment = () => {
     this.setState({count: this.state.count + 1});
   }
 
@@ -804,7 +841,7 @@ class Counter extends React.Component {
     return (
       <div>
         <div>count:{this.state.count}</div>
-        <button onClick={this.onClick}>click!</button>
+        <button onClick={this.increment}>click!</button>
       </div>
     );
   }
@@ -815,7 +852,7 @@ class Counter extends React.Component {
 
 
 
-Program-29 setState() in Detail
+Program-33 setState() in Detail
 *********************************
 import React from 'react';
 class Counter extends React.Component {
@@ -860,7 +897,7 @@ export default Counter;
 
 
 
-Program-30  asynchronous state
+Program-34  asynchronous state
 *******************************
 import React, { Component } from "react";
 export default class Counter extends Component {
@@ -898,7 +935,7 @@ export default class Counter extends Component {
 
 
 
-Program-31 setState() in Detail-2
+Program-35 setState() in Detail-2
 *********************************
 //React may group multiple setState calls in to a single update for better performance
 //when we want to update the state based on the previous State,
@@ -938,7 +975,7 @@ export default Counter;
 
 
 
-Program -32 Batch update
+Program -36 Batch update
 ***********************
 import React, { useState } from "react";
 
@@ -966,7 +1003,7 @@ export default function Demo1() {
 
 
 
-Program-33 Show/Hide 
+Program-37 Show/Hide 
 *********************
 import React from 'react';
 class MyClass extends React.Component {
@@ -1011,7 +1048,7 @@ export default function Demo() {
 
 
 
-Program-34 Show/Hide Password
+Program-38 Show/Hide Password
 *****************************
 import React, { Component } from 'react';
 export default class Test extends Component {
@@ -1055,12 +1092,26 @@ export default function Demo() {
 }
 
 
+Program:39 Remaining Character
+****************************
+export default function RemainingChar() {
+  const [remaining, setRemaining] = useState(100);
+  const keyUpHandler = (e) => {
+    const msg = e.target.value;
+    setRemaining(100-msg.length)
+  };
+  return (
+    <>
+      <textarea onKeyUp={keyUpHandler} maxLength={100} className="m-1"></textarea>
+      <p>remaining char: {remaining}</p>
+    </>
+  );
+}
 
 
 
 
-
-Program-35 Addition 
+Program-40 Addition 
 *******************
 import React from 'react';
 
@@ -1122,13 +1173,13 @@ export default function Demo() {
 
 
 
-Program: 36 Search
+Program: 41 Search
 *****************
 import React, { useState } from "react";
 import SearchBar from "react-js-search";
 
-export default function Employees() {
-  const initEmployees = [
+export default function EmployeeList() {
+  const initialEmployees = [
     { number: 12, name: "Buffon", position: "ST", success: true },
     { number: 21, name: "Pirlo", position: "MC", success: false },
     { number: 10, name: "Ruiz", position: "MDI" },
@@ -1142,23 +1193,37 @@ export default function Employees() {
     { number: 10, name: "Ruiz", position: "MDI" },
     { number: 7, name: "Nesta", position: "RB" },
   ];
-  const [employees, setEmployees] = useState(initEmployees);
-  const [filteredEmployees, setFilteredEmployees] = useState(initEmployees);
 
-  const onSearchClick = () => {
-    console.log("search clicked");
-    // setFilteredEmployees([...filteredData]);
+  const [employees, setEmployees] = useState(initialEmployees);
+  const [filteredEmployees, setFilteredEmployees] = useState(initialEmployees);
+
+  const onSearchClick = (searchText) => {
+    setFilteredEmployees(
+      employees.filter((emp) => JSON.stringify(emp).includes(searchText))
+    );
   };
+  const onSearchTextChange = (searchText, filteredData) => {
+    setFilteredEmployees(filteredData);
+  };
+  const sortAsc = () => {
+    const sortedData = filteredEmployees.sort((e1, e2) => e1.name.localeCompare(e2.name))
+    setFilteredEmployees([...sortedData]);
+  };
+  const sortDesc = () => {
+    const sortedData = filteredEmployees.sort((e1, e2) => e2.name.localeCompare(e1.name))
+    setFilteredEmployees([...sortedData]);
+  };
+
   return (
     <>
       <SearchBar
-        onSearchTextChange={(term, filteredData) => {
-          setFilteredEmployees([...filteredData]);
-        }}
+        // onSearchTextChange={onSearchTextChange}
         onSearchButtonClick={onSearchClick}
         placeHolderText={"Search here..."}
         data={employees}
       />
+      <button onClick={sortAsc}>Asc</button>
+      <button onClick={sortDesc} className='ms-1'>Desc</button>
       <hr />
       {
         <table className="table table-bordered">
@@ -1176,6 +1241,7 @@ export default function Employees() {
     </>
   );
 }
+
 
 
 
@@ -1272,7 +1338,7 @@ Assignment
 
 
 
-Program-37 Event
+Program-42 Event
 *****************
 class Football extends React.Component {
   shoot = () => {
@@ -1315,7 +1381,7 @@ class Football extends React.Component {
 
 
 
-Program-38 Event with parameter
+Program-43 Event with parameter
 ***********************************
 class Football extends React.Component {
   shoot = (a) => {
@@ -1348,7 +1414,7 @@ Assignment
 
 
 
-Program-39  Modal 
+Program-44  Modal 
 ******************
 1. npm i react-modal
 2. add the below code
@@ -1394,7 +1460,7 @@ class MyComponent extends React.Component {
 }
 export default MyComponent;
 
-
+==============================================================
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
@@ -1430,7 +1496,7 @@ export default function Test() {
 
 
 
-program-40 Component Communication (child to parent)
+program-45 Component Communication (child to parent)
 **********************************
 import React, { Component } from 'react';
 import Child from '../child/child'
@@ -1478,7 +1544,7 @@ export default Child;
 
 
 
-program-41  Component Communication (child to parent)
+program-46  Component Communication (child to parent)
 ************************************
 import React, { Component } from 'react';
 import Area from './components/Area';
@@ -1492,10 +1558,9 @@ class App extends Component {
       len: 40,
       bre: 50
     }
-    this.updateState = this.updateState.bind(this);
   }
  
-  updateState(calculation) {
+  updateState = (calculation)=> {
     if(calculation == "Area")
     {
       this.setState({data: this.state.len * this.state.bre})
@@ -1511,7 +1576,7 @@ class App extends Component {
       <div>
         Calculation: {this.state.data}
         <Area update={this.updateState} />
-        <Parameter update={this.updateState} />
+        <Perimeter update={this.updateState} />
       </div>
     )
   }
@@ -1542,7 +1607,7 @@ export default class Perimeter extends Component {
         return (
             <div>
                 Perimeter:
-                <button onClick={() => this.props.update('Parameter')}>
+                <button onClick={() => this.props.update('Perimeter')}>
                     Perimeter
         </button>
             </div>
@@ -1556,7 +1621,7 @@ export default class Perimeter extends Component {
 
 
 
-program-42 without HOC
+program-47 without HOC
 **********************
 import React, { Component } from "react";
 
@@ -1608,7 +1673,7 @@ export default HoverCounter;
 
 
 
-Program-43  With HOC
+Program-48  With HOC
 *********************
 clickCounter.js
 ---------------
@@ -1654,7 +1719,7 @@ export default UpdatedComponent;
 
 
 
-Program-44  CRUD
+Program-49  CRUD
 ******************
 import React from 'react';
 
@@ -1739,7 +1804,7 @@ export default Crud;
 
 
 
-Program-45 CRUD (functional component)
+Program-50 CRUD (functional component)
 ************************************
 import React, { useState } from "react";
 import AddEmployee from "./AddEmployee";
@@ -1883,7 +1948,7 @@ export default function AddEmployee(props) {
 
 
 
-Program-46  Pure Component
+Program-51  Pure Component
 **************************
 import React, { Component } from 'react'
 import { PureComponent } from 'react';
@@ -1908,7 +1973,7 @@ export default class Demo1 extends PureComponent {
 
 
 
-Program:47 react memo
+Program:52 react memo
 *********************
 import React, { useState } from "react";
 import Demo2 from "../demo2/Demo2";
@@ -1948,7 +2013,7 @@ export default React.memo(Demo2);
 
 
 
-Program-48 (Constructor)
+Program-53 (Constructor)
 *************************
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -1968,7 +2033,7 @@ class Header extends React.Component {
 
 
 
-Program-49 (getDerivedStateFromProps)
+Program-54 (getDerivedStateFromProps)
 ******************************************
 class Header extends React.Component {
   constructor(props) {
@@ -1987,7 +2052,7 @@ class Header extends React.Component {
 
 
 
-program-50 (componentDidMount)
+program-55 (componentDidMount)
 ******************************
 class Header extends React.Component {
   constructor(props) {
@@ -2008,7 +2073,7 @@ class Header extends React.Component {
 
 
 
-program-51 getDerivedStateFromProps()
+program-56 getDerivedStateFromProps()
 *************************************
 class Header extends React.Component {
   constructor(props) {
@@ -2032,7 +2097,7 @@ class Header extends React.Component {
 }
 
 
-Program-52 (shouldComponentUpdate)
+Program-57 (shouldComponentUpdate)
 **********************************
 class Header extends React.Component {
   constructor(props) {
@@ -2057,7 +2122,7 @@ class Header extends React.Component {
 
 
 
-Program-53 (getSnapshotBeforeUpdate)
+Program-58 (getSnapshotBeforeUpdate)
 ************************************
 class Header extends React.Component {
   constructor(props) {
@@ -2090,7 +2155,7 @@ class Header extends React.Component {
 
 
 
-program-54 (componentDidUpdate)
+program-59 (componentDidUpdate)
 *********************************
 class Header extends React.Component {
   constructor(props) {
@@ -2118,7 +2183,7 @@ class Header extends React.Component {
 
 
 
-program-55 (componentWillUnmount)
+program-60 (componentWillUnmount)
 *********************************
 class Container extends React.Component {
   constructor(props) {
@@ -2157,7 +2222,7 @@ class Child extends React.Component {
 
 
 
-program: 56  useEffect hook
+program: 61  useEffect hook
 **************************
 import React, { useEffect, useState } from "react";
 export default function Demo() {
@@ -2217,8 +2282,10 @@ export default function Demo3() {
   );
 }
 
-Program:57 How to get prev state and props 
-****************************************
+
+
+Program:62 How to get prev state and props 
+******************************************
 import { useEffect, useRef, useState } from "react";
 export default function Counter() {
   const [count, setCount] = useState(0);
@@ -2237,7 +2304,7 @@ export default function Counter() {
 
 
 
-program-58  Addition using refs
+program-63  Addition using refs
 *****************************
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -2268,7 +2335,7 @@ export default class Test extends Component {
 
 
 
-program- 59 refs in functional component
+program- 64 refs in functional component
 ***************************************
 import React, { useRef } from "react";
 export default function Addition() {
@@ -2294,7 +2361,7 @@ export default function Addition() {
 
 
 
-program-60 call back refs
+program-65 call back refs
 *************************
 import React, { Component } from 'react'
 export default class Test extends Component {
@@ -2317,7 +2384,7 @@ export default class Test extends Component {
 
 
 
-program- 61  callback ref in functional component
+program- 66  callback ref in functional component
 **********************************************
 export default function Addition() {
   let inputRef1;
@@ -2340,8 +2407,8 @@ export default function Addition() {
 
 
 
-program- 62  Ref Forwarding
-************************
+program- 67  Ref Forwarding
+**************************
 import React, { Component } from 'react'
 import FancyButton from '../FancyButton/FancyButton'
 
@@ -2379,7 +2446,7 @@ export default FancyButton;
 
 
 
-program-63  Form Submit
+program-68  Form Submit
 **********************
 import React, { useState } from "react";
 
@@ -2410,7 +2477,7 @@ export default function Demo() {
 
 
 
-Program-64 UnControlled Form Elements
+Program-69 UnControlled Form Elements
 *************************************
 import React, { useRef, useState } from "react";
 
@@ -2444,7 +2511,7 @@ export default function Demo() {
 
 
 
-Program-65 Controlled Form Elements
+Program-70 Controlled Form Elements
 *************************************
 import React, { Component } from 'react';
 
@@ -2477,7 +2544,7 @@ export default class Test extends Component {
 
 
 
-Program-66 Multiple input fields
+Program-71 Multiple input fields
 *******************************
 import React from 'react';
 
@@ -2524,7 +2591,7 @@ class MyForm extends React.Component {
 export default MyForm;
 
 
-Program-67 form data in an object
+Program-72 form data in an object
 *********************************
 import React, { useState } from "react";
 
@@ -2561,7 +2628,7 @@ export default function Form1() {
 }
 
 
-program-68  Form Validation while typing
+program-73  Form Validation while typing
 *****************************************
 import React, { useState } from "react";
 
@@ -2620,7 +2687,7 @@ export default function Demo() {
 
 
 
-program-69  Form Validation while submitting
+program-74  Form Validation while submitting
 *********************************************
 import React from 'react';
 class MyForm extends React.Component {
@@ -2670,7 +2737,7 @@ export default MyForm;
 
 
 
-Program-70 Error Message While Typing
+Program-75 Error Message While Typing
 **************************************
 import React from 'react';
 class MyForm extends React.Component {
@@ -2730,7 +2797,7 @@ export default MyForm;
 
 
 
-Program-71 Error Message onSubmit
+Program-76 Error Message onSubmit
 *********************************
 import React from 'react';
 
@@ -2793,7 +2860,7 @@ export default MyForm;
 
 
 
-program-72 Load a Form With Default Values
+program-77 Load a Form With Default Values
 ********************************************
 import React from 'react';
 
@@ -2850,7 +2917,7 @@ export default MyForm;
 
 
 
-Program-73 DropDown
+Program-78 DropDown
 *******************
 class MyForm extends React.Component {
   import React, { Component } from 'react'
@@ -2885,7 +2952,7 @@ export default class Test extends Component {
 
 
 
-Program-74  Fetch() Example
+Program-79  Fetch() Example
 ****************************
 import React, { Component } from 'react'
 
@@ -2966,7 +3033,7 @@ export default function Comments() {
 
 
 
-Program-75  HTTP CRUD using Axios
+Program-80  HTTP CRUD using Axios
 ***********************************
 import React, { Component } from "react";
 import Modal from "react-modal";
@@ -3233,7 +3300,7 @@ export default class Curd extends Component {
 
 
 
-Program:76 CRUD example Functional component
+Program:81 CRUD example Functional component
 *******************************************
 import axios from "axios";
 import React, { useState } from "react";
@@ -3338,7 +3405,7 @@ export default function Crud() {
 
 
 
-program: 77 axios & async-await
+program: 82 axios & async-await
 ****************************
 import React, { Component } from 'react';
 import axios from 'axios';
@@ -3387,11 +3454,72 @@ export default class Test extends Component {
 }
 
 
+Program-83 Request Interceptor
+****************************
+axios.interceptors.request.use( req => {
+  req.meta = req.meta || {}
+  req.meta.requestStartedAt = new Date().getTime();
+  return req;
+});
+
+
+Program-84 Response Interceptor
+****************************
+axios.interceptors.response.use(res => {
+  res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
+  return res;
+},
+res => {
+  res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
+  throw res;
+});
+
+
+Program:85 Request & Response Interceptor
+******************************************
+import axios from 'axios';
+axios.interceptors.request.use( req => {
+  req.meta = req.meta || {}
+  req.meta.requestStartedAt = new Date().getTime();
+  return req;
+});
+
+axios.interceptors.response.use(res => {
+  res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
+  return res;
+},
+res => {
+  res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
+  throw res;
+});
+
+(async () => {
+  try {
+    const headers = { Accept: 'application/json', 'Accept-Encoding': 'identity' };
+    const githubUserName = 'abraham';
+
+    const url = `https://api.github.com/users/${githubUserName}`;
+    console.log(`Sending a GET reqeust to: ${url}`);
+    const { data, durationInMs } = await axios.get(url, { headers });    
+    console.log(`Github username ${githubUserName} has real name: ${data?.name} and works at ${data?.company}`,);
+    console.log(`Successful response took ${durationInMs} milliseconds`);
+
+    //the below request will fail
+    const nonExistinggithubUserName = 'thisUserShouldNotBeOnGithub';
+    const failingUrl = `https://api.github.com/users/${nonExistinggithubUserName}`;
+    console.log(`Sending a GET reqeust to: ${failingUrl}`);
+    const response = await axios.get(failingUrl, headers);
+    console.log(response.data); //it will never reach here as get will hit a 404, it will go to the catch part
+  } catch(err) {
+    console.log(`Error message : ${err.message} - `, err.code);
+    console.log(`Error response took ${err.durationInMs} milliseconds`);
+  }
+})();
 
 
 
 
-program:78 Routing
+program:86 Routing
 ******************
 app.js
 ------
@@ -3415,7 +3543,6 @@ import { Route, Routes } from "react-router";
 </Routes>
 
 
-
 nav.js
 ------
 <ul class="nav navbar-nav">
@@ -3434,7 +3561,44 @@ nav.js
 </ul>
 
 
-program-79 useState Hook 
+
+
+
+Program : 87 Protected Routes
+==========================
+<Route exact path="/careers" element={
+          <ProtectedRoute>
+            <Careers></Careers>
+          </ProtectedRoute>
+        } />		
+---------------------------------------------------
+import React from "react";
+import { Navigate } from "react-router-dom";
+export default function ProtectedRoute({ children }) {
+  const role = "student";
+  if (role === "student") {
+      alert('you are not allowed to go to this route')
+    return <Navigate to="/home" replace />;
+  }
+  return children;
+}
+
+
+
+Lazy Loading
+============
+const ProductList = React.lazy(() => import("./components/list/product_list"));
+
+<Suspense fallback={<h1>Loading...</h1>}>
+    <Routes>
+        <Route exact path="products" element={<ProductList />} />
+    </Routes>
+</Suspense>
+
+
+
+
+program-88 useState Hook 
 ************************
 import React, { Component } from 'react';
 
@@ -3478,29 +3642,11 @@ export default function Demo1() {
 
 
 
-Program : 80 Protected Routes
-==========================
-<Route exact path="/careers" element={
-          <ProtectedRoute>
-            <Careers></Careers>
-          </ProtectedRoute>
-        } />		
----------------------------
-import React from "react";
-import { Navigate } from "react-router-dom";
-export default function ProtectedRoute({ children }) {
-  const role = "student";
-  if (role === "student") {
-      alert('you are not allowed to go to this route')
-    return <Navigate to="/home" replace />;
-  }
-  return children;
-}
 
 
 
 
-Program-81  useState with array data
+Program-89  useState with array data
 ************************************
 import React, { useState } from 'react'
 
@@ -3590,7 +3736,7 @@ export default function Test() {
 
 
 
-program-82 useEffect
+program-90 useEffect
 ********************
 import React, { useState, useEffect } from 'react'
 
@@ -3633,7 +3779,7 @@ export default function Test() {
 
 
 
-program-83 custom Hook
+program-91 custom Hook
 ***********************
 fetchHook.js
 -----------
@@ -3686,7 +3832,7 @@ export default function Test() {
 }
 
 
-program-84: Context Example
+program-92: Context Example
 ************************
 userContext.js
 --------------
@@ -3741,7 +3887,7 @@ export default class ComponentF extends Component {
     }
 }
 
-Program-85: use context in Function-component
+Program-93: use context in Function-component
 ******************************************
 import React, { useContext } from 'react';
 import { userContext } from '../../contexts/userContext';
@@ -3758,14 +3904,13 @@ export default function ComponentF() {
 
 
 
-Program- 86 Redux Counter
+Program- 94 Redux Counter
 *************************
 1. create a new project 
    npx create-react-app counter-app --template redux
    
 2. install redux & react-redux
-   npm install @reduxjs/toolkit react-redux
-   npm install redux
+   npm install redux @reduxjs/toolkit react-redux
 
 3. Create Folders & Files for actions, reducers, store and components
     store-->store.js
@@ -3863,7 +4008,7 @@ Program- 86 Redux Counter
 
 
 
-Program-87:  Redux ToDo example
+Program-95:  Redux ToDo example
 ********************************
 1. create a new project 
    create-react-app <projectName>
@@ -4028,7 +4173,7 @@ Program-87:  Redux ToDo example
 
 
 
-Program:-88 useReducer hook
+Program:-96 useReducer hook
 ************************
 import React, { useReducer, useRef } from "react";
 
@@ -4109,7 +4254,7 @@ export default function UseReducerDemo() {
 
 
 
-Program:-89 useCallback Hook
+Program:-97 useCallback Hook
 *************************
 import { useState, useCallback } from "react";
 import ReactDOM from "react-dom";
@@ -4155,7 +4300,7 @@ export default memo(Todos);
 
 
 
-Program :-90 usememo
+Program :-98 usememo
 ******************
 import React, { useMemo, useState } from "react";
 
@@ -4200,7 +4345,7 @@ const expensiveCalculation = (num) => {
 
 
 
-Program- Error Boundary
+Program-99 Error Boundary
 ***********************
 class ErrorBoundary extends React.Component {
   constructor(props) {
