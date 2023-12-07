@@ -21,6 +21,12 @@ Syllabus
 -Http - Axios
 -Interceptors
 -Routing
+-REDUX  (State Management)
+-Unit Testing (JEST)
+-EsLint
+
+
+
 
 
 React Local Setup
@@ -32,33 +38,26 @@ React Local Setup
    node -v 
 
 3. check if NPM is installed? (NPM-Node Package Manager)
-   npm -v 
+   npm -v    
    
-4.  install create-react-app package (run the below command in cmd)
-	npm install -g create-react-app
-
-5. check if create-react-app is installed?
-   create-react-app --version
-   
-6.  go to the folder where you want to create project(d:/sanjay/react)& run the below command
-	create-react-app <projectName> (ex: create-react-app project1)
-			(Either step-4 to step-6) OR (the below command)
+4.  go to the folder where you want to create project(d:/sanjay/react)& run the below command	
 	npx create-react-app project1 (npx-node package executer)
                  
-7. go to the created project folder(project1) and start your React application
+5. go to the created project folder(project1) and start your React application
    cd project1
    npm start 
   
-8. A new browser window will pop up with your newly created React App! 
+6. A new browser window will pop up with your newly created React App! 
    open a browser tab and type 'http://localhost:3000/' if browser doesn't open automatically.
+  
   
   
 React Project with Typescript
 =============================
 -Create React App supports TypeScript out of the box.
 -To create a new project with TypeScript support, run the below command
- create-react-app my-app --template typescript
--To add TypeScript to an existing Create React App project, install the below things
+ npx create-react-app my-app --template typescript
+-To add TypeScript to an existing Create-React-App project, install the below things
  npm install --save typescript @types/node @types/react @types/react-dom @types/jest
 
  
@@ -127,6 +126,7 @@ Let's take an example:
 7. No 		 					 7. Dependency Injection
 8. No							 8. Form Validation
 9. extra libraries needed		 9. No additional libraries
+10. UI heavy					 10. Functionality Heavy
 
 
 
@@ -145,7 +145,7 @@ React Features
 Why virtual DOM?
 ===============
 -Frequent DOM manipulations are expensive and performance heavy. 
--Every time the DOM changes, the browser would need to recalculate the CSS, 
+-Every time the DOM changes, browser would need to recalculate the CSS, 
  run layout and repaint the web page.
 -we need a way to minimize the time it takes to repaint the screen. 
  This is where the Virtual DOM comes in.
@@ -157,8 +157,6 @@ What Virtual DOM is
 -Virtual DOM is a virtual representation of the real DOM.
 -A virtual DOM is the DOM where a representation of the UI is kept in memory and synced with the DOM.
 -When state changes occur, the virtual DOM is updated and the previous and current version of  virtual DOM is compared. This is called “diffing”.
--The virtual DOM then sends a batch update to the real DOM to update the UI.
--React uses an efficient diff algorithm to compare the versions of virtual DOM.
 -It then makes sure that batched updates are sent to the real DOM for repainting or re-rendering of the UI.
 -React never reads from real DOM, only writes to it.
 
@@ -170,10 +168,7 @@ How does React Work? (Virtual DOM)
  real DOM. It is a node tree that lists the elements, their attributes and content as 
  Objects and their properties.
 -React creates a VIRTUAL DOM in memory.
--Instead of manipulating the browser's DOM directly, 
- React creates a virtual DOM in memory, where it does all the necessary 
- manipulations, before making the changes in the browser DOM.
--React only changes what needs to be changed!
+-Instead of manipulating the browser's DOM directly, React creates a virtual DOM in memory, where it does all the necessary manipulations, before making the changes in the browser DOM.
 -React finds out what changes have been made,and changes only what 
  needs to be changed in the actual DOM.
 -Whenever application state/props changes, 
@@ -188,10 +183,8 @@ c. Based on (b) find the minimum number of operations to transform the old Virtu
 
 What is the difference between Shadow DOM and Virtual DOM?
 ==========================================================
--The Shadow DOM is a browser technology designed primarily for scoping 
- variables and CSS in web components. 
--The Virtual DOM is a concept implemented by libraries in JavaScript(React) 
- on top of browser APIs.
+-The Shadow DOM is a browser technology designed primarily for scoping variables and CSS in web components. 
+-The Virtual DOM is a concept implemented by libraries in JavaScript(React) on top of browser APIs.
 
 
 
@@ -222,7 +215,7 @@ React Reconciliation
 -It's a step that happens between the render() function being called and the displaying of elements on the screen. This entire process is called reconciliation.
 
 
-Stack Reconciler
+Stack Reconciler < React-16
 ================
 -Synchronous
 -works like a stack
@@ -274,14 +267,14 @@ React Project Flow
 
 JSX
 ===
--JSX (JavaScript Syntax Extension)is a special syntax for React that makes it easier to represent your UI.
--JSX is basically used to write HTML tags inside JavaScript. 
--JSX looks similar to HTML but it is not HTML.
+-JSX (JavaScript Syntax Extension)is a special syntax for React that makes it easier to represent the UI.
+-JSX is used to describe the structure & content of a comonent.
 -JSX allows us to add the elements in DOM without any createElement() or appendChild() methods.
+-JSX is transpiled to plain javascript, so it is compatible with all browsers.
+-JSX looks similar to HTML but it is not HTML.
 -JSX code we write gets transformed into React.createElement().
 -JSX is not part of browser. we need a tool(Babel)(a JavaScript compiler) 
  to transform it to valid JavaScript.
--JSX requires React to be in scope. import React in every file that uses JSX or else it won't work.
 -JSX doesn't support void tags.
  <img>  		invalid
  <img></img>    valid
@@ -337,6 +330,8 @@ const hello = React.createElement(
 -document.createElement() returns a DOM element (for example a div or an h1). 
  Whereas React.createElement() returns an object that represents the DOM element.
  
+
+
 
 Module Systems
 ==============
@@ -414,7 +409,23 @@ extensions
 4. code spell checker
 5. gitlens
 6. vscode-icons
-7. json viewer (browser extension)
+7. Thunder Client
+
+
+
+Browser extension
+=================
+json viewer
+
+
+
+
+React Plugins
+=============
+1. React Developer Tools
+2. React-sight
+3. Redux DevTools
+   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 
 
 
@@ -424,8 +435,7 @@ React.StrictMode
 ================
 -StrictMode is a tool for highlighting potential problems in a react application.
 -It activates additional checks and warnings for its descendants(child elements).
--Strict mode checks are run in development mode only, 
- they do not impact the production build.
+-Strict mode checks are run in development mode only,they do not impact the production build.
 -Strict Mode helps with the below things:
 	Identifying components with unsafe lifecycles (componentWillMount)
 	Warning about legacy string ref API usage
@@ -436,7 +446,7 @@ React.StrictMode
      <StrictMode>
 		<App />
      </StrictMode>
-Note: StrictMode renders components twice (on dev but not production) in order to 
+Note: StrictMode renders components twice (on dev but not production) in order to
       detect any problems with our code and warn us about them.
 
 
@@ -499,7 +509,7 @@ When to use a Class Component over a Function Component?
 ========================================================
 -If the component needs state or lifecycle methods then use class component 
  otherwise use function component. 
--However, from React 16.8 with the addition of Hooks, you could use state , 
+-However, from React 16.8 with the addition of Hooks, we can use state , 
  lifecycle methods and other features  that were only available in class component 
  in function component also. 
 -So, it is always recommended to use Function components, unless you need a React functionality whose Function component equivalent is not present yet, like Error Boundaries.
@@ -541,7 +551,7 @@ How to use React-icons
 ======================
 1. install react-icons
    npm install react-icons
-2. use react-icons in component
+2. import react-icons in component
    import { FaEdit, FaTrash } from 'react-icons/fa';
    import { BsFillCalendarDateFill,BsFillClockFill } from 'react-icons/bs';
 3. use the Icons
@@ -554,7 +564,7 @@ Fragments
 -While returning elements in JSX, we can only return 1 element at a time.
  That element can have children but we have to ensure that we are only returning 1 element at a time, or else we will get a syntax error. (ex: a function can return 1 value)
 -Fragments are way to render multiple elements without using a wrapper element.
--Fragment acts a wrapper without adding unnecessary divs to the DOM. 
+-Fragment acts as a wrapper without adding unnecessary divs to the DOM. 
 -We can use it directly from the React import, or deconstruct it.
 	  import React from 'react';
 	  <React.Fragment>
@@ -586,10 +596,10 @@ different ways to add CSS:
 
 
 CSS Modules
-============
+===========
 -This approach is designed to fix the problem of the global scope in CSS.
 -A CSS Module is a CSS file in which all class names are scoped locally by default.
--CSS Modules let you use the same CSS class name in different files without worrying about naming clashes.
+-CSS Modules allow to use the same CSS class name in different files without worrying about naming clashes.
 -CSS Modules allow the scoping of CSS by automatically creating a unique classname of the below format.
 	ex: [filename]\_[classname]\_\_[hash]
 -ClassNames are dynamically generated, unique, and mapped to the correct styles.
@@ -647,22 +657,26 @@ List Items - Lists and Keys
  
 read data from a JSON file
 ==========================
-1. create a JSON file (employees.json/products.json)
+1. create a JSON file (employees.json/products.json/countries.json)
    [ {},{},{} ]
-2. import listData from './employees.json'
+2. import listData from './countries.json'
 3. use 'listData' in JSX
+   {countries.map((country,ind)=>{
+       return <option key={ind} value={country} />
+   })}
 
 
 Assignment
 ==========
-1. create products.json with list of products.
+1. create products.json with list of products. 
+   https://fakestoreapi.com/products
 2. display the products in table & card
 
 
 
 forceUpdate	
 ===========	
--declaring class variables/function variables is always a bad idea.	
+-Declaring class variables/function variables is always a bad idea.	
 -can be used for the below 2 use cases:
 	Setting and clearing timeouts	
 	Storing frequently-referenced values	
@@ -703,14 +717,14 @@ props
 Props De-structuring
 ====================
 -It’s a JavaScript feature that allows us to extract multiple pieces of data from an array or object and assign them to their own variables.
--we de-structure props in the render() function.(class Component)
 -Improves readability.
--we can get rid of props/this.props in front of each property.
--ex: 
-  let { pId, name, price } = this.props.product;
-  
+-we can get rid of props/this.props in front of each property. 
+
 -props de-structuring in functional component
  export default function Greet({ name, msg }){}
+-we de-structure props in the render() function.(class Component)
+ ex: let { pId, name, price } = this.props.product;
+
 
 
 
@@ -722,7 +736,7 @@ PropTypes
 -When an invalid value is provided for a prop, a warning will be shown in the browser console. 
 -For performance reasons, propTypes is only checked in development mode.not in production.
 
-1. import PropTypes from 'prop-types';	
+1. import PropTypes from 'prop-types';  
 2. ComponentName.propTypes = {	
 		variableName: PropTypes.string	
 	};	
@@ -748,7 +762,7 @@ PropTypes
 
 Requiring Props
 ===============
--If prop values are not passed to a certain component, no error will be thrown.Instead, within the component that prop will have a value of undefined.
+-If prop values are not passed to a certain component, no error will be thrown.Instead, within the component that prop will have a value of 'undefined'.
 -Apart from specifying the type of the prop that can be passed to the component, 
  we can also make sure the prop is always provided to the component by chaining 
  isRequired at the end of the prop validator.
@@ -760,12 +774,24 @@ Student.propTypes = {
 
 
 
+Default props
+=============
+-defaultProps allows to set default value for props. 
+-ex: 	
+	Greet.defaultProps = {	
+		msg: 'this is my default message'	
+	}	
+-Functional Component & destructuring
+ export default function Greet({name , msg='good morning'}) {
+ }
+ 
+ 
+
 Props.children	
 ==============	
 -props.children represents the content between the tags of a Component.
 -props.children can be an array or a single item.
--props.children is available on every component. 	
--It contains the content between the opening and closing tags of a component.	
+-props.children is available on every component.	
 -<Welcome>Hello world!</Welcome>	
 -The string Hello world! is available in props.children in the Welcome component.	
 -class Welcome extends React.Component {	
@@ -786,18 +812,6 @@ Greet.propTypes = {
     children: PropTypes.element	
 };
 
-
-
-Default props
-=============
--defaultProps allows to set default value for props. 
--ex: 	
-	Greet.defaultProps = {	
-		msg: 'this is my default message'	
-	}	
--Functional Component & destructuring
- export default function Greet({name , msg='good morning'}) {
- }
 
 
 Prop Drilling
@@ -825,8 +839,8 @@ State in Class Component
  They provide a setState() method we can use to update the state.
 -State object is usually initialized inside the constructor in class components.
 -UI will not Re-render when we change state directly, setState() should be used.
-  this.counter = this.counter + 1; // wrong
-  this.setState({counter:this.state.counter+1});  //correct
+  this.counter = this.counter + 1; // re-render won't happpen
+  this.setState({counter:this.state.counter+1});  // re-render will happpen
 -use setState() to change the state of react Component. 
  it ensures that render() gets called.
 -If a piece of code needs to be executed only after the state has been updated, then 
@@ -834,16 +848,14 @@ State in Class Component
  ex:-  setState( {} , ()=>{} );
  
  
-
-
 Note:
 -----
 -setState() actions are asynchronous. setState() doesn’t immediately mutate this.state.
 -React may group multiple setState() calls in to a single update for better performance
 -when we want to update the state based on the previous State value,
  we need to pass a function as an arguement to setState() instead passing an object.
- ex:- this.setState({ value: this.state.value + 1 });   // wrong
-      this.setState(prevState => ({ value: prevState.value + 1 }));   // right
+ ex:- this.setState({ value: this.state.value + 1 });   
+      this.setState(prevState => ({ value: prevState.value + 1 }));   
 	
 
 
@@ -878,14 +890,6 @@ State in Functional Component
 
 
 
-React Plugins
-=============
-1. React Developer Tools
-2. React-sight
-3. Redux DevTools
-   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-
-
 
 
 How to use SweetAlert	
@@ -909,23 +913,23 @@ How to use react-modal
 1. npm i react-modal
 2. import Modal from 'react-modal';
 3. use Modal as below 
-	  state = { modalIsOpen: false };
-	  openModal = () => {
-		this.setState({ modalIsOpen: true });
-	  };
-	  closeModal = () => {
-		this.setState({ modalIsOpen: false });
-	  };
+	  let [modalIsOpen, setIsOpen] = useState(false);
+	  function openModal() {
+		setIsOpen(true);
+	  }
+	  function closeModal() {
+		setIsOpen(false);
+	  }
   
 	<Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          contentLabel="Example Modal"
-        >
-          <button onClick={this.closeModal}>close</button>
-          <h2>I am a Modal</h2>
-          <div>I am a modal</div>
-        </Modal>
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        <h2>Hello Hiiiiiiiiiii</h2>
+        <button onClick={closeModal}>close</button>
+        <div>I am a modal</div>
+    </Modal>
 
 
 
@@ -968,14 +972,27 @@ Search
         onSearchButtonClick={onSearchClick}
         placeHolderText={"Search here..."}
         data={employees}
-      />
+      />	  
+	   
 
 
 Pagination
 ==========
 1. install the library
    npm i react-paginate
-2. 
+   
+2. import ReactPaginate from 'react-paginate';
+
+3.    <Employees> / <Products> / <Users>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+      />
 
 
 
@@ -1036,6 +1053,7 @@ Single Event Handler for multiple input elements
     this.setState({ [name]: +value });
   }; 
   
+  
 
 
 SyntheticEvent
@@ -1094,7 +1112,7 @@ React Memo Component
 useMemo()
 ========
 -The functions called inside component are re-invoked on every state change.
--If we want the functions should be called only on page load and not on every state changes then for that function useMemo should be used.
+-If we want the functions should be called only on page load and not on every state changes then for that function, useMemo should be used.
 -useMemo Hook returns a memoized value.
 -The useMemo(()=>{} , []) hook accepts a second parameter to declare dependencies. 
  The function will only run when its dependencies are changed.
@@ -1112,7 +1130,7 @@ useCallBack()
 =============
 -useCallback() Hook returns a memoized callback function.
 -useCallback() Hook only runs when one of its dependencies update.
--use useCallback() to prevent a component from re-rendering unless its props have changed.
+-useCallback() should be used to prevent a component from re-rendering unless its props have changed.
 -When a function is passed as a props from parent to child component,child component re-renders even if no props data changes(even though the child is a memo component)
 -the function that gets passed as a props gets a new reference everytime there is a state change in parent component.
 ex:
@@ -1213,7 +1231,7 @@ shouldComponentUpdate()
 getSnapshotBeforeUpdate(prevProps, prevState)
 ------------------------
 -In the getSnapshotBeforeUpdate(prevProps, prevState) method we have access to the props and state before the update,meaning that even after the update, we can check what the values were before the update.
--If the getSnapshotBeforeUpdate() method is present, we should also include the componentDidUpdate() method,otherwise we will get an error.
+
 
 example:
 -When the component is mounting it is rendered with the favorite color "red".
@@ -1373,26 +1391,6 @@ dynamic inputs								no					yes
 
 
 
-React Higher Order Components (HOCs)
-=============================
--A higher-order component (HOC) is a technique in React for re-using component logic.
--To Share Common Functionalities accross components without repeating the code.
--A higher-order component is a function that takes a component and returns a new component.
--Higher order Component takes one or more components as arguments, and return a new upgraded component.
-  newComponent = higherOrderComponent( originalComponent )
--Higher order components are JavaScript functions used for adding additional functionalities to the existing component.
--These functions are pure, which means they are receiving data and returning values according to that data. 
-
-use cases:
--Infinite scroll in three different views, all having different data.
--Components using data from third party subscription.
--Components that need logged in user data.
--Showing multiple lists(e.g. Users, Locations) with search feature.
-
-
-
-
-
 HTTP Methods
 ============
 GET - Retrieve a resource/Retrieve data from DB
@@ -1459,6 +1457,7 @@ Fake Online REST API for Testing
 5. https://dummyjson.com/products
 6. https://dummy.restapiexample.com/
 7. https://my-json-server.typicode.com/horizon-code-academy/fake-movies-api/movies
+8. https://api.publicapis.org/entries
 
 
 
@@ -1466,7 +1465,7 @@ Create REST API with json-server
 --------------------------------
 https://medium.com/codingthesmartway-com-blog/create-a-rest-api-with-json-server-36da8680136d
 
-1.  Install json-server (not necessarily in a project)
+1.  Install json-server (not necessarily in a react project)
 	npm install -g json-server
 2. create a json file  and have some data (not necessarily in a project)
     db.json (filename can be anything.json)
@@ -1565,7 +1564,7 @@ const [response1, response2] = await axios.all([promise1, promise2]);
 
 
 Http Interceptors
-==================
+=================
 -Interceptor is a feature that allows an application to intercept/modify requests or  responses before they are handled by  .then() or the .catch()
  
  httpRequest ----> Interceptor ----> ModifiedRequest ----> Server
@@ -1608,6 +1607,16 @@ axios.interceptors.response.use(
 );
 
 
+Run interceptor only for few APIs
+---------------------------------
+axios.interceptors.request.use((req) => {
+    console.log(req);
+    if (req.url.includes("users")) {
+      req.headers.authorization = "my secret token";
+    }
+    return req;
+ });
+
 
 remove an interceptor
 ---------------------
@@ -1618,10 +1627,31 @@ axios.interceptors.request.eject(myInterceptor);
 
 add interceptors to a custom instance of axios
 -----------------------------------------------
-const instance = axios.create();
-instance.interceptors.request.use((req) => { 
+const client = axios.create();
+client.interceptors.request.use((req) => { 
 	// Logic
 });
+
+
+
+
+React Higher Order Components (HOCs)
+=============================
+-A higher-order component (HOC) is a technique in React for re-using component logic.
+-To Share Common Functionalities accross components without repeating the code.
+-Higher order Component takes one or more components as arguments, and return a new upgraded component.
+  newComponent = higherOrderComponent( originalComponent )
+-Higher order components are JavaScript functions used for adding additional functionalities to the existing component.
+-These functions are pure, which means they are receiving data and returning values according to that data. 
+
+use cases:
+-Infinite scroll in three different views, all having different data.
+-Components using data from third party subscription.
+-Components that need logged in user data.
+-Showing multiple lists(e.g. Users, Locations) with search feature.
+
+
+
 
 
 
@@ -1822,6 +1852,7 @@ Protected Routes
 -create a component that accepts component and other route details as props.
 -check a condition to confirm if user is authenticated or not. 
 -if the value is true, render the component, else, Redirect route to /signin page.
+
 	
 	
 Replace
@@ -1887,14 +1918,17 @@ Build and Deploy React App
  source code which someone can use.
 -Deploying an application refers to making the application accessible to 
  the world through internet.
--"npm run build" creates a build directory with a production build of your app. 
+-"npm run build" creates a build directory with a production build of our app. 
 
   https://cra.link/deployment
 
+
+Deploy in a Local Server
+========================
 -Install a server and deploy our project
  1. install a server
 	npm i -g serve 
- 2. go to project folder, open command prompt and run the below command
+ 2. go to project(build) folder, open command prompt and run the below command
     'serve'  or  'serve -l 7000'
 
 	
@@ -1935,7 +1969,7 @@ package.json vs package-lock.json
  package-lock.json records the exact version of each installed package. 
 -in package.json (~) tells go up to hot-fixes 1.4.X if 1.4.1 is installed
  in package.json (^) checks if there is a newer version under 1.x.x if 1.4.1 is installed in package-lock.json - there is neither ~ nor ^
-
+-Package-lock.json maintains the Peer-dependencies.
 
 
 
@@ -1977,6 +2011,7 @@ ESLint
 3. eslint .
 
 
+
 Environment Variables
 =====================
 -Environment variables allow to define values on a system-wide level. 
@@ -1995,6 +2030,7 @@ Environment Variables
 	<h1>Your name is: {process.env.REACT_APP_MY_NAME}</h1>
 
 https://create-react-app.dev/docs/adding-custom-environment-variables/
+
 
 
 
@@ -2071,15 +2107,14 @@ Redux
 -Redux is a state management library.
 -Redux stores the state of our application.
 -With Redux the state is maintained outside the React component,not in a particular component.
--if a component wants to update the state, it communicates with the state container,the state container updates the state.
 -Redux 1.0 August 2015
 -React-Redux is the library that provides binding to use React and Redux together in an application.
--In a typical Redux app there is just a single store with a single Root Reducing function.
+-In a typical Redux app there will be a single store & Root-reducer.
 -As Your app grows, you split the Root Reducer in to smaller reducers 
  independently operating on the different parts of the state tree.
--this is exactly like how there is just one root component in a react app, but is composed out of many small components.
 
-View/UI-----> Action --> Reducer --> Store --> View
+
+View/UI-----> Action --> Reducer --> Store/State --> View
 
 
 3 Core Concepts in Redux
@@ -2131,13 +2166,33 @@ Reducers
 -reducer1(previous state, action)=>newState
 -Instead of mutating the state directly,we specify the mutations you want to 
  happen with plain objects called actions.
--Then we write a special function called a Reducer to decide how every action transforms the entire
- applications state.
+-Then we write a special function called a Reducer to decide how every action transforms the entire applications state.
 
 
 Context API: useful and ideal for small applications where state changes are minimal.
-Redux: Perfect for larger applications where there are high-frequency state updates.
-	   Redux gives you a more structural and advanced way of doing state management.
+Redux: Perfect for larger applications where there are high-frequency state updates.Redux gives a more structural and advanced way of doing state management.
+
+
+Redux Toolkit
+==============
+1.Create a new project 
+   npx create-react-app employee-mgmt --template redux
+2.Install Redux Toolkit and React Redux (for existing react app)
+   npm install @reduxjs/toolkit react-redux
+3.Create a Redux store with configureStore
+	configureStore accepts a reducer function as a named argument
+	configureStore automatically sets up the store with good default settings
+4.Provide the Redux store to the React application components
+	Put a React-Redux <Provider> component around your <App />
+	Pass the Redux store as <Provider store={store}>
+5.Create a Redux "slice" reducer with createSlice
+	Call createSlice with a string name, an initial state, and named reducer functions
+	Reducer functions may "mutate" the state using Immer
+	Export the generated slice reducer and action creators
+6.Use the React-Redux useSelector/useDispatch hooks in React components
+	Read data from the store with the useSelector hook
+	Get the dispatch function with the useDispatch hook, and dispatch actions as needed
+
 
 
 
@@ -2156,24 +2211,20 @@ Thunks
 -Thunks are the standard approach for writing async logic in Redux apps.
 -Redux thunk allows to call action creators, which then returns a function 
  instead of an action object. 
- This function receives the store’s dispatch method, which is then used to dispatch 
- the regular synchronous actions within the function’s body once the asynchronous 
- operations is completed. 
+ This function receives the store’s dispatch method, which is then used to dispatch the regular synchronous actions within the function’s body once the asynchronous operations is completed. 
 -This feature of thunk redux also allows us dispatch after certain conditions are met. 
 -Redux-Thunk allows you to dispatch special functions, called thunks.
 -a thunk is a function that (optionally) takes some parameters and returns another function. 
- The inner function takes a dispatch function and 
- a getState function -- both of which will be supplied by the Redux-Thunk middleware.
--thunk never act in response to an action. Redux-Saga, on the other hand, subscribes to the store and can trigger a saga to run or continue when a certain action is dispatched.
+ The inner function takes a dispatch function and a getState function -- both of which will be supplied by the Redux-Thunk middleware.
+ 
 
 
 Thunks vs Sagas
-================
+===============
 -Redux-thunk and Redux-saga are both middleware libraries for Redux. 
--Redux middleware is code that intercepts actions coming into the store via the dispatch() method.
 -Redux-Saga in comparison to Redux-Thunk is that you can more easily test your asynchronous data flow.
 -Redux-Saga allows to express complex application logic as pure functions called sagas.
--Pure functions are desirable from a testing standpoint because they are predictable and repeatable, which makes them relatively easy to test
+-Pure functions are desirable from a testing standpoint because they are predictable and repeatable, which makes them relatively easy to test.
 -Sagas are implemented through special functions called generator functions.
 
 
@@ -2189,7 +2240,7 @@ React Hooks
 -React Hooks allow to use state , lifecycle features and other features without writing a class.
 -React has built-in hooks 
 	useState(), useEffect(), useRef(), useContext(), useReducer(), 
-	useCallBack(), useMemo(), useId() 
+	useCallBack(), useMemo(), useId(),useDebugValue(),useDeferredValue() 
 -we can also create our own Hooks to reuse stateful behavior between different components.
 
 
@@ -2223,8 +2274,7 @@ useEffect
 ---------
 -useEffect serves the same purpose as componentDidMount, componentDidUpdate, and componentWillUnmount.
 -pass a callBack Function as 1st arguement & an empty array as a second argument to useEffect().
--array contains so called dependencies for useEffect, that is, variables on which useEffect 
- depends on to re-run.
+-array contains so called dependencies for useEffect, that is, variables on which useEffect depends on to re-run.
 -When the array is empty, the effect runs only once.
 -If 2nd arguement is present, effect will only activate if the values in the list change.
 -you cannot return a Promise from useEffect.
@@ -2254,7 +2304,7 @@ useReducer:
 -local state
 -comes with other native hooks
 -no extra dependencies needed
--multiple stores maybe(actually reducers that can act as store)
+-multiple stores maybe(reducers that can act as store)
 -more suitable for small projects
 
 
@@ -2280,9 +2330,38 @@ Custom Hook
  we can extract that logic to a custom Hook.
 -A custom Hook is a JavaScript function whose name starts with ”use” and that 
  may call other Hooks.
--Avoid repetitive and redundant stateful logic inside multiple components.
+-Helps to Avoid repetitive and redundant stateful logic inside multiple components.
 -Custom Hooks offer the flexibility of sharing logic.
 -Each call to a Custom Hook gets isolated state.
+
+
+
+
+React Profiler
+==============
+-Profiler measures how often a React application renders and what the “cost” of rendering is.
+-A Profiler can be added anywhere in a React tree to measure the cost of rendering that part of the tree.
+-It requires two props: an id (string) and an onRender callback (function)
+-For example, to profile a Navigation component and its descendants:
+ <Profiler id="Navigation" onRender={callbackToProcessRenderInfo}>
+    <Navigation {...props} />
+ </Profiler>
+ function callbackToProcessRenderInfo(id, phase, actualDuration, baseDuration, startTime, commitTime) {
+  // we can log it to a database or render it out as a chart 
+  logToDatabase({ id, phase, actualDuration, baseDuration, startTime, commitTime })
+}
+-Profiling adds some additional overhead, so it is disabled in the production build.
+-Although Profiler is a light-weight component, it should be used only when necessary.
+
+Pre-requisites:
+---------------
+-The application should have React version 16.5 or above.
+-The React DevTools Extension needs to be installed in your browser.
+
+
+<Profiler id="counterExample" onRender={console.log}>
+    <StateDemo2 />
+</Profiler>
 
 
 
@@ -2334,8 +2413,7 @@ it() (OR) test()
 -it() takes 2 arguements. 1. string(message) 2. callback function
 -it() allows us to write some text describing what a test should successfully achieve. 
 -test() method can be used instead of it() and vice-versa.Both are valid methods.
--test.only() executes only that test-case from that files & test-cases from other files
- skips the test-cases present in the same file
+-test.only() executes only that test-case from that files & test-cases from other files skips the test-cases present in the same file
 
 expect() 
 -The expect() compares actual value with the expected value.
@@ -2365,22 +2443,28 @@ toContain()
 
 Jest Global Functions
 =====================
-beforeAll()
-beforeEach()
-afterEach()
-afterAll()
+beforeAll()       - Before All the Testcases (1)
+beforeEach()      - Before Each Test case    (n)
+afterEach()		  - After Each Test case     (n)
+afterAll()        - After all the testcases  (1)
+
+it.skip()    - skips this test case, executes other test cases
+it.only()    - executes only this test case, skips other testcases
+
+https://create-react-app.dev/docs/debugging-tests/
 
 
 Snapshot Testing
 ----------------
 -Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
 
--if the component name is 'button',create a folder '_test__' inside button folder
- add test file 'button.test.js' or 'button.spec.js'
+-if the component name is 'button',create a folder '_test__' inside button folder add test file 'button.test.js' or 'button.spec.js'
 -snapshot testing adds a __snapshots__ folder inside __test__ folder
  if any accidental change happens, testcase will fail
  Press u to update failing snapshots.
  
+ 
+
  
 
 Server Side Rendering
@@ -2422,3 +2506,4 @@ developers.facebook.com
 2. https://www.freakyjolly.com/reactjs-create-todo-application-in-reactjs-using-class-components/
 3. https://github.com/Asabeneh/30-Days-Of-React
 4. shimmer UI
+https://www.pragimtech.com/blog/reactjs/profiler-in-react/

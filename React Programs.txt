@@ -32,12 +32,14 @@ Program-2 : Nested Element Without Create-react-app
         const title = React.createElement('h1', {}, 'My First React Code');
         const paragraph = React.createElement('p', {}, 'Writing some more HTML');
         const containerDiv = React.createElement('div', {}, [title, paragraph]);
+		
         const domEle = document.getElementById('example');
         const root = ReactDOM.createRoot(domEle); 
         root.render(containerDiv);
     </script>
 </body>
 </html>
+
 
 
 Program-3 : Nested Element using JSX 
@@ -87,7 +89,7 @@ Program-5: use Bootstrap
 	       (OR)
 	npm i bootstrap			(latest version)
 	
-2. add to index.js file
+2. add the below line to index.js file
    import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -128,8 +130,8 @@ export default Header;
 
 
 
-program-8: Expression
-**********************
+program-8: Data Binding
+***********************
 import React from 'react';
 class App extends React.Component {
    render() {
@@ -827,7 +829,7 @@ export default Child;
 
 
 Program-32: States
-********************
+******************
 class Counter extends React.Component {
    constructor(props) {
      super(props);
@@ -923,7 +925,10 @@ export default class Counter extends Component {
       <h2>
         counter works
         <div>Count - {this.state.count}</div>
-        <button onClick={() => this.incrementCountFiveTimes()}>
+        <button className="btn btn-primary m-2" onClick={this.increment}>
+          Increment
+        </button>
+        <button className="btn btn-primary m-2" onClick={this.incrementCountFiveTimes}>
           Increment
         </button>
       </h2>
@@ -1093,7 +1098,7 @@ export default function Demo() {
 
 
 Program:39 Remaining Character
-****************************
+******************************
 export default function RemainingChar() {
   const [remaining, setRemaining] = useState(100);
   const keyUpHandler = (e) => {
@@ -1174,7 +1179,7 @@ export default function Demo() {
 
 
 Program: 41 Search
-*****************
+******************
 import React, { useState } from "react";
 import SearchBar from "react-js-search";
 
@@ -1240,6 +1245,110 @@ export default function EmployeeList() {
       }
     </>
   );
+}
+
+
+Program- Pagination 
+===================
+import React, { useState } from "react";
+import productsArr from "./Products.json";
+import ReactPaginate from "react-paginate";
+import "./ProductsPagination.css";
+
+export default function ProductsPagination() {
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 4;
+
+  const endOffset = itemOffset + itemsPerPage;
+  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+  const filteredProducts = productsArr.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(productsArr.length / itemsPerPage);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % productsArr.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+
+  return (
+    <>
+      <h1 className="text-center">Products With Pagination</h1>
+
+      <div className="container">
+        <div className="row">
+          {filteredProducts.map((product) => (
+            <div className="col-sm-3" key={product.id}>
+              <div className="card text-center">
+                <img
+                  src={product.image}
+                  className="card-img-top"
+                  alt="..."
+                  style={{ height: "200px" }}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{product.category}</h5>
+                  <p className="card-text">{product.title}</p>
+                  <p
+                    className="card-text"
+                    style={{ height: "200px", overflow: "scroll" }}
+                  >
+                    {product.description}
+                  </p>
+                  <p className="card-text"> {product.price}</p>
+                  <a href="#" className="btn btn-primary">
+                    BUY NOW
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+        containerClassName="pagination"
+        pageLinkClassName="page-num"
+        previousLinkClassName="page-num"
+        nextLinkClassName="page-num"
+        activeLinkClassName="active"
+      />
+    </>
+  );
+}
+
+ProductsPagination.css
+=======================
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  font-size: 16px;
+  gap: 5px;
+}
+.pagination .page-num {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.pagination .page-num:hover {
+  background-color: aqua;
+  color: white;
+}
+.pagination .active {
+  background-color: aqua;
 }
 
 
@@ -1623,51 +1732,38 @@ export default class Perimeter extends Component {
 
 program-47 without HOC
 **********************
-import React, { Component } from "react";
+import React,{ useState } from "react";
+export default function ClickCounter() {
+  const [count, setCount] = useState(0);
 
-class ClickCounter extends Component {
-  constructor() {
-    super();
-    this.state = {
-      count: 0,
-    };
-  }
-  increment = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-  render() {
-    return (
-      <>
-        <h2>count is {this.state.count}</h2>
-        <button onClick={this.increment}>Click me</button>
-      </>
-    );
-  }
+  const increment = () => {
+    setCount(count + 1);
+  };  
+  return (
+    <>
+      <h2>In Click Counter Component - count is {count}</h2>
+      <button onClick={increment}>Click me</button>
+    </>
+  );
 }
-export default ClickCounter;
+
 
 ------------------------------------------------
-import React, { Component } from "react";
-class HoverCounter extends Component {
-  constructor() {
-    super();
-    this.state = {
-      count: 0,
-    };
-  }
-  increment = () => {
-    this.setState({ count: this.state.count + 1 });
+import React, { useState } from "react";
+
+export default function HoverCounter() {
+  const [count, setCount] = useState(0);
+  const increment = () => {
+    setCount(count + 1);
   };
-  render() {
-    return (
-      <>
-        <h2>count is {this.state.count}</h2>
-        <button onMouseOver={this.increment}>Hover me</button>
-      </>
-    );
-  }
+  return (
+    <>
+      <h2>In Hover Counter Component - count is {count}</h2>
+      <button onMouseOver={increment}>Hover me</button>
+    </>
+  );
 }
-export default HoverCounter;
+
 
 
 
@@ -3406,7 +3502,7 @@ export default function Crud() {
 
 
 program: 82 axios & async-await
-****************************
+******************************
 import React, { Component } from 'react';
 import axios from 'axios';
 
@@ -3782,19 +3878,21 @@ export default function Test() {
 program-91 custom Hook
 ***********************
 fetchHook.js
------------
-import { useState, useEffect } from "react";
+------------
+import React, { useEffect, useState } from "react";
+
 export default function useFetch(url) {
-    const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  
+  useEffect(async () => {
+    const response = await fetch(url);
+    const data = await response.json();
+    setData(data);
+  }, []);
 
-    useEffect(() => {
-        fetch(url)
-            .then(response => response.json())
-            .then(data => setData(data));
-    }, []);
-
-    return data;
+  return data;
 }
+
 
 test.js
 -------
@@ -4174,7 +4272,7 @@ Program-95:  Redux ToDo example
 
 
 Program:-96 useReducer hook
-************************
+***************************
 import React, { useReducer, useRef } from "react";
 
 const initialTodos = [
