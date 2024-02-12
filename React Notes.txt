@@ -998,7 +998,7 @@ Pagination
 
 
 React Events
-=============
+============
 -React events are written in camelCase
 	onClick-correct
 	onclick-wrong
@@ -1076,9 +1076,9 @@ Component Communication
 
 
 Child To Parent:	
-1. Define a callback in parent which takes the data as a parameter.	
-2. Pass that callback as a prop to the child.	
-3. Call the callback function using this.props.[callback] in the child, pass in the data as the argument.	
+1. Define a function in parent which takes the data as a parameter.	
+2. Pass that function as a prop to the child.	
+3. Call the function using this.props.[callback] in the child, pass in the data as the argument.	
 
 
 
@@ -1269,9 +1269,9 @@ useEffect()
 -useEffect() takes a callBack Function as 1st argument and an arrray as 2nd argument.
  ex: useEffect(()=>{} , []);
 -array contains so called dependencies for useEffect, that is, variables on which useEffect depends on to re-run.
+-If 2nd argument is not present, effect runs everytime there is a state change.
 -When the array is empty, the effect runs only once.(on component load)
 -If 2nd arguement is present, effect will only activate if the values in the list change.
--If 2nd argument is not present, effect runs everytime there is a state change.
 -we can have many useEffects() in a component to track changes for diff variables.
 
 
@@ -1319,6 +1319,7 @@ Refs (Template Reference Variable)
 -'Ref forwarding' is a feature that lets some components take a ref they receive,and pass/forward it further down to a child.
 
 
+Q. How to display previous State & Current State data in functional Component using ref.
 
 
 Forms
@@ -1365,10 +1366,10 @@ Feature									Uncontrolled		Controlled
 One-time value retrieval 
 (e.g. on submit)							yes					yes
 Validating on submit						yes					yes
+Default Value								yes                 yes
 Field-level Validation						no					yes
 Conditionally disabling submit button		no					yes
 Enforcing input format						no					yes
-several inputs for one piece of data		no					yes
 dynamic inputs								no					yes
 
 
@@ -1388,6 +1389,12 @@ dynamic inputs								no					yes
 -component state and the input value is in sync at all the times.
  <input onChange={this.onChange} value={this.state.name} />
  
+
+NPM Libraries for Form Handling
+===============================
+1. https://www.npmjs.com/package/react-hook-form
+2. https://www.npmjs.com/package/formik
+
 
 
 
@@ -1463,7 +1470,7 @@ Fake Online REST API for Testing
 
 Create REST API with json-server
 --------------------------------
-https://medium.com/codingthesmartway-com-blog/create-a-rest-api-with-json-server-36da8680136d
+https://medium.com/@devmrin/create-a-rest-api-json-server-in-less-than-1-minute-acf286600f03
 
 1.  Install json-server (not necessarily in a react project)
 	npm install -g json-server
@@ -1570,7 +1577,7 @@ Http Interceptors
  httpRequest ----> Interceptor ----> ModifiedRequest ----> Server
  ModifiedResponse<---- Interceptor <---- httpResponse <---- Server
 
-request interceptor use cases:
+Request interceptor use cases:
 -Assume you want to check before making a request if your credentials are valid. 
  So, instead of actually making an API call, you can check at the interceptor level that your credentials are valid.
 -Assume you need to attach a token to every request made, instead of duplicating 
@@ -1649,6 +1656,8 @@ use cases:
 -Components using data from third party subscription.
 -Components that need logged in user data.
 -Showing multiple lists(e.g. Users, Locations) with search feature.
+
+https://www.codingame.com/playgrounds/8595/reactjs-higher-order-components-tutorial
 
 
 
@@ -1809,6 +1818,7 @@ Query params
   useEffect(() => {
     const currentParams = Object.fromEntries([...searchParams]);
     console.log(currentParams); // get new values onchange
+	console.log(searchParams.get("title"), searchParams.get("price"));
   }, [searchParams]);
   
   
@@ -1824,8 +1834,8 @@ Nested Routing
     </Route>
 -add a nav in Parent(products) component, and a outlet	
      <div className="courses-nav">
-        <Link to="/products/featured">featured</Link>
-        <Link to="/products/new">New</Link>
+        <Link to="featured">featured</Link>
+        <Link to="new">New</Link>
       </div>
       <Outlet />
 	  
@@ -1887,8 +1897,22 @@ Code Splitting/Lazy Loading
      <OtherComponent />
  </Suspense>
  
+ 
+
+Q: What are the ways to handle errors in react application?
+Ans: 1. try-Catch    2. Error Boundary
 
 
+when To Use try-Catch
+=====================
+-To handle errors in specific blocks of code.
+ ex: try{
+		axios.get()
+	}catch(){
+	
+	}
+-To handle errors in event handlers.
+-To handle errors in server-side rendering.
 
 
 
@@ -1908,6 +1932,51 @@ Error Boundaries
  An error boundary can’t catch an error within itself.
 -We can use static getDerivedStateFromError() to render a fallback UI when an error has been thrown, and can use componentDidCatch() to log error information.
 
+
+
+
+React Profiler
+==============
+-Profiler measures how often a React application renders and what the “cost” of rendering is.
+-A Profiler can be added anywhere in a React tree to measure the cost of rendering that part of the tree.
+-It requires two props: an id (string) and an onRender callback (function)
+-For example, to profile a Navigation component and its descendants:
+ <Profiler id="Navigation" onRender={callbackToProcessRenderInfo}>
+    <Navigation {...props} />
+ </Profiler>
+ function callbackToProcessRenderInfo(id, phase, actualDuration, baseDuration, startTime, commitTime) {
+  // we can log it to a database or render it out as a chart 
+  logToDatabase({ id, phase, actualDuration, baseDuration, startTime, commitTime })
+}
+-Profiling adds some additional overhead, so it is disabled in the production build.
+-Although Profiler is a light-weight component, it should be used only when necessary.
+
+Pre-requisites:
+---------------
+-The application should have React version 16.5 or above.
+-The React DevTools Extension needs to be installed in your browser.
+
+<Profiler id="counterExample" onRender={console.log}>
+    <StateDemo2 />
+</Profiler>
+
+
+
+React Portals
+=============
+-Portals provide a way to render children into a DOM node that exists outside the DOM hierarchy of the parent component.
+-to insert a child into a different location(not in the parent) in the DOM.
+-createPortal() allows to render some children into a different part of the DOM.
+ createPortal(children, domNode, key?)
+ 
+import { createPortal } from 'react-dom';
+<div>
+  <p>This child is placed in the parent div.</p>
+  {createPortal(
+    <p>This child is placed in the document body.</p>,
+    document.body
+  )}
+</div>
 
 
 
@@ -1931,15 +2000,22 @@ Deploy in a Local Server
  2. go to project(build) folder, open command prompt and run the below command
     'serve'  or  'serve -l 7000'
 
-	
-
-
 
 Generated Files:
 	main.[hash].js  -  	This is your application code
     [number].[hash].chunk.js  -  vendor code
 	runtime-main.[hash].js  -   webpack runtime logic which is used to load and run your application
 
+
+Deploy Application in Server
+============================
+-AWS
+-Azure
+-Firebase
+-GithubPages
+-Netlify
+-Heroku
+-Vercel
 
 
 Deploy React in GitHub
@@ -1961,15 +2037,21 @@ WebPack
 
 package.json vs package-lock.json
 =================================
--The package.json is used for more than dependencies - like defining project properties,
- description, author & license information, scripts, etc. 
- The package-lock.json is only used to lock dependencies to a specific version number.
--To avoid differences in installed dependencies on different environments and to generate the same results on every environment we should use the package-lock.json file to install dependencies.
--package.json records the minimum version needed by the app ,
- package-lock.json records the exact version of each installed package. 
+-Package.json is mandatory
+-package-lock.json is Optional (can be generated by running 'npm i')
+
+-package.json is used for more than dependencies - like defining project properties,
+ description, author & license information, scripts, homepage etc. 
+-package-lock.json Maintains only dependencies, it doesn't include HomePgae,Scripts etc.
+
+-Package.json Contains Only Top Level Dependencies (cors,bootstrap)
+ package-lock.json contains Nested/Peer dependencies
+
+-package.json Records the minimum version needed by the application
+ package-lock.json Records the exact version of each installed package.
+ 
 -in package.json (~) tells go up to hot-fixes 1.4.X if 1.4.1 is installed
- in package.json (^) checks if there is a newer version under 1.x.x if 1.4.1 is installed in package-lock.json - there is neither ~ nor ^
--Package-lock.json maintains the Peer-dependencies.
+ in package.json (^) checks if there is a newer version under 1.x.x if 1.4.1 is installed in package-lock.json - there is neither ~ nor 
 
 
 
@@ -2004,6 +2086,8 @@ Available Scripts
 
 ESLint
 ======
+-ESLint is a static code analysis tool for identifying problematic patterns found in JavaScript code.
+
 1. npm i eslint -g
 2. npm init @eslint/config   
          (OR) 
@@ -2021,7 +2105,7 @@ Environment Variables
   npm start     NODE_ENV   development
   npm test      NODE_ENV   test
   npm run build NODE_ENV   production
--follow the below steps to create custom environment variables/
+-follow the below steps to create custom environment variables
  1. create .env file in project
  2. Add variables in that file
     Note:create custom environment variables beginning with REACT_APP_
@@ -2036,7 +2120,7 @@ https://create-react-app.dev/docs/adding-custom-environment-variables/
 
 Context API
 ===========
--React context API helps us avoid the problem of props drilling.
+-React context API helps to avoid the problem of props drilling.
 -Context provides a way to pass data through the component tree without passing 
  props through intermediate components.
 -Context is primarily used when some data needs to be accessible by many 
@@ -2064,34 +2148,6 @@ Read Context data in Function Component
 ---------------------------------------
 const myContextObj = useContext(myContext);
 <div>Context Data is: {myContextObj}</div>
-
-
-
-
-React Flux
-==========
--Flux is an application architecture that Facebook uses internally for building the client-side web application with React. 
--It is not a library nor a framework. It is a kind of architecture that complements React as view and follows the concept of Unidirectional Data Flow model
--Flux is a programming concept, where the data is uni-directional. 
--This data enters the app and flows through it in one direction until it is rendered on the screen.
--Flux is a pattern for managing how data flows through a React application. 
--As we've seen, the preferred method of working with React components is through passing data from one parent component to it's children components. 
--The Flux pattern makes this model the default method for handling data.
-
-Flux Benefits
-=============
--Single directional data flow is easy to understand.
--The app is easier to maintain.
--The app parts are decoupled.
-
-View --> Action --> Dispatcher --> store --> View(Re-render)
-
-
-Actions − Actions are sent to the dispatcher to trigger the data flow.
-Dispatcher − This is a central hub of the app. All the data is dispatched and sent to the stores.
-Store − Store is the place where the application state and logic are held. 
-		Every store is maintaining a particular state and it will update when needed.
-View − The view will receive data from the store and re-render the app.
 
 
 
@@ -2174,14 +2230,14 @@ Redux: Perfect for larger applications where there are high-frequency state upda
 
 
 Redux Toolkit
-==============
+=============
 1.Create a new project 
    npx create-react-app employee-mgmt --template redux
 2.Install Redux Toolkit and React Redux (for existing react app)
    npm install @reduxjs/toolkit react-redux
 3.Create a Redux store with configureStore
-	configureStore accepts a reducer function as a named argument
-	configureStore automatically sets up the store with good default settings
+	configureStore() accepts a reducer function as a named argument
+	configureStore() automatically sets up the store with good default settings
 4.Provide the Redux store to the React application components
 	Put a React-Redux <Provider> component around your <App />
 	Pass the Redux store as <Provider store={store}>
@@ -2293,7 +2349,7 @@ useReducer
 
 Redux:
 -----
--centralised state
+-centralised state (Application State)
 -adds more de-coupling
 -has middlewares: Thunk , sagas , logger
 -actions can only hit one Store
@@ -2301,7 +2357,7 @@ Redux:
 
 useReducer:
 ----------
--local state
+-local state (Component State)
 -comes with other native hooks
 -no extra dependencies needed
 -multiple stores maybe(reducers that can act as store)
@@ -2333,35 +2389,6 @@ Custom Hook
 -Helps to Avoid repetitive and redundant stateful logic inside multiple components.
 -Custom Hooks offer the flexibility of sharing logic.
 -Each call to a Custom Hook gets isolated state.
-
-
-
-
-React Profiler
-==============
--Profiler measures how often a React application renders and what the “cost” of rendering is.
--A Profiler can be added anywhere in a React tree to measure the cost of rendering that part of the tree.
--It requires two props: an id (string) and an onRender callback (function)
--For example, to profile a Navigation component and its descendants:
- <Profiler id="Navigation" onRender={callbackToProcessRenderInfo}>
-    <Navigation {...props} />
- </Profiler>
- function callbackToProcessRenderInfo(id, phase, actualDuration, baseDuration, startTime, commitTime) {
-  // we can log it to a database or render it out as a chart 
-  logToDatabase({ id, phase, actualDuration, baseDuration, startTime, commitTime })
-}
--Profiling adds some additional overhead, so it is disabled in the production build.
--Although Profiler is a light-weight component, it should be used only when necessary.
-
-Pre-requisites:
----------------
--The application should have React version 16.5 or above.
--The React DevTools Extension needs to be installed in your browser.
-
-
-<Profiler id="counterExample" onRender={console.log}>
-    <StateDemo2 />
-</Profiler>
 
 
 

@@ -5,7 +5,7 @@ Program-1 : Hello World Without Create-react-app
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 </head>
-<body>
+<body>at
     <div id="example"></div>
     <script>
         const reactEle = React.createElement('h1', {}, 'My First React App');
@@ -42,7 +42,7 @@ Program-2 : Nested Element Without Create-react-app
 
 
 
-Program-3 : Nested Element using JSX 
+Program-3 : Nested Element using JSX (Babel)
 ************************************
 <html>
 <head>
@@ -67,6 +67,7 @@ Program-3 : Nested Element using JSX
 </html>
 
 
+
 program-4 : Component 
 **********************
 export default function Header() {
@@ -82,15 +83,40 @@ export default class Header extends Component {
 
 
 
+
 Program-5: use Bootstrap
-***********************
-1. install bootstrap
-	npm i  bootstrap@3.3.7  (particular version)
-	       (OR)
-	npm i bootstrap			(latest version)
-	
-2. add the below line to index.js file
+************************
+1. install bootstrap	
+   npm i bootstrap	
+2. add below 2 lines to index.js file
    import 'bootstrap/dist/css/bootstrap.min.css';
+   import "bootstrap/dist/js/bootstrap.bundle.min.js";
+   
+   
+   
+Program-6: use Bootstrap-icons
+******************************
+1. install bootstrap icons library	
+   npm i bootstrap-icons
+2. import bootstrap-icons.css file in to index.js 
+   import 'bootstrap-icons/font/bootstrap-icons.css';
+3. Use class names
+   <i className="bi-alarm"></i>
+   <i className="bi-airplane" style={{ fontSize: "2rem", color: "cornflowerblue" }}></i>
+
+
+
+
+Program-7 : How to use React-icons
+********************************
+1. install react-icons
+   npm install react-icons
+2. import react-icons in component
+   import { FaEdit, FaTrash } from 'react-icons/fa';
+   import { BsFillCalendarDateFill,BsFillClockFill } from 'react-icons/bs';
+3. use the Icons
+   <FaEdit /> 
+   <FaTrash color='red' />
 
 
 
@@ -108,6 +134,7 @@ export default function tick() {
   root.render(element);
 }
 setInterval(tick, 1000);
+
 
 
 
@@ -192,6 +219,9 @@ class App extends React.Component {
 export default App;
 
 
+
+
+
 program-11 CSS Modules
 *********************
 DashedBox.module.css
@@ -230,6 +260,10 @@ const DashedBox = () => (
 export default DashedBox;
  
 
+
+
+
+
 program-12 : External CSS
 ************************
 mystyles.css
@@ -241,10 +275,8 @@ mystyles.css
     padding: 10px 50px;
   }
 -------
-
 import React from 'react';
 import './mystyles.css';
-
 class Externalcss extends React.Component {
       render() {
             return (
@@ -257,6 +289,9 @@ class Externalcss extends React.Component {
       }
 }
 export default Externalcss;
+
+
+
 
 
 Program-13 conditional CSS
@@ -299,6 +334,8 @@ export default Conditional;
 
 
 
+
+
 Program-15 : if else
 *******************
 import React from 'react';
@@ -314,6 +351,9 @@ class Conditional extends React.Component {
     }
 }
 export default Conditional;
+
+
+
 
 
 
@@ -390,6 +430,9 @@ export default List;
 
 
 
+
+
+
 program-19 List of Items & condition
 ***********************************
 import React, { Component } from 'react'
@@ -404,6 +447,9 @@ export default class Demo extends Component {
         return <div>{carList}</div>
     }
 }
+
+
+
 
 
 Program:20 Countries DropDown & Datalist
@@ -434,7 +480,7 @@ export default function ListDemo2() {
 
  
 program-21 List of Objects
-************************
+**************************
 import React from 'react';
 
 class EmployeeList extends React.Component {
@@ -502,6 +548,8 @@ export default class Demo extends Component {
 
 
 
+
+
 Program-22 Iterate objects
 **************************
 import React, { Component } from 'react'
@@ -541,6 +589,7 @@ export default class Demo1 extends Component {
 }
 
 
+
 		
 Program-23 productList & Product
 ********************************
@@ -578,6 +627,8 @@ export default class Product extends Component {
         )
     }
 }
+
+
 
 
 program-24 problem with Local Variables declared inside render()
@@ -623,6 +674,7 @@ export default class Conditional extends Component {
 
 
 
+
 program-26: Props
 ******************
 import React from 'react';
@@ -653,6 +705,7 @@ class Child extends React.Component {
     }
 }
 export default Child;
+
 
 
 
@@ -980,6 +1033,8 @@ export default Counter;
 
 
 
+
+
 Program -36 Batch update
 ***********************
 import React, { useState } from "react";
@@ -1097,6 +1152,9 @@ export default function Demo() {
 }
 
 
+
+
+
 Program:39 Remaining Character
 ******************************
 export default function RemainingChar() {
@@ -1112,6 +1170,27 @@ export default function RemainingChar() {
     </>
   );
 }
+
+
+Program:40  Country Dropdown
+******************************
+import React, { useState } from 'react'
+export default function StateDropDown() {
+    const stateNames = ['Karnataka', 'Odisha', 'Tamilnadu', 'Kerala', 'Bihar', 'UP'];
+    const [selectedState, setSelectedState] = useState(stateNames[0]);
+    const stateChanged = (e) => {
+        setSelectedState(e.target.value)
+    }
+    return <>
+        <select onChange={stateChanged}>
+            {stateNames.map((state, ind) => {
+                return <option key={ind}>{state}</option>
+            })}
+        </select>
+        <h2>You have Selected -  {selectedState}</h2>
+    </>
+}
+
 
 
 
@@ -1175,6 +1254,39 @@ export default function Demo() {
         </div>
     );
 }
+
+
+Program: Folder Explorer
+**************************
+import React, { useState } from "react";
+
+export default function Folder({ folderInfo }) {
+    const [expand, setExpand] = useState(false);
+
+    if (folderInfo.isFolder) { // if folder
+        return <div>
+            <span onClick={() => setExpand(!expand)} style={{ cursor: 'pointer' }}>
+                📁
+                {folderInfo.name}
+                <br />
+            </span>
+            <div
+                style={{ display: expand ? "block" : "none", paddingLeft: "20px" }}
+            >
+                {folderInfo.items.map((subfolderInfo, ind) => (
+                    <Folder folderInfo={subfolderInfo} key={ind} />
+                ))}
+            </div>
+        </div>
+    } else { // if file
+        return <span>
+            🏢
+            {folderInfo.name} <br />
+        </span>
+
+    }
+}
+
 
 
 
@@ -1248,8 +1360,8 @@ export default function EmployeeList() {
 }
 
 
-Program- Pagination 
-===================
+Program-42    Pagination 
+************************
 import React, { useState } from "react";
 import productsArr from "./Products.json";
 import ReactPaginate from "react-paginate";
@@ -1354,84 +1466,46 @@ ProductsPagination.css
 
 
 
-Task ToDo CRUD
-===============
-import React, { Component } from 'react';
-export default class TodoList extends Component {
-     constructor(props) {
-        super(props);
-        this.myRef = React.createRef();
-        this.state = {
-            todos: [
-            ],
-            remaining: 0
-        }
-    }
-    addToDo = () => {
-        const todoText = this.myRef.current.value;
-        if (todoText && todoText.length) {
-            const todoObj = { text: todoText, isCompleted: false, id: this.state.todos.length + 1 }
-            const tempArr = [...this.state.todos, todoObj]
-            this.setState({ todos: tempArr },
-                () => {
-                    this.setRemaining();
-                })
-            this.myRef.current.value = '';
+Program- 43  ToDo CRUD
+**********************
+export default function ToDoCRUD() {
+    let initialtodos = [
+        { id: 1, text: 'To Do 1', completed: true },
+        { id: 2, text: 'To Do 2', completed: false },
+        { id: 3, text: 'To Do 3', completed: true }
+    ]
+    let [todoArr, setToDoArr] = useState(initialtodos);
 
-        }
+    let deleteToDo = (id) => {
+        let filteredToDos = todoArr.filter(todo => todo.id !== id);
+        setToDoArr([...filteredToDos]);
     }
-    setRemaining=()=>{
-         const myRemaining = this.state.todos.filter(todo => todo.isCompleted === false);
-            this.setState({ remaining: myRemaining.length })
-    }
-    toggleTodo = (todo) => {
-        const tempArr = this.state.todos.map(ele => {
-            return ele.id == todo.id ? { ...ele, isCompleted: !ele.isCompleted } : ele
+    let toggleToDo = (id) => {
+        let updatedToDos = todoArr.map(ele => {
+            return ele.id === id ? { ...ele, completed: !ele.completed } : ele;
         })
-        this.setState({ todos: tempArr }, () => {
-           this.setRemaining();
-        })
-
+        setToDoArr([...updatedToDos]);
     }
-    render() {
-
-        return (
-            <>
-                <div>
-                    <h2>
-                        Todo List
-                    </h2>
-                    <p>
-                        <input ref={this.myRef} /> &nbsp;
-                        <button onClick={this.addToDo}>Add</button>
-                    </p>
-                    <div> {this.state.remaining} remaining out of {this.state.todos.length} tasks</div>
-                    <ul>
-                        {this.state.todos.map(todo => (
-                            <li className={todo.isCompleted ? 'is-done' : ''} onClick={() => this.toggleTodo(todo)}>
-                                {todo.text}
-                            </li>
-                        ))}
-                    </ul>
+    let addToDo = (text) => {
+        let newToDo = { id: todoArr.length + 1, text: text, completed: false };
+        todoArr.push(newToDo);
+        setToDoArr([...todoArr])
+    }
+    return <>
+        <h2 className='text-center'>This is ToDo CRUD Example</h2>
+        <div className='container'>
+            <div className='row'>
+                <div className='col-sm-8'>
+                    <h3 className='text-center'>ToDo List</h3>
+                    <ToDoList todoArr={todoArr} deleteToDo={deleteToDo} toggleToDo={toggleToDo} />
                 </div>
-                <style>{`
-                    .is-done {
-                        text-decoration: line-through;
-                    }
-                    input:focus{
-                  border:2px solid blue;
-                  box-shadow:0 0 10px blue;
-                }
-                button:hover{
-                  border:2px solid blue;
-                  box-shadow:0 0 10px blue;
-                }
-                `}
-                
-                </style>
-            </>
-        );
-    }
+                <div className='col-sm-4'>
+                    <h3 className='text-center'>Add To Do</h3>
+                    <AddToDo addToDo={addToDo} />
+                </div>
+            </div>
+        </div>
+    </>
 }
 
 
@@ -1447,8 +1521,9 @@ Assignment
 
 
 
-Program-42 Event
-*****************
+
+Program-44   Event
+******************
 class Football extends React.Component {
   shoot = () => {
     alert(this);
@@ -1490,7 +1565,7 @@ class Football extends React.Component {
 
 
 
-Program-43 Event with parameter
+Program-45 Event with parameter
 ***********************************
 class Football extends React.Component {
   shoot = (a) => {
@@ -1523,7 +1598,7 @@ Assignment
 
 
 
-Program-44  Modal 
+Program-46   Modal 
 ******************
 1. npm i react-modal
 2. add the below code
@@ -1605,7 +1680,7 @@ export default function Test() {
 
 
 
-program-45 Component Communication (child to parent)
+program-47 Component Communication (child to parent)
 **********************************
 import React, { Component } from 'react';
 import Child from '../child/child'
@@ -1653,7 +1728,7 @@ export default Child;
 
 
 
-program-46  Component Communication (child to parent)
+program-48  Component Communication (child to parent)
 ************************************
 import React, { Component } from 'react';
 import Area from './components/Area';
@@ -1730,93 +1805,13 @@ export default class Perimeter extends Component {
 
 
 
-program-47 without HOC
-**********************
-import React,{ useState } from "react";
-export default function ClickCounter() {
-  const [count, setCount] = useState(0);
-
-  const increment = () => {
-    setCount(count + 1);
-  };  
-  return (
-    <>
-      <h2>In Click Counter Component - count is {count}</h2>
-      <button onClick={increment}>Click me</button>
-    </>
-  );
-}
-
-
-------------------------------------------------
-import React, { useState } from "react";
-
-export default function HoverCounter() {
-  const [count, setCount] = useState(0);
-  const increment = () => {
-    setCount(count + 1);
-  };
-  return (
-    <>
-      <h2>In Hover Counter Component - count is {count}</h2>
-      <button onMouseOver={increment}>Hover me</button>
-    </>
-  );
-}
 
 
 
 
 
-
-Program-48  With HOC
-*********************
-clickCounter.js
----------------
-import React from "react";
-import CounterHOC from "./CounterHOC";
-function ClickCounterWithHOC(props) {
-  return (
-    <button onClick={props.increment}> Clicked {props.count} Times</button>
-  );
-}
-export default CounterHOC(ClickCounterWithHOC);
-
-
-hovercounter.js
---------------
-import React from "react";
-import CounterHOC from "./CounterHOC";
-function HoverCounterWithHOC(props) {
-  return (
-    <button onMouseOver={props.increment}> Clicked {props.count} Times</button>
-  );
-}
-export default CounterHOC(HoverCounterWithHOC);
-
-
-
-
-withcounter.js
---------------
-import React, { useState } from "react";
-const UpdatedComponent = (OriginalComponent) => {
-  function CounterHOC() {
-    const [count, setCount] = useState(0);
-    const increment = () => {
-      setCount(count + 1);
-    };
-    return <OriginalComponent count={count} increment={increment} />;
-  }
-  return CounterHOC;
-};
-export default UpdatedComponent;
-
-
-
-
-Program-49  CRUD
-******************
+Program-49  Employee CRUD
+*************************
 import React from 'react';
 
 class Crud extends React.Component {
@@ -2129,7 +2124,7 @@ class Header extends React.Component {
 
 
 
-Program-54 (getDerivedStateFromProps)
+Program-54   getDerivedStateFromProps
 ******************************************
 class Header extends React.Component {
   constructor(props) {
@@ -2251,6 +2246,7 @@ class Header extends React.Component {
 
 
 
+
 program-59 (componentDidUpdate)
 *********************************
 class Header extends React.Component {
@@ -2351,8 +2347,8 @@ export default function Demo() {
 
 
 
-componentWillUnmount in functional component
-********************************************
+program: 62  componentWillUnmount in functional component
+*****************************************************
 import React, { useEffect, useState } from "react";
 
 export default function Demo3() {
@@ -2380,7 +2376,7 @@ export default function Demo3() {
 
 
 
-Program:62 How to get prev state and props 
+Program:63 How to get prev state and props 
 ******************************************
 import { useEffect, useRef, useState } from "react";
 export default function Counter() {
@@ -2400,7 +2396,7 @@ export default function Counter() {
 
 
 
-program-63  Addition using refs
+program-64  Addition using refs
 *****************************
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -2427,12 +2423,7 @@ export default class Test extends Component {
     }
 
 }
-
-
-
-
-program- 64 refs in functional component
-***************************************
+--------------------------------------------------
 import React, { useRef } from "react";
 export default function Addition() {
   const inputRef1 = useRef();
@@ -2476,12 +2467,7 @@ export default class Test extends Component {
         )
     }
 }
-
-
-
-
-program- 66  callback ref in functional component
-**********************************************
+----------------------------------------------------------------
 export default function Addition() {
   let inputRef1;
   let inputRef2;
@@ -2503,7 +2489,7 @@ export default function Addition() {
 
 
 
-program- 67  Ref Forwarding
+program- 66  Ref Forwarding
 **************************
 import React, { Component } from 'react'
 import FancyButton from '../FancyButton/FancyButton'
@@ -2542,7 +2528,7 @@ export default FancyButton;
 
 
 
-program-68  Form Submit
+program-67  Form Submit
 **********************
 import React, { useState } from "react";
 
@@ -2573,7 +2559,7 @@ export default function Demo() {
 
 
 
-Program-69 UnControlled Form Elements
+Program-68 UnControlled Form Elements
 *************************************
 import React, { useRef, useState } from "react";
 
@@ -2607,7 +2593,7 @@ export default function Demo() {
 
 
 
-Program-70 Controlled Form Elements
+Program-69 Controlled Form Elements
 *************************************
 import React, { Component } from 'react';
 
@@ -2640,7 +2626,7 @@ export default class Test extends Component {
 
 
 
-Program-71 Multiple input fields
+Program-70 Multiple input fields
 *******************************
 import React from 'react';
 
@@ -2687,7 +2673,7 @@ class MyForm extends React.Component {
 export default MyForm;
 
 
-Program-72 form data in an object
+Program-71  form data in an object
 *********************************
 import React, { useState } from "react";
 
@@ -2724,7 +2710,7 @@ export default function Form1() {
 }
 
 
-program-73  Form Validation while typing
+program-72  Form Validation while typing
 *****************************************
 import React, { useState } from "react";
 
@@ -2783,7 +2769,7 @@ export default function Demo() {
 
 
 
-program-74  Form Validation while submitting
+program-73  Form Validation while submitting
 *********************************************
 import React from 'react';
 class MyForm extends React.Component {
@@ -2833,7 +2819,7 @@ export default MyForm;
 
 
 
-Program-75 Error Message While Typing
+Program-74 Error Message While Typing
 **************************************
 import React from 'react';
 class MyForm extends React.Component {
@@ -2893,7 +2879,7 @@ export default MyForm;
 
 
 
-Program-76 Error Message onSubmit
+Program-75  Error Message onSubmit
 *********************************
 import React from 'react';
 
@@ -2956,7 +2942,7 @@ export default MyForm;
 
 
 
-program-77 Load a Form With Default Values
+program-76   Load a Form With Default Values
 ********************************************
 import React from 'react';
 
@@ -3013,8 +2999,8 @@ export default MyForm;
 
 
 
-Program-78 DropDown
-*******************
+Program-77  DropDown
+********************
 class MyForm extends React.Component {
   import React, { Component } from 'react'
 
@@ -3045,6 +3031,9 @@ export default class Test extends Component {
 }
 
 }
+
+
+
 
 
 
@@ -3615,28 +3604,117 @@ res => {
 
 
 
+program-78 without HOC
+**********************
+import React,{ useState } from "react";
+export default function ClickCounter() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    setCount(count + 1);
+  };  
+  return (
+    <>
+      <h2>In Click Counter Component - count is {count}</h2>
+      <button onClick={increment}>Click me</button>
+    </>
+  );
+}
+
+
+------------------------------------------------
+import React, { useState } from "react";
+
+export default function HoverCounter() {
+  const [count, setCount] = useState(0);
+  const increment = () => {
+    setCount(count + 1);
+  };
+  return (
+    <>
+      <h2>In Hover Counter Component - count is {count}</h2>
+      <button onMouseOver={increment}>Hover me</button>
+    </>
+  );
+}
+
+
+
+
+
+
+Program-79  With HOC
+*********************
+
+withcounter.js
+--------------
+import React, { useState } from "react";
+const UpdatedComponent = (OriginalComponent) => {
+  function CounterHOC() {
+    const [count, setCount] = useState(0);
+    const increment = () => {
+      setCount(count + 1);
+    };
+    return <OriginalComponent count={count} increment={increment} />;
+  }
+  return CounterHOC;
+};
+export default UpdatedComponent;
+
+
+
+clickCounter.js
+---------------
+import React from "react";
+import CounterHOC from "./CounterHOC";
+function ClickCounterWithHOC(props) {
+  return (
+    <button onClick={props.increment}> Clicked {props.count} Times</button>
+  );
+}
+export default CounterHOC(ClickCounterWithHOC);
+
+
+hovercounter.js
+--------------
+import React from "react";
+import CounterHOC from "./CounterHOC";
+function HoverCounterWithHOC(props) {
+  return (
+    <button onMouseOver={props.increment}> Clicked {props.count} Times</button>
+  );
+}
+export default CounterHOC(HoverCounterWithHOC);
+
+
+
+
+
+
+
+
+
 program:86 Routing
 ******************
-app.js
+index.js
 ------
-import { BrowserRouter } from 'react-router-dom';
-
-	<BrowserRouter>
-        <Header />
-        <Mynav />
-        <Center />
-        <Footer />
-      </BrowserRouter>
+import { BrowserRouter } from 'react-router-dom';	
+   <BrowserRouter>
+        <App />
+   </BrowserRouter>	
 	
 	
 center.js
 ---------
 import { Route, Routes } from "react-router";
 <Routes>
-	<Route exact path="/" element={<Home />} />
-	<Route exact path="/home" element={<Home />} />
-	<Route path="*" element={<NotFound />} />
-</Routes>
+      <Route exact path="/" element={<Home />} />
+      <Route exact path="/home" element={<Home />} />
+      <Route exact path="/aboutus" element={<Aboutus />} />
+      <Route exact path="/careers" element={<Careers />} />
+      <Route exact path="/products" element={<Products />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
 
 
 nav.js
