@@ -120,7 +120,7 @@ Let's take an example:
 1. Library-2013					 1. Framework-2009
 2. Light-weight					 2. Heavy
 3. JSX + Javascript				 3. HTML + Typescript
-4. Uni-Directional				 4. two-way
+4. Uni-Directional				 4. Two-way
 5. Virtual DOM					 5. Regular DOM
 6. Axios 				 		 6. HttpClientModule 
 7. No 		 					 7. Dependency Injection
@@ -171,9 +171,10 @@ How does React Work? (Virtual DOM)
 -Instead of manipulating the browser's DOM directly, React creates a virtual DOM in memory, where it does all the necessary manipulations, before making the changes in the browser DOM.
 -React finds out what changes have been made,and changes only what 
  needs to be changed in the actual DOM.
+ 
+ 
 -Whenever application state/props changes, 
  these are the steps that React performs in order to optimise performance.
-
 a. Generate a new Virtual DOM that represents the new state of our application.
 b. Compare the old Virtual DOM (which represents the current HTML DOM) vs the new Virtual
    DOM.
@@ -268,9 +269,8 @@ React Project Flow
 JSX
 ===
 -JSX (JavaScript Syntax Extension)is a special syntax for React that makes it easier to represent the UI.
--JSX is used to describe the structure & content of a comonent.
--JSX allows us to add the elements in DOM without any createElement() or appendChild() methods.
--JSX is transpiled to plain javascript, so it is compatible with all browsers.
+-JSX is used to describe the structure & content of a react component.
+-JSX allows us to add the elements in DOM without using createElement() or appendChild() methods.
 -JSX looks similar to HTML but it is not HTML.
 -JSX code we write gets transformed into React.createElement().
 -JSX is not part of browser. we need a tool(Babel)(a JavaScript compiler) 
@@ -288,18 +288,14 @@ JSX
 React Without JSX
 =================
 -Code written with JSX will be converted to use React.createElement(). 
--You will not typically invoke React.createElement() directly if you are using JSX. 
--React.createElement(type,[props],[...children])
--The first one is the type of element we're creating, in this case an <h1> tag.
- This could also be another React component. 
- If we're creating an HTML element, we pass in the name as a string, 
- just like we did above. If we're creating a React component, 
- we pass in the variable that the component is assigned to.
--The second argument is an object containing properties (props-class,id,title) that get passed to the component.
--The last argument is the children of that component.
+-we don't have to use React,createElement() when we use JSX. 
+Syntax : React.createElement(type,[props],[...children])
+example: React.createElement(div , {name:'myDiv'},[<p> , <span>])
+-The first argument is the type of element we're creating
+-The second argument is props object.
+-The last argument is the children of that element.
 
 ex:  <div class='test'>This is a div</div>  
-
 -Babel converts the above JSX line to the below code
 return React.createElement("div", {
     class: "test"
@@ -372,7 +368,7 @@ The React object
 -When we import React,we get a React object that contains methods and properties.
 -React exposes its current version through the version property, here's how we can read that.
  import React from "react"
- console.log(React.version); //"16.9.0" 
+ console.log(React.version); //"16.9.0" / 18.2.0
  <h2>React Version is {React.version}</h2>
 -in cmd run the below command 
  npm view react version
@@ -402,7 +398,7 @@ SST - this.setState({ })
 
 
 extensions
-===========
+==========
 1. React Snippet
 2. ESLint
 3. prettier
@@ -495,7 +491,7 @@ class Welcome extends React.Component {
   then JSX realizes it’s a component instance; if not, then it’s an HTML tag.
 
 
-	Functional Component			Class Component
+	Functional Component 			Class Component
 	---------------------			---------------
 1. No 'this' keyword				1. More feature rich
 2. solution without state			2. Maintain own private data- state
@@ -555,7 +551,8 @@ How to use React-icons
    import { FaEdit, FaTrash } from 'react-icons/fa';
    import { BsFillCalendarDateFill,BsFillClockFill } from 'react-icons/bs';
 3. use the Icons
-   <FaEdit /> <FaTrash />
+   <FaEdit /> 
+   <FaTrash color='red' />
 
 
 
@@ -583,6 +580,13 @@ Fragments
 		<button>I am another element</button>
    </>
  
+ 
+ 
+Data Binding
+============
+-Binding/Displaying  the variable value in UI is called data binding.
+
+
  
 
 CSS in React
@@ -762,7 +766,8 @@ PropTypes
 
 Requiring Props
 ===============
--If prop values are not passed to a certain component, no error will be thrown.Instead, within the component that prop will have a value of 'undefined'.
+-If prop values are not passed to a certain component, no error will be thrown.
+Instead, within the component that prop will have a value of 'undefined'.
 -Apart from specifying the type of the prop that can be passed to the component, 
  we can also make sure the prop is always provided to the component by chaining 
  isRequired at the end of the prop validator.
@@ -835,8 +840,8 @@ States
  
 State in Class Component
 ========================
--class components have a state property that holds their state. 
- They provide a setState() method we can use to update the state.
+-class components have a state object , where all the state variables are declared. 
+ To update state variables, setState() should be used;
 -State object is usually initialized inside the constructor in class components.
 -UI will not Re-render when we change state directly, setState() should be used.
   this.counter = this.counter + 1; // re-render won't happpen
@@ -845,7 +850,8 @@ State in Class Component
  it ensures that render() gets called.
 -If a piece of code needs to be executed only after the state has been updated, then 
  place that code in the callback function which is the second arguement to setState()
- ex:-  setState( {} , ()=>{} );
+ Syntax: setState( StateObject, callbackFunction);
+  ex:    setState( {} , ()=>{} );
  
  
 Note:
@@ -920,16 +926,18 @@ How to use react-modal
 	  function closeModal() {
 		setIsOpen(false);
 	  }
-  
-	<Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
-      >
-        <h2>Hello Hiiiiiiiiiii</h2>
-        <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
-    </Modal>
+	 <>
+        <button onClick={openModal}>Open Modal</button>
+        <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            contentLabel="Example Modal"
+        >
+            <h2>Hello Hiiiiiiiiiii</h2>
+            <button onClick={closeModal}>close</button>
+            <div>I am a modal</div>
+        </Modal>
+    </>
 
 
 
@@ -978,11 +986,8 @@ Search
 
 Pagination
 ==========
-1. install the library
-   npm i react-paginate
-   
+1. npm install react-paginate  
 2. import ReactPaginate from 'react-paginate';
-
 3.    <Employees> / <Products> / <Users>
       <ReactPaginate
         breakLabel="..."
@@ -1004,8 +1009,8 @@ React Events
 	onclick-wrong
 -React event handlers are written inside curly braces
 	onClick={shoot}  instead of onClick="shoot()"
-	<button onClick={shoot}>Take the Shot!</button>
-	<button onClick={shoot()}>Take the Shot!</button> //calls the function on load
+	<button onClick={shoot}>Take the Shot!</button>   // calls the function on click
+	<button onClick={shoot()}>Take the Shot!</button> // calls the function on load
 -For methods in React,the 'this' keyword should represent the component that owns the method.
 -That is why we should use arrow functions. 
  With arrow functions, 'this' will always represent the object that defined the arrow function.
@@ -1052,19 +1057,31 @@ Single Event Handler for multiple input elements
     const { name, value } = e.target;
     this.setState({ [name]: +value });
   }; 
+================================= 
+let [obj, setObj] = useState({ num1: 0, num2: 0 });
+const changeHandler = (e) => {
+   setObj({ ...obj, [e.target.name]: +e.target.value })
+}
   
-  
+
 
 
 SyntheticEvent
 ==============
 -SyntheticEvent is a cross-browser wrapper around the browser’s native event.
 -in React event handlers receive 'SyntheticEvent' object as arguement insteadof browser's native 'Event' object.
+
 -To register an event handler for the capture phase, append Capture to the event name.
   <button onClick={f1}>click me</button>  // bubbling
   <button onClickCapture={f1}>click me</button>  // capturing
  
- 
+  <div onClickCapture={() => console.log('div clicked')}>
+            div <br/>
+            <span onClickCapture={() => console.log('span clicked')}>
+                Span <br/>
+                <button onClickCapture={() => console.log('button clicked')}>button</button>
+            </span>
+	</div>
 
 
 
@@ -1103,7 +1120,7 @@ React Memo Component
 -React.memo() is a higher-order component.
 -React.memo() can be used for both class & function components.
 -When a component is wrapped in React.memo(), React renders the component only if the props those are passed to that component changes.
--React always re-renders the component if the state changes, even if the component is wrapped in React.memo()
+-lets you skip re-rendering a component when its props are unchanged.
 -ex: export default React.memo(MyComponent);
  
 
@@ -1268,11 +1285,12 @@ useEffect()
 -useEffect serves the same purpose as componentDidMount, componentDidUpdate, and componentWillUnmount.
 -useEffect() takes a callBack Function as 1st argument and an arrray as 2nd argument.
  ex: useEffect(()=>{} , []);
--array contains so called dependencies for useEffect, that is, variables on which useEffect depends on to re-run.
+-array contains dependencies for useEffect, that is, variables on which useEffect depends on to re-run.
 -If 2nd argument is not present, effect runs everytime there is a state change.
 -When the array is empty, the effect runs only once.(on component load)
--If 2nd arguement is present, effect will only activate if the values in the list change.
+-If 2nd arguement is present, effect will only run if the values in the list change.
 -we can have many useEffects() in a component to track changes for diff variables.
+
 
 
 How to use componentWillUnmount in Functional Components
@@ -1322,6 +1340,7 @@ Refs (Template Reference Variable)
 Q. How to display previous State & Current State data in functional Component using ref.
 
 
+
 Forms
 =====
 -React uses forms to allow users to interact with the web page.(Collect User Data)
@@ -1335,16 +1354,12 @@ Forms
 -use event.preventDefault() to prevent the form from actually being submitted.(to avoid page refresh)
 -control the values of more than one input field by adding a name attribute to each element.
 
--When you initialize the state in the constructor, use the field names.
--To access the fields in the event handler use the event.target.name and event.target.value syntax.
--To update the state in the this.setState method, use square brackets [bracket notation] around the property name.
-
--You can validate form input when the user is typing or you can wait untill the form gets submitted.
+-A form can be validated on change or while submitting the form.
 -The textarea element in React is slightly different from HTML Syntax.
 -In HTML the value of a textarea was the text between the start tag <textarea> and the end tag </textarea>,
  in React the value of a textarea is placed in a value attribute:
    <textarea value={this.state.description} />   correct
-   <textarea>{this.state.description} <textarea>  wrong
+   <textarea>{this.state.description}<textarea>  wrong
 -A drop down list, or a select box, in React is also a bit different from HTML.
 -in HTML, the selected value in the drop down list was defined with the selected attribute:
 	 <select value={this.state.mycar}>
@@ -1493,7 +1508,7 @@ DELETE /employees/{id}
 Ways of Fetching Data
 =====================
 There are many ways to extract data from API in React:
-1. using Fetch API
+1. using fetch() , then()
 2. using async-await syntax
 3. using Axios library
 4. using custom hooks
@@ -1534,7 +1549,7 @@ HTTP with axios
   
 
 
-		Axios												Fetch
+		Axios												fetch()
 ===========================================================================
 -built-in XSRF protection.						-Fetch does not.
 -uses the data property.						-Fetch uses the body property.
@@ -1542,7 +1557,7 @@ HTTP with axios
 -request is ok when status is 200 and statusText is ‘OK’.	Fetch request is ok when response object contains the ok property.
 -performs automatic transforms of JSON data.		Fetch is a two-step process when handling JSON data- first, to make the actual request; second, to call the .json() method on the response.
 -allows cancelling request and request timeout.	Fetch does not.
--has the ability to intercept HTTP requests.	Fetch, by default, doesn’t provide a way to intercept requests.
+-has the ability to intercept HTTP requests.	Fetch, by default, doesn’t 
 -has built-in support for download progress.	Fetch does not support upload progress.
 
 
@@ -1650,6 +1665,7 @@ React Higher Order Components (HOCs)
   newComponent = higherOrderComponent( originalComponent )
 -Higher order components are JavaScript functions used for adding additional functionalities to the existing component.
 -These functions are pure, which means they are receiving data and returning values according to that data. 
+-Authentication,Logging,Styling and Theming
 
 use cases:
 -Infinite scroll in three different views, all having different data.
@@ -1870,7 +1886,7 @@ Replace
 -replaces the current location instead of pushing a new one onto the browser history stack
 <Navigate to="/home" replace />
 	  (OR)
-navigate(to, { replace: true })
+navigate("/home", { replace: true })
 
 
 Exact
@@ -1964,8 +1980,8 @@ Pre-requisites:
 
 React Portals
 =============
--Portals provide a way to render children into a DOM node that exists outside the DOM hierarchy of the parent component.
--to insert a child into a different location(not in the parent) in the DOM.
+-Portals provide a way to render some Content into a DOM node that exists outside the DOM hierarchy of the parent component.
+-To insert HTML Content into a different location(not in the parent) in the DOM.
 -createPortal() allows to render some children into a different part of the DOM.
  createPortal(children, domNode, key?)
  
@@ -2002,7 +2018,7 @@ Deploy in a Local Server
 
 
 Generated Files:
-	main.[hash].js  -  	This is your application code
+	main.[hash].js  -  	This is our application code
     [number].[hash].chunk.js  -  vendor code
 	runtime-main.[hash].js  -   webpack runtime logic which is used to load and run your application
 
@@ -2137,25 +2153,15 @@ Context API
 	   <MyContext.Provider value={/* some value */}>
 	      <ComponentX />
 	   <MyContext.Provider>
-3. Consume the context value.
+3. Consume the context value. (Class Component)
 	   <MyContext.Consumer>
 			{value => /* render something based on the context value */}
 		</MyContext.Consumer>
 		
-		
-
 Read Context data in Function Component
 ---------------------------------------
 const myContextObj = useContext(myContext);
 <div>Context Data is: {myContextObj}</div>
-
-
-
-FLUX VS REDUX
-=============
--Flux can have multiuple Stores, But Redux will have only one store.
--Flux has Dispatcher , Redux has Reducer.
--State is Mutable , Immutable state.
 
   
 Redux
@@ -2395,7 +2401,7 @@ Custom Hook
 Unit Testing
 ============
 -Unit testing is a great discipline which can lead to 40%-80% reductions in production bug density.
--Improves your application architecture and maintainability.
+-Improves our application architecture and maintainability.
 -Provides quick feedback on file-save, tells you whether the changes you made worked or not. 
 -This can replace console.log() and clicking around in the UI to test changes. 
 
@@ -2485,7 +2491,7 @@ Snapshot Testing
 ----------------
 -Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
 
--if the component name is 'button',create a folder '_test__' inside button folder add test file 'button.test.js' or 'button.spec.js'
+-if the component name is 'button',create a folder '__test__' inside button folder add test file 'button.test.js' or 'button.spec.js'
 -snapshot testing adds a __snapshots__ folder inside __test__ folder
  if any accidental change happens, testcase will fail
  Press u to update failing snapshots.

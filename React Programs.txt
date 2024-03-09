@@ -262,38 +262,6 @@ export default DashedBox;
 
 
 
-
-
-program-12 : External CSS
-************************
-mystyles.css
--------------
-.mybutton {
-    background: red;
-    border-radius: 8px;
-    color: white;
-    padding: 10px 50px;
-  }
--------
-import React from 'react';
-import './mystyles.css';
-class Externalcss extends React.Component {
-      render() {
-            return (
-                  <div>
-                        <button className="mybutton">test</button>
-                        <div className='mydiv'>This is a div</div>
-                        <span id='myspan'>this is a span</span>
-                  </div>
-            );
-      }
-}
-export default Externalcss;
-
-
-
-
-
 Program-13 conditional CSS
 **************************
 import React from 'react';
@@ -355,8 +323,6 @@ export default Conditional;
 
 
 
-
-
 Program-16 Logical &&
 **********************
 import React, { Component } from 'react'
@@ -376,7 +342,7 @@ export default class Conditional extends Component {
 
 
 program-17 switch case
-********************
+**********************
 import React from "react";
 
 export default function ConditionalDemo2() {
@@ -483,8 +449,7 @@ program-21 List of Objects
 **************************
 import React from 'react';
 
-class EmployeeList extends React.Component {
-    render() {
+export default function EmployeeList {
         let employees = [
             { eId: 101, name: "sanjay", sal: 5000 },
             { eId: 104, name: "deepak", sal: 8000 },
@@ -501,10 +466,8 @@ class EmployeeList extends React.Component {
                     </tr>
                 ))}
             </table>
-        
-    }
 }
-export default EmployeeList;
+
 
 -------------------(OR)--------------------------------------
 
@@ -1172,6 +1135,8 @@ export default function RemainingChar() {
 }
 
 
+
+
 Program:40  Country Dropdown
 ******************************
 import React, { useState } from 'react'
@@ -1193,9 +1158,40 @@ export default function StateDropDown() {
 
 
 
+Program: Dark/Light Mode
+************************
+import React, { useEffect, useState } from 'react';
+import './ThemeDemo.css';
+export default function ThemeDemo() {
+    const [isDark, setIsDark] = useState(false);
+    const changeMode = () => {
+        setIsDark(!isDark)
+    }
+    useEffect(() => {
+        if (isDark) {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
+    }, [isDark])
+
+    return <>
+        <h2>Toggle Dark/Light Mode</h2>
+        <div>This page is in <b>{isDark ? 'Dark' : 'Light'}</b> Mode</div>
+        <button onClick={changeMode}>Go To {!isDark ? 'Dark' : 'Light'} Mode</button>
+    </>
+}
+======
+.dark{
+    background-color:black;
+    color:white 
+}
 
 
-Program-40 Addition 
+
+
+
+Program-41 Addition 
 *******************
 import React from 'react';
 
@@ -1256,10 +1252,9 @@ export default function Demo() {
 }
 
 
-Program: Folder Explorer
-**************************
+Program-42 : Folder Explorer
+****************************
 import React, { useState } from "react";
-
 export default function Folder({ folderInfo }) {
     const [expand, setExpand] = useState(false);
 
@@ -1290,7 +1285,7 @@ export default function Folder({ folderInfo }) {
 
 
 
-Program: 41 Search
+Program: 43 Search
 ******************
 import React, { useState } from "react";
 import SearchBar from "react-js-search";
@@ -1360,7 +1355,7 @@ export default function EmployeeList() {
 }
 
 
-Program-42    Pagination 
+Program-44   Pagination 
 ************************
 import React, { useState } from "react";
 import productsArr from "./Products.json";
@@ -1466,7 +1461,7 @@ ProductsPagination.css
 
 
 
-Program- 43  ToDo CRUD
+Program- 45  ToDo CRUD
 **********************
 export default function ToDoCRUD() {
     let initialtodos = [
@@ -1520,85 +1515,34 @@ Assignment
 -Add Pagination
 
 
-
-
-Program-44   Event
-******************
-class Football extends React.Component {
-  shoot = () => {
-    alert(this);
-    /*
-    The 'this' keyword refers to the component object
-    */
-  }
-  render() {
-    return (
-      <button onClick={this.shoot}>Take the shot!</button>
-	  <button onClick={this.shoot()}>Take the shot!</button> //No
-    );
-  }
-}
-
-		(OR)
-		
-class Football extends React.Component {
-  constructor(props) {
-    super(props)
-    this.shoot = this.shoot.bind(this)
-  }
-  shoot() {
-    alert(this);
-    /*
-    Thanks to the binding in the constructor function,
-    the 'this' keyword now refers to the component object
-    */
-  }
-  render() {
-    return (
-      <button onClick={this.shoot}>Take the shot!</button>
-    );
-  }
-}
-
-
-
-
-
-
-Program-45 Event with parameter
+Program-46 Event with parameter
 ***********************************
-class Football extends React.Component {
-  shoot = (a) => {
-    alert(a);
-  }
-  render() {
-    return (
-      <button onClick={() => this.shoot("Goal")}>Take the shot!</button>
-    );
-  }
+import React, { Component } from 'react';
+export default class EventDemo1 extends Component {
+    f1 = () => {
+        console.log('I am F1...')
+    }
+    add = (a, b) => {
+        console.log(`Addition of ${a} & ${b} is ${a + b}`)
+    }
+    render() {
+        return <>
+            <button onClick={this.f1} className='btn btn-primary'>btn-1</button>
+            <button onClick={() => { this.add(2, 3) }} className='btn btn-secondary m-1'>Add</button>
+        </>
+    }
 }
 
-		(OR)
-class Football extends React.Component {
-  shoot(a) {
-    alert(a);
-  }
-  render() {
-    return (
-      <button onClick={this.shoot.bind(this, "Goal")}>Take the shot!</button>
-    );
-  }
-}	
 
 
 Assignment
 ==========
 -add 2 input boxes (num1,num2)
--add a button, onClick of button find the additionResult
+-add a button, onClick of button find the addition Result
 
 
 
-Program-46   Modal 
+Program-47   Modal 
 ******************
 1. npm i react-modal
 2. add the below code
@@ -1677,140 +1621,7 @@ export default function Test() {
 }
 
 
-
-
-
-program-47 Component Communication (child to parent)
-**********************************
-import React, { Component } from 'react';
-import Child from '../child/child'
-
-export default class Parent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            parentName: 'Parentttt'
-        };
-        this.greetParent = this.greetParent.bind(this);
-        this.greetParentWithParam = this.greetParentWithParam.bind(this);
-    }
-    greetParent() {
-        alert(`Hello ${this.state.parentName}`)
-    }
-    greetParentWithParam(data) {
-        alert(`Hello parent with parameter from ${data}`)
-    }
-    render() {
-        return (
-            <div>
-                I am parent
-                <Child greetHandler={this.greetParent} greetHandler2={this.greetParentWithParam}/>
-            </div>
-        )
-    }
-}
-------------
-import React from 'react';
-
-class Child extends React.Component {
-    render() {
-        return (
-            <div>
-                <div>I am child component</div>
-                <button onClick={this.props.greetHandler}>Invoke parent Method</button>
-                <button onClick={() => this.props.greetHandler2('childparameter')}>Invoke parent Method</button>
-            </div>
-        );
-    }}
-export default Child;
-
-
-
-
-
-program-48  Component Communication (child to parent)
-************************************
-import React, { Component } from 'react';
-import Area from './components/Area';
-import Parameter from './components/Parameter';
- 
-class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      data: 0,
-      len: 40,
-      bre: 50
-    }
-  }
- 
-  updateState = (calculation)=> {
-    if(calculation == "Area")
-    {
-      this.setState({data: this.state.len * this.state.bre})
-    }
-    else
-    {
-      this.setState({data: 2 * (this.state.len + this.state.bre)})
-    }
-  }
- 
-  render() {
-    return (
-      <div>
-        Calculation: {this.state.data}
-        <Area update={this.updateState} />
-        <Perimeter update={this.updateState} />
-      </div>
-    )
-  }
-}
- 
-export default App;
--------------------
-import React, { Component } from 'react';
- 
-class Area extends Component {
-  render() {
-    return (
-      <div>
-        Area:
-        <button onClick={() => this.props.update('Area')}>
-          Area
-        </button>
-      </div>
-    );
-  }
-} 
-export default Area;
------------------------------
-import React, { Component } from 'react'
-
-export default class Perimeter extends Component {
-    render() {
-        return (
-            <div>
-                Perimeter:
-                <button onClick={() => this.props.update('Perimeter')}>
-                    Perimeter
-        </button>
-            </div>
-        )
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-Program-49  Employee CRUD
+Program-48  Employee CRUD
 *************************
 import React from 'react';
 
@@ -1895,144 +1706,128 @@ export default Crud;
 
 
 
-Program-50 CRUD (functional component)
+Program-49 CRUD (functional component)
 ************************************
-import React, { useState } from "react";
-import AddEmployee from "./AddEmployee";
-import EmployeeList from "./EmployeeList";
+import React, { useState } from 'react'
+import EmployeeList from './EmployeeList'
+import AddEmployee from './AddEmployee'
+import EditEmployee from './EditEmployee';
 
-export default function EmployeeCRUD() {
-  const initialEmployees = [
-    { eId: 101, name: "sanjay", sal: 5000 },
-    { eId: 104, name: "deepak", sal: 8000 },
-    { eId: 103, name: "ranjan", sal: 7000 },
-    { eId: 102, name: "manoj", sal: 9000 },
-  ];
-  const [employees, setEmployees] = useState(initialEmployees);
+export default function EmployeeCrud() {
+    const initialEmployees = [
+        { eId: 101, name: "sanjay", sal: 5000 },
+        { eId: 104, name: "deepak", sal: 8000 },
+        { eId: 103, name: "ranjan", sal: 7000 },
+        { eId: 102, name: "manoj", sal: 9000 },
+    ];
+    const [employees, setEmployees] = useState(initialEmployees);
+    const [isEdit, setIsEdit] = useState(false);
+    const initialEmp = { eId: '', name: '', sal: 0 }
+    const [selectedEmployee, setSelectedEmployee] = useState(initialEmp);
 
-  const deleteEmp = (empID) => {
-    const tempArray = employees.filter((emp) => {
-      return emp.eId !== empID;
-    });
-    setEmployees(tempArray);
-  };
-  const addEmp = (empObj) => {
-    let tempArray = [...employees, empObj];
-    setEmployees(tempArray);
-  };
-  return (
-    <>
-      <h1>This is Employee CRUD Example</h1>
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-8">
-            <EmployeeList
-              allEmployees={employees}
-              deleteEmp={deleteEmp}
-            ></EmployeeList>
-          </div>
-          <div className="col-sm-4">
-            <AddEmployee addEmp={addEmp}></AddEmployee>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-------------------------------------------------
-import React from "react";
-
-export default function EmployeeList(props) {
-  return (
-    <div>
-      <>
-        <table className="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>Employee ID</th>
-              <th>Employee Name</th>
-              <th>Employee Salary</th>
-              <th>Actions </th>
-            </tr>
-          </thead>
-          <tbody>
-            {props.allEmployees.map((emp, ind) => {
-              return (
-                <tr key={emp.eId}>
-                  <td>{emp.eId}</td>
-                  <td>{emp.name}</td>
-                  <td>{emp.sal}</td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      type="button"
-                      onClick={() => {
-                        props.deleteEmp(emp.eId);
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </>
-    </div>
-  );
-}
-------------------------------------------------
-import React, { useState } from "react";
-
-export default function AddEmployee(props) {
-  const [employeeID, setEmployeeID] = useState(0);
-  const [employeeName, setEmployeeName] = useState("test");
-  const [employeeSalary, setEmployeeSalary] = useState(1000);
-  const changeHandler = (e) => {
-    if (e.target.name === "eID") {
-      setEmployeeID(e.target.value);
-    } else if (e.target.name === "eName") {
-      setEmployeeName(e.target.value);
-    } else {
-      setEmployeeSalary(e.target.value);
+    const deleteEmployee = (idToDelete) => {
+        let filteredEmployees = employees.filter(emp => emp.eId !== idToDelete);
+        setEmployees([...filteredEmployees])
     }
-  };
+    const addEmployee = (emp) => {
+        employees.push(emp);
+        setEmployees([...employees]);
+    }
+    const editEmployee = (emp) => {
+        setSelectedEmployee(emp);
+        setIsEdit(true);
+    }
+    const saveEditedEmployee = (editedEmp) => {
+        let updatedEmployees = employees.map(emp => {
+            if (emp.eId === editedEmp.eId) {
+                return editedEmp;
+            } else {
+                return emp;
+            }
+        })
+        setEmployees([...updatedEmployees]);
+        setIsEdit(false);
+    }
+    const cancelSave = () => {
+        setSelectedEmployee(initialEmp);
+        setIsEdit(false);
+    }
 
-  return (
-    <>
-      <input
-        name="eID"
-        placeholder="Enter Employee ID"
-        onChange={changeHandler}
-      />
-      <input
-        name="eName"
-        placeholder="Enter Employee Name"
-        onChange={changeHandler}
-      />
-      <input
-        name="eSalary"
-        placeholder="Enter Employee Salary"
-        onChange={changeHandler}
-      />
-      <button
-        type="button"
-        className="btn btn-success"
-        onClick={() => {
-          let emp = {
-            eId: employeeID,
-            name: employeeName,
-            sal: employeeSalary,
-          };
-          props.addEmp(emp);
-        }}
-      >
-        Add Employee
-      </button>
+    return <>
+        <h2 className='text-center'>This is EmployeeCRUD Component</h2>
+        <div className='container'>
+            <div className='row'>
+                <div className='col-sm-8'>
+                    <h3>Employee List</h3>
+                    <EmployeeList
+                        employees={employees}
+                        deleteEmployee={deleteEmployee}
+                        editEmployee={editEmployee}
+                    />
+                </div>
+                <div className='col-sm-4'>
+                    {
+                        isEdit ?
+                            <EditEmployee
+                                selectedEmployee={selectedEmployee}
+                                saveEditedEmployee={saveEditedEmployee} 
+                                cancelSave={cancelSave}
+                                />
+                            :
+                            <AddEmployee addEmployee={addEmployee} />
+                    }
+                </div>
+            </div>
+        </div>
     </>
-  );
 }
+
+------------------------------------------------
+import React from 'react'
+import { useState } from 'react';
+
+export default function EditEmployee({ selectedEmployee, saveEditedEmployee, cancelSave }) {
+    const [emp, setEmp] = useState(selectedEmployee);
+    const changeHandler = (e) => {
+        const { name, value } = e.target;
+        setEmp({ ...emp, [name]: value })
+    }
+    return <>
+        <h3>Edit Employee</h3>
+        <p>eId : <input value={emp.eId} name='eId' onChange={(e) => changeHandler(e)} /></p>
+        <p>Name : <input value={emp.name} name='name' onChange={(e) => changeHandler(e)} /></p>
+        <p>Salary : <input value={emp.sal} name='sal' onChange={(e) => changeHandler(e)} /></p>
+        <div className='text-center'>
+            <button onClick={cancelSave} className='btn btn-secondary mx-1'>Cancel</button>
+            <button onClick={() => saveEditedEmployee(emp)} className='btn btn-primary'>Save</button>
+        </div>
+    </>
+}
+
+------------------------------------------------
+import React, { useState } from 'react'
+
+export default function AddEmployee({ addEmployee }) {
+    const initialEmp = { eId: '', name: '', sal: 0 }
+    const [emp, setEmp] = useState(initialEmp);
+    const changeHandler = (e) => {
+        const { name, value } = e.target;
+        setEmp({ ...emp, [name]: value })
+    }
+    const addMyEmployee = (emp) => {
+        addEmployee(emp);
+        setEmp(initialEmp);
+    }
+    return <>
+        <p>eId : <input value={emp.eId} name='eId' onChange={(e) => changeHandler(e)} /></p>
+        <p>Name : <input value={emp.name} name='name' onChange={(e) => changeHandler(e)} /></p>
+        <p>Salary : <input value={emp.sal} name='sal' onChange={(e) => changeHandler(e)} /></p>
+        <div className='text-center'>
+            <button onClick={() => addMyEmployee(emp)} className='btn btn-primary'>Add Employee</button>
+        </div>
+    </>
+}
+
 
 
 
@@ -2048,7 +1843,6 @@ export default class Demo1 extends PureComponent {
     state = {
         name: 'sachin'
     }
-
     render() {
         console.log('Demo1 render called....');
         setInterval(() => {
@@ -2490,7 +2284,7 @@ export default function Addition() {
 
 
 program- 66  Ref Forwarding
-**************************
+***************************
 import React, { Component } from 'react'
 import FancyButton from '../FancyButton/FancyButton'
 
@@ -2506,7 +2300,7 @@ export default class Test extends Component {
     render() {
         return (
             <div>
-                <FancyButton ref={this.myRef}>
+                <FancyButton ref={this.myRef} >
                     <div>button text</div>
                 </FancyButton>
 
@@ -2524,6 +2318,25 @@ const FancyButton = React.forwardRef((props, ref) => (
 ));
 export default FancyButton;
 
+
+
+Program : display previous State & Current State
+************************************************
+export default function CounterDemo3() {
+    let [counter, updateCounter] = useState(0);
+    let prevValue = useRef(0);
+
+    let increment = () => {
+        updateCounter(counter + 1);
+    }
+    useEffect(() => {
+        prevValue.current = counter;
+    }, [counter]);
+    return <>
+        <p>Current value - {counter} , previous Value is-{prevValue.current}</p>
+        <button onClick={increment}>Increment</button>
+    </>
+}
 
 
 
@@ -2561,73 +2374,31 @@ export default function Demo() {
 
 Program-68 UnControlled Form Elements
 *************************************
-import React, { useRef, useState } from "react";
+import React, { useState } from 'react'
+import { useRef } from 'react';
 
-export default function Demo() {
-  const [fname, setFname] = useState("sachin");
-  const [lname, setLname] = useState("tendulkar");
-
-  const ref1 = useRef();
-  const ref2 = useRef();
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log(fname + " " + lname);
-    console.log(ref1.current.value + " " + ref2.current.value);
-  };
-
-  return (
-    <>
-      <form onSubmit={submitHandler}>
-        First Name:
-        <input name="fname" defaultValue={fname} ref={ref1} />
-        Last Name:
-        <input name="lname" defaultValue={lname} ref={ref2} />
-        <br />
-        <br />
-        <button>submit</button>
-      </form>
-    </>
-  );
-}
-
-
-
-Program-69 Controlled Form Elements
-*************************************
-import React, { Component } from 'react';
-
-export default class Test extends Component {
-    constructor(props) {
-        super(props)
-        this.state = { 'userName': 'sanjay' };
-
-        this.myRef1 = React.createRef()
-    }
-    changeHandler = (e) => {
-        this.setState({ [e.target.name]: e.target.value })
-    }
-    submitHandler = (e) => {
+export default function FormDemo2() {
+    let myRef1 = useRef('')
+    let myRef2 = useRef('')
+    const submitHandler = (e) => {
         e.preventDefault();
-        console.log(this.state.userName);
+        const fname = myRef1.current.value;
+        const lname = myRef2.current.value;
+        console.log(fname, lname)
     }
-    render() {
-        return (
-            <div>
-                <div>name is: {this.state.userName}</div>
-                <form onSubmit={this.submitHandler}>
-                    <input name='userName' value={this.state.userName} onChange={this.changeHandler} />
-                    <input type='submit' value='submit' />
-                </form>
-            </div>
-        )
-    }
+    return <form onSubmit={submitHandler}>
+        First Name:
+        <input name="fname" defaultValue={'Sachin'} ref={myRef1} />
+        Last Name:
+        <input name="lname" defaultValue={'Tendulkar'} ref={myRef2} />
+        <br /><br />
+        <button>submit</button>
+    </form>
 }
-
 
 
 Program-70 Multiple input fields
-*******************************
+********************************
 import React from 'react';
 
 class MyForm extends React.Component {
@@ -3551,13 +3322,13 @@ axios.interceptors.request.use( req => {
 Program-84 Response Interceptor
 ****************************
 axios.interceptors.response.use(res => {
-  res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
-  return res;
-},
-res => {
-  res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
-  throw res;
-});
+        res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
+        return res;
+    },
+        err => {
+            err.durationInMs = new Date().getTime() - err.config.meta.requestStartedAt
+            throw err;
+        });
 
 
 Program:85 Request & Response Interceptor
@@ -3573,9 +3344,9 @@ axios.interceptors.response.use(res => {
   res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
   return res;
 },
-res => {
-  res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
-  throw res;
+err => {
+  err.durationInMs = new Date().getTime() - err.config.meta.requestStartedAt
+  throw err;
 });
 
 (async () => {
@@ -3600,6 +3371,29 @@ res => {
     console.log(`Error response took ${err.durationInMs} milliseconds`);
   }
 })();
+
+
+
+Program- HOC For Logging
+========================
+import React from 'react'
+import { useEffect } from 'react';
+const LoggerHOC = (InputComponent) => {
+    const EnhancedComponent = (props) => {
+        useEffect(() => {
+            console.log(`${InputComponent.name} Mounted`);
+            return () => {
+                console.log(`${InputComponent.name} UnMounted`);
+            }
+        }, []);
+        useEffect(() => {
+            console.log(`${InputComponent.name} Updated`);
+        });
+        return <InputComponent {...props} />
+    }
+    return EnhancedComponent;
+}
+export default LoggerHOC;
 
 
 
@@ -3688,7 +3482,32 @@ export default CounterHOC(HoverCounterWithHOC);
 
 
 
+Program- Logging
+==========================
+const withLogger = (WrappedComponent) => {
+  const WithLogger = (props) => {
+    useEffect(() => {
+      // Log data on component mount
+      console.log(`Component ${WrappedComponent.name} mounted.`);
+      return () => {
+        // Log data on component unmount
+        console.log(`Component ${WrappedComponent.name} unmounted.`);
+      };
+    }, []);
 
+    useEffect(() => {
+      // Log data on component update
+      console.log(`Component ${WrappedComponent.name} updated.`);
+    });
+
+    return <WrappedComponent {...props} />;
+  };
+
+  WithLogger.displayName = `withLogger(${WrappedComponent.displayName || WrappedComponent.name})`;
+  return WithLogger;
+};
+
+export default withLogger;
 
 
 
