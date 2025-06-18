@@ -67,24 +67,7 @@ Program-3 : Nested Element using JSX (Babel)
 </html>
 
 
-
-program-4 : Component 
-**********************
-export default function Header() {
-  return <div>Hello ReactJS</div>
-}
------------------------------------
-import { Component } from "react";
-export default class Header extends Component {
-  render() {
-    return <div>Hello ReactJS</div>;
-  }
-}
-
-
-
-
-Program-5: use Bootstrap
+Program-4: use Bootstrap
 ************************
 1. install bootstrap	
    npm i bootstrap	
@@ -94,7 +77,7 @@ Program-5: use Bootstrap
    
    
    
-Program-6: use Bootstrap-icons
+Program-5: use Bootstrap-icons
 ******************************
 1. install bootstrap icons library	
    npm i bootstrap-icons
@@ -107,7 +90,7 @@ Program-6: use Bootstrap-icons
 
 
 
-Program-7 : How to use React-icons
+Program-6 : How to use React-icons
 ********************************
 1. install react-icons
    npm install react-icons
@@ -122,7 +105,7 @@ Program-7 : How to use React-icons
 
 
 
-Program-6: React Rendering Elements
+Program-7: React Rendering Elements
 *********************************
 export default function tick() {
   const element = (
@@ -138,7 +121,7 @@ setInterval(tick, 1000);
 
 
 
-Program-7:  Fragments
+Program-8:  Fragments
 *********************
 import React from 'react';
 class Header extends React.Component {
@@ -157,7 +140,7 @@ export default Header;
 
 
 
-program-8: Data Binding
+program-9: Data Binding
 ***********************
 import React from 'react';
 class App extends React.Component {
@@ -185,7 +168,7 @@ export default App;
 
 
 
-program-9 display Image
+program-10 display Image
 *************************
 1. place the image inside 'public' folder
 2. use it in HTML file
@@ -197,8 +180,8 @@ program-9 display Image
 
 
 
-program-10 : CSS
-***************
+program-11 : CSS
+****************
 import React from 'react';
 class App extends React.Component {
    render() {
@@ -222,7 +205,7 @@ export default App;
 
 
 
-program-11 CSS Modules
+program-12 CSS Modules
 *********************
 DashedBox.module.css
 -------------------
@@ -397,28 +380,7 @@ export default List;
 
 
 
-
-
-program-19 List of Items & condition
-***********************************
-import React, { Component } from 'react'
-
-export default class Demo extends Component {
-    render() {
-        let cars = ['tata', 'honda', 'maruti', 'hundai', 'toyota'];
-        let carList = cars.map((car, ind) => {
-            if (ind % 2 == 0)
-                return <h2>{car}</h2>
-        })
-        return <div>{carList}</div>
-    }
-}
-
-
-
-
-
-Program:20 Countries DropDown & Datalist
+Program:19 Countries DropDown & Datalist
 **************************************
 export default function ListDemo2() {
 	const countries = ["Afghanistan","Albania","Algeria"]
@@ -445,10 +407,9 @@ export default function ListDemo2() {
 
 
  
-program-21 List of Objects
+program-20 List of Objects
 **************************
 import React from 'react';
-
 export default function EmployeeList {
         let employees = [
             { eId: 101, name: "sanjay", sal: 5000 },
@@ -470,9 +431,7 @@ export default function EmployeeList {
 
 
 -------------------(OR)--------------------------------------
-
 import React, { Component } from 'react';
-
 export default class Demo extends Component {
     render() {
         let employees = [
@@ -513,7 +472,7 @@ export default class Demo extends Component {
 
 
 
-Program-22 Iterate objects
+Program-21 Iterate objects
 **************************
 import React, { Component } from 'react'
 
@@ -554,7 +513,7 @@ export default class Demo1 extends Component {
 
 
 		
-Program-23 productList & Product
+Program-22 productList & Product
 ********************************
 import React, { Component } from 'react'
 import Product from './product'
@@ -594,7 +553,7 @@ export default class Product extends Component {
 
 
 
-program-24 problem with Local Variables declared inside render()
+program-23 problem with Local Variables declared inside render()
 *********************************************************
 import React, { Component } from 'react'
 export default class Test extends Component {
@@ -615,7 +574,7 @@ export default class Test extends Component {
 // render() method gets invoked only if there is a change in props/state
 
 
-program-25  Force Update
+program-24  Force Update
 ************************
 import React, { Component } from 'react'
 export default class Conditional extends Component {
@@ -638,7 +597,7 @@ export default class Conditional extends Component {
 
 
 
-program-26: Props
+program-25: Props
 ******************
 import React from 'react';
 import Child from '../child/child';
@@ -656,7 +615,6 @@ class Parent extends React.Component {
 export default Parent;
 -------------------
 import React from 'react';
-
 class Child extends React.Component {
     render() {
         return (
@@ -673,7 +631,7 @@ export default Child;
 
 
 
-Program-27  Props De-structuring
+Program-26  Props De-structuring
 ******************************
 import React, { Component } from 'react'
 
@@ -697,7 +655,7 @@ export default class Product extends Component {
 
 
 
-Program-28 propTypes
+Program-27 propTypes
 *******************
 import React from 'react';
 import { PropTypes } from 'prop-types';
@@ -721,7 +679,7 @@ export default Student;
 
 
 
-Program-29 Requiring Single Child
+Program-28 Requiring Single Child
 *******************************
 import React from 'react';
 import { PropTypes } from 'prop-types';
@@ -758,7 +716,7 @@ export default App;
 
 
 
-Program-30: props.children
+Program-29: props.children
 **************************
 import React from 'react';
 import Greet from '../greet/greet';
@@ -797,7 +755,7 @@ export default Greet;
 
 
 
-Program-31: Methods as props
+Program-30: Methods as props
 ****************************
 import React, { Component } from 'react';
 import Child from '../child/child';
@@ -827,7 +785,6 @@ export default class Parent extends Component {
 }
 -----------------------
 import React from 'react';
-
 class Child extends React.Component {
     render() {
         return (
@@ -844,7 +801,7 @@ export default Child;
 
 
 
-Program-32: States
+Program-31: States
 ******************
 class Counter extends React.Component {
    constructor(props) {
@@ -854,7 +811,6 @@ class Counter extends React.Component {
   increment = () => {
     this.setState({count: this.state.count + 1});
   }
-
   render() {
     return (
       <div>
@@ -868,54 +824,7 @@ class Counter extends React.Component {
 
 
 
-
-
-Program-33 setState() in Detail
-*********************************
-import React from 'react';
-class Counter extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count: 0
-        }
-    }
-    increment() {
-        //this.state.count = this.state.count + 1;
-        //console.log(this.state.count);
-        //UI will not Re-render when we change state directly, setState() should be used
-
-        this.setState({
-            count: this.state.count + 1
-        })
-        console.log(this.state.count);
-        //Calls to setState() is asynchronous,
-        //Console.log() gets executed before setState()
-        
-        this.setState({
-            count: this.state.count + 1
-        },
-        ()=>{
-            console.log('call back '+this.state.count)
-        }
-        )
-
-    }
-    render() {
-        return (
-            <h2>
-                counter works
-                <div>Count - {this.state.count}</div>
-                <button onClick={() => this.increment()}>Increment</button>
-            </h2>
-        );
-    }
-}
-export default Counter;
-
-
-
-Program-34  asynchronous state
+Program-32  asynchronous state
 *******************************
 import React, { Component } from "react";
 export default class Counter extends Component {
@@ -956,7 +865,7 @@ export default class Counter extends Component {
 
 
 
-Program-35 setState() in Detail-2
+Program-33 setState() in Detail-2
 *********************************
 //React may group multiple setState calls in to a single update for better performance
 //when we want to update the state based on the previous State,
@@ -998,7 +907,7 @@ export default Counter;
 
 
 
-Program -36 Batch update
+Program -34 Batch update
 ***********************
 import React, { useState } from "react";
 
@@ -1026,7 +935,7 @@ export default function Demo1() {
 
 
 
-Program-37 Show/Hide 
+Program-35 Show/Hide 
 *********************
 import React from 'react';
 class MyClass extends React.Component {
@@ -1071,7 +980,7 @@ export default function Demo() {
 
 
 
-Program-38 Show/Hide Password
+Program-36 Show/Hide Password
 *****************************
 import React, { Component } from 'react';
 export default class Test extends Component {
@@ -1118,7 +1027,7 @@ export default function Demo() {
 
 
 
-Program:39 Remaining Character
+Program:37 Remaining Character
 ******************************
 export default function RemainingChar() {
   const [remaining, setRemaining] = useState(100);
@@ -1137,8 +1046,8 @@ export default function RemainingChar() {
 
 
 
-Program:40  Country Dropdown
-******************************
+Program:38 Selected value from dropdown
+***************************************
 import React, { useState } from 'react'
 export default function StateDropDown() {
     const stateNames = ['Karnataka', 'Odisha', 'Tamilnadu', 'Kerala', 'Bihar', 'UP'];
@@ -1158,8 +1067,8 @@ export default function StateDropDown() {
 
 
 
-Program: Dark/Light Mode
-************************
+Program:39 Dark/Light Mode
+**************************
 import React, { useEffect, useState } from 'react';
 import './ThemeDemo.css';
 export default function ThemeDemo() {
@@ -1191,7 +1100,7 @@ export default function ThemeDemo() {
 
 
 
-Program-41 Addition 
+Program-39 Addition 
 *******************
 import React from 'react';
 
@@ -1252,7 +1161,7 @@ export default function Demo() {
 }
 
 
-Program-42 : Folder Explorer
+Program-40 : Folder Explorer
 ****************************
 import React, { useState } from "react";
 export default function Folder({ folderInfo }) {
@@ -1285,7 +1194,71 @@ export default function Folder({ folderInfo }) {
 
 
 
-Program: 43 Search
+import React, { useEffect, useState } from 'react';
+import './TrafficLight.css';
+
+const config = {
+    red: { backgroundColor: 'red', duration: 4000, next: 'green' },
+    yellow: { backgroundColor: 'yellow', duration: 1000, next: 'red' },
+    green: { backgroundColor: 'green', duration: 3000, next: 'yellow' }
+};
+export default function TrafficLight() {
+    const [currentColor, setCurrentColor] = useState('green');
+
+    useEffect(() => {
+        const { duration, next } = config[currentColor];
+        const timerId = setTimeout(() => {
+            setCurrentColor(next);
+        }, duration);
+        return () => {
+            clearTimeout(timerId);
+        };
+    }, [currentColor]);
+
+    return <div className="wrapper">
+        <div className='traffic-light-container traffic-light-container--vertical'>
+            {Object.keys(config).map((color) => (
+                <div key={color} className="traffic-light"
+                    style={{
+                        backgroundColor: color === currentColor
+                            ? config[color].backgroundColor
+                            : ''
+                    }}
+                />
+            ))}
+        </div>
+    </div>
+}
+-------------------------
+.wrapper {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+}
+.traffic-light-container {
+    background-color: #000;
+    border-radius: 8px;
+    display: flex;
+    padding: 8px;
+    gap: 8px;
+}
+.traffic-light-container--vertical {
+    flex-direction: column;
+}
+.traffic-light {
+    --size: 50px;
+    background-color: #555;
+    border-radius: var(--size);
+    height: var(--size);
+    width: var(--size);
+}
+
+
+
+
+Program: 41 Search
 ******************
 import React, { useState } from "react";
 import SearchBar from "react-js-search";
@@ -1355,7 +1328,7 @@ export default function EmployeeList() {
 }
 
 
-Program-44   Pagination 
+Program-42   Pagination 
 ************************
 import React, { useState } from "react";
 import productsArr from "./Products.json";
@@ -1461,7 +1434,7 @@ ProductsPagination.css
 
 
 
-Program- 45  ToDo CRUD
+Program- 43  ToDo CRUD
 **********************
 export default function ToDoCRUD() {
     let initialtodos = [
@@ -1507,6 +1480,10 @@ export default function ToDoCRUD() {
 
 
 
+
+
+
+
 Assignment
 ==========
 -create a component to display list of products
@@ -1515,7 +1492,7 @@ Assignment
 -Add Pagination
 
 
-Program-46 Event with parameter
+Program-44 Event with parameter
 ***********************************
 import React, { Component } from 'react';
 export default class EventDemo1 extends Component {
@@ -1542,56 +1519,13 @@ Assignment
 
 
 
-Program-47   Modal 
+Program-45   Modal 
 ******************
 1. npm i react-modal
 2. add the below code
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Modal from 'react-modal';
-
-class MyComponent extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            modalIsOpen: false
-        };
-    }
-
-    openModal = ()=> {
-        this.setState({ modalIsOpen: true });
-    }
-    closeModal = () => {
-        this.setState({ modalIsOpen: false });
-    }
-
-    render() {
-        return (
-            <div>
-                <button onClick={this.openModal}>Open Modal</button>
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    contentLabel="Example Modal"
-                >
-
-                    <button onClick={this.closeModal}>close</button>
-
-                    <h2>I am a Modal</h2>
-                    <div>I am a modal</div>
-
-                </Modal>
-            </div>
-        );
-    }
-}
-export default MyComponent;
-
-==============================================================
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-
 export default function Test() {
     const [modalIsOpen, setIsOpen] = React.useState(false);
 
@@ -1621,7 +1555,7 @@ export default function Test() {
 }
 
 
-Program-48  Employee CRUD
+Program-46  Employee CRUD
 *************************
 import React from 'react';
 
@@ -1706,7 +1640,7 @@ export default Crud;
 
 
 
-Program-49 CRUD (functional component)
+Program-47 CRUD (functional component)
 ************************************
 import React, { useState } from 'react'
 import EmployeeList from './EmployeeList'
@@ -1834,11 +1768,10 @@ export default function AddEmployee({ addEmployee }) {
 
 
 
-Program-51  Pure Component
+Program-48  Pure Component
 **************************
 import React, { Component } from 'react'
 import { PureComponent } from 'react';
-
 export default class Demo1 extends PureComponent {
     state = {
         name: 'sachin'
@@ -1858,7 +1791,7 @@ export default class Demo1 extends PureComponent {
 
 
 
-Program:52 react memo
+Program:49 react memo
 *********************
 import React, { useState } from "react";
 import Demo2 from "../demo2/Demo2";
@@ -1867,21 +1800,7 @@ export default function Demo() {
   const [counter, setCounter] = useState(0);
   const [cars, setCars] = useState(["tata", "honda", "maruti"]);
   return (
-    <div>
-      I am Demo Component
-      <div>Counter is {counter}</div>
-      <div>cars is {cars.join(',')}</div>
-      <button onClick={() => setCounter(counter + 1)}>Increment Counter</button>
-      <button onClick={() =>{setCars([...cars,'hundai'])}}>add a new car</button>
-      <br />
-      =====================================================================
-      <Demo2 cars={cars}></Demo2>
-    </div>
-  );
-}
----------------------------------------
-import React from "react";
-
+    
 function Demo2(props) {
   console.log("demo-2 render called");
   return (
@@ -1898,28 +1817,9 @@ export default React.memo(Demo2);
 
 
 
-Program-53 (Constructor)
-*************************
-import React from 'react';
-import ReactDOM from 'react-dom';
 
-class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {favoritecolor: "red"};
-  }
-  render() {
-    return (
-      <h1>My Favorite Color is {this.state.favoritecolor}</h1>
-    );
-  }
-}
-
-
-
-
-Program-54   getDerivedStateFromProps
-******************************************
+Program-50 constructor & getDerivedStateFromProps
+**************************************************
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -1937,7 +1837,7 @@ class Header extends React.Component {
 
 
 
-program-55 (componentDidMount)
+program-51  componentDidMount
 ******************************
 class Header extends React.Component {
   constructor(props) {
@@ -1958,31 +1858,7 @@ class Header extends React.Component {
 
 
 
-program-56 getDerivedStateFromProps()
-*************************************
-class Header extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {favoritecolor: "red"};
-  }
-  static getDerivedStateFromProps(props, state) {
-    return {favoritecolor: props.favcol };
-  }
-  changeColor = () => {
-    this.setState({favoritecolor: "blue"});
-  }
-  render() {
-    return (
-      <div>
-      <h1>My Favorite Color is {this.state.favoritecolor}</h1>
-      <button type="button" onClick={this.changeColor}>Change color</button>
-      </div>
-    );
-  }
-}
-
-
-Program-57 (shouldComponentUpdate)
+Program-52   shouldComponentUpdate
 **********************************
 class Header extends React.Component {
   constructor(props) {
@@ -2007,7 +1883,7 @@ class Header extends React.Component {
 
 
 
-Program-58 (getSnapshotBeforeUpdate)
+Program-53   getSnapshotBeforeUpdate
 ************************************
 class Header extends React.Component {
   constructor(props) {
@@ -2041,7 +1917,7 @@ class Header extends React.Component {
 
 
 
-program-59 (componentDidUpdate)
+program-54   componentDidUpdate
 *********************************
 class Header extends React.Component {
   constructor(props) {
@@ -3320,7 +3196,7 @@ axios.interceptors.request.use( req => {
 
 
 Program-84 Response Interceptor
-****************************
+******************************
 axios.interceptors.response.use(res => {
         res.durationInMs = new Date().getTime() - res.config.meta.requestStartedAt
         return res;
@@ -3371,6 +3247,41 @@ err => {
     console.log(`Error response took ${err.durationInMs} milliseconds`);
   }
 })();
+
+
+
+
+
+Program: graphQL
+=================
+1. install apollo-client and graphQL
+   npm install @apollo/client graphql
+   
+2. Initialize ApolloClient (index.js)
+    import { ApolloClient, InMemoryCache } from '@apollo/client';	
+    const client = new ApolloClient({
+	  uri: 'http://localhost:5000/',
+	  cache: new InMemoryCache()
+	});
+
+3. Connect your Apollo-client to React / Set Up ApolloProvider
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+  
+4. Fetch data with useQuery
+   import { gql, useQuery } from '@apollo/client';
+   
+   const GET_COMMENTS = gql`
+    query comments {
+      comments {
+        id
+        name
+      }
+    }
+  `;
+   const { loading, error, data } = useQuery(GET_COMMENTS);
+
 
 
 
@@ -3865,20 +3776,16 @@ import { UserConsumer } from '../../contexts/userContext'
 
 export default class ComponentF extends Component {
     render() {
-        return (
-            <UserConsumer>
-                {
-                    (userObj) => {
-                        return (
-                            <>
-                                <h2>This is F component</h2>
-                                <h3>data is {userObj}</h3>
-                            </>
-                        )
-                    }
-                }
-            </UserConsumer>
-        )
+	 return <>
+      <h2>This is ContactUs component</h2>
+      <myContext.Consumer>
+        {
+          (userObj) => {
+            return <div>Name is {userObj.name} , Age is {userObj.age}</div>
+          }
+        }
+      </myContext.Consumer>
+    </>
     }
 }
 
@@ -4006,7 +3913,7 @@ Program- 94 Redux Counter
 Program-95:  Redux ToDo example
 ********************************
 1. create a new project 
-   create-react-app <projectName>
+   npx create-react-app <projectName>
    
 2. install redux & react-redux
    npm install redux 
@@ -4341,61 +4248,53 @@ const expensiveCalculation = (num) => {
 
 
 Program-99 Error Boundary
-***********************
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { error: null, errorInfo: null };
-  }  
-  componentDidCatch(error, errorInfo) {
-    // Catch errors in any components below and re-render with error message
-    this.setState({
-      error: error,
-      errorInfo: errorInfo
-    })
-    // You can also log error messages to an error reporting service here
-  }
-  
-  render() {
-    if (this.state.errorInfo) {
-      // Error path
-      return (
-        <div>
-          <h2>Something went wrong.</h2>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
-            {this.state.error && this.state.error.toString()}
-            <br />
-            {this.state.errorInfo.componentStack}
-          </details>
-        </div>
-      );
+*************************
+import React, { Component } from 'react';
+export default class MyErrorBoundry extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
     }
-    // Normally, just render children
-    return this.props.children;
-  }  
+    static getDerivedStateFromError(error) {
+        // Update state so the next render will show the fallback UI.
+        return { hasError: true };
+    }
+    componentDidCatch(error, errorInfo) {
+        // You can also log the error to an error reporting service
+        // logErrorToMyService(error, errorInfo);
+    }
+    render() {
+        if (this.state.hasError) {
+            return <h2>Something went wrong, Component cann't be loaded </h2>
+        } else {
+            // Normally, just render children
+            return this.props.children;
+        }
+    }
 }
 
-class BuggyCounter extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { counter: 0 };
-    this.handleClick = this.handleClick.bind(this);
-  }
-  
-  handleClick() {
-    this.setState(({counter}) => ({
-      counter: counter + 1
-    }));
-  }
-  
-  render() {
-    if (this.state.counter === 5) {
-      // Simulate a JS error
-      throw new Error('I crashed!');
+
+import React, { Component } from 'react'
+export class BuggyCounter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { counter: 0 };
     }
-    return <h1 onClick={this.handleClick}>{this.state.counter}</h1>;
-  }
+    increment = () => {
+        this.setState({ counter: this.state.counter + 1 });
+    }
+    render() {
+        if (this.state.counter === 5) {
+            // Simulate a JS error
+            throw new Error('I crashed!');
+        }
+        return <>
+            <h1>Count is : {this.state.counter}</h1>
+            <button onClick={this.increment}>Increment</button>
+        </>
+    }
 }
+
 
 function Test() {
   return (

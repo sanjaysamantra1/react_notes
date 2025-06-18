@@ -11,7 +11,7 @@ Syllabus
 -Conditional rendering
 -Lists & keys
 -Props : de-structuring,requiring props, proptypes,default props
--State : 
+-State 
 -Pure Component
 -Memo Component
 -HigherOrder Component
@@ -42,6 +42,7 @@ React Local Setup
    
 4.  go to the folder where you want to create project(d:/sanjay/react)& run the below command	
 	npx create-react-app project1 (npx-node package executer)
+	
                  
 5. go to the created project folder(project1) and start your React application
    cd project1
@@ -49,6 +50,8 @@ React Local Setup
   
 6. A new browser window will pop up with your newly created React App! 
    open a browser tab and type 'http://localhost:3000/' if browser doesn't open automatically.
+   
+   set PORT=3001 && npm start
   
   
   
@@ -251,7 +254,7 @@ src/			:  Source files for the root-level application project.
 .gitignore		:  Specifies intentionally untracked files that Git should ignore.
 package.json	:  Configures npm package dependencies that are available to all projects in the workspace. 
 package-lock.json : Provides version information for all packages installed into node_modules by the npm client. 
-README.md		: Introductory documentation for the application.
+README.md		 : Introductory documentation for the application.
 
 
 
@@ -2522,7 +2525,6 @@ GraphQL
 -in REST, the client makes an HTTP request and data is sent as an HTTP Response.
 -in GraphQL,the client Requests the data with queries.
 -it allows the client to query only the data that they need.
-
 
 -The most popular  GraphQL library is Apollo Client.
 
