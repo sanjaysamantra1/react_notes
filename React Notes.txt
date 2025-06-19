@@ -82,6 +82,20 @@ NPX
  ex: npx create-react-app my-app
  
 
+React app with Vite
+===================
+-Vite.js is a build tool and development server that is designed to optimize the development experience for modern web applications.
+-It includes built-in support for TypeScript, CSS preprocessors.
+
+npm create vite@latest my-app -- --template react  
+npm create vite@latest my-app -- --template react-ts
+cd my-app
+npm install
+npm run dev
+
+
+
+
  
 What React is
 =============
