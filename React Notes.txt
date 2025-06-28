@@ -1,12 +1,12 @@
 Syllabus
 ========
 -ReactJs features (VirtualDOM , ReConciliation)
--Local Environemnt Setup
--Create-react-app
+-Local Environemnt Setup (Create-react-app , vite)
 -JSX
 -Class Components
 -Functional Components
--React Object - Fragment
+-React Object
+-Fragment
 -Component Styling
 -Conditional rendering
 -Lists & keys
@@ -87,11 +87,18 @@ React app with Vite
 -Vite.js is a build tool and development server that is designed to optimize the development experience for modern web applications.
 -It includes built-in support for TypeScript, CSS preprocessors.
 
-npm create vite@latest my-app -- --template react  
-npm create vite@latest my-app -- --template react-ts
-cd my-app
-npm install
-npm run dev
+
+1. Create a vite project
+	npm create vite@latest
+		(OR)
+	npm create vite@latest my-app -- --template react  
+		(OR)
+	npm create vite@latest my-app -- --template react-ts
+	
+2. Go to the crated Project, install , and serve the application
+	cd my-app
+	npm install
+	npm run dev
 
 
 
@@ -113,9 +120,9 @@ React is NOT a framework
 ========================
 -React is a library and not a framework.
 -The difference between a library and a framework is that a library only helps 
- you in one aspect whereas a framework helps you in many aspects. 
+ us in one aspect whereas a framework helps us in many aspects. 
 Let's take an example:
--React is a library because it only takes care of your UI.
+-React is a library because it only takes care of our UI.
 -Angular, on the other hand, is a framework because it handles much more than the UI 
  (It handles Dependency Injection, CSS encapsulation, httpClient, Form validation, routing etc.)
 
@@ -150,13 +157,21 @@ Let's take an example:
 
 React Features
 ==============
+-Light weight
 -JSX
 -Components  (easy to build, easy to extend,reusable,loosly coupled)
--One-way Data Binding (watchers will not be there for bindings)
+-Oneway Data Binding (watchers will not be there for bindings)
 -Virtual DOM
 -Easy to learn because of its simple Design
 -Performance
 
+
+
+
+DOM (Document Object Model)
+==========================
+-DOM is a tree-like structure representing the HTML of a web page
+-Allows JavaScript to interact with and modify the page's content, structure, and style. 
 
 
 Why virtual DOM?
@@ -166,43 +181,41 @@ Why virtual DOM?
  run layout and repaint the web page.
 -we need a way to minimize the time it takes to repaint the screen. 
  This is where the Virtual DOM comes in.
+-React uses virtual DOM to enhance its performance.
  
  
 What Virtual DOM is
 ===================
--React uses virtual DOM to enhance its performance.
--Virtual DOM is a virtual representation of the real DOM.
+-A virtual DOM is a lightweight JavaScript object which is just a copy of the
+ real DOM. 
+-It is a node tree that lists the elements, their attributes and content as 
+ Objects and their properties.
+-Virtual DOM is a JavaScript object that mirrors the structure of the real DOM. 
 -A virtual DOM is the DOM where a representation of the UI is kept in memory and synced with the DOM.
--When state changes occur, the virtual DOM is updated and the previous and current version of  virtual DOM is compared. This is called “diffing”.
--It then makes sure that batched updates are sent to the real DOM for repainting or re-rendering of the UI.
 -React never reads from real DOM, only writes to it.
 
+
+Virtual DOM Benefits:
+=====================
+Improved Performance: By reducing the number of direct DOM manipulations, the Virtual DOM significantly speeds up the update process. 
+Optimized Updates: React intelligently determines the most efficient way to update the real DOM, minimizing costly reflows and repaints. 
+Simplified Development: The Virtual DOM makes it easier to work with complex UIs by abstracting away the complexities of direct DOM manipulation. 
 
  
 How does React Work? (Virtual DOM)
 ====================
--A virtual DOM is a lightweight JavaScript object which is just a copy of the
- real DOM. It is a node tree that lists the elements, their attributes and content as 
- Objects and their properties.
--React creates a VIRTUAL DOM in memory.
--Instead of manipulating the browser's DOM directly, React creates a virtual DOM in memory, where it does all the necessary manipulations, before making the changes in the browser DOM.
--React finds out what changes have been made,and changes only what 
- needs to be changed in the actual DOM.
- 
- 
--Whenever application state/props changes, 
- these are the steps that React performs in order to optimise performance.
-a. Generate a new Virtual DOM that represents the new state of our application.
-b. Compare the old Virtual DOM (which represents the current HTML DOM) vs the new Virtual
-   DOM.
-c. Based on (b) find the minimum number of operations to transform the old Virtual DOM (which represents the current HTML DOM) into the new Virtual DOM.
+Initial Render: When page loads, React creates a virtual DOM tree based on the initial JSX or HTML code.
+State Changes: When the application's state changes (user input, data updates), Generates a new Virtual DOM tree based on updated data.
+Diffing: React compares the new Virtual DOM with the previous Virtual DOM, It identifies what exactly changed 
+Reconciliation: Based on diffing results, React calculates the minimal number of real DOM operations needed.
+Real DOM Update: Only the necessary changes are applied to the real DOM, resulting faster updates. 
 
 
 
 What is the difference between Shadow DOM and Virtual DOM?
 ==========================================================
--The Shadow DOM is a browser technology designed primarily for scoping variables and CSS in web components. 
--The Virtual DOM is a concept implemented by libraries in JavaScript(React) on top of browser APIs.
+-Shadow DOM is a browser technology for scoping variables and CSS in web components. 
+-Virtual DOM is a concept implemented by React on top of browser APIs.
 
 
 
@@ -257,6 +270,7 @@ Fiber Reconciler
  ----------------
  -React tells the DOM to render the changes that was created in the previous phase.
  -the Reconciliation phase can be interrupted, the Commit phase cannot.
+
 
 
 
@@ -522,9 +536,7 @@ When to use a Class Component over a Function Component?
 ========================================================
 -If the component needs state or lifecycle methods then use class component 
  otherwise use function component. 
--However, from React 16.8 with the addition of Hooks, we can use state , 
- lifecycle methods and other features  that were only available in class component 
- in function component also. 
+-However, from React 16.8 with the addition of Hooks, we can use state , lifecycle methods and other features  that were only available in class component in function component also. 
 -So, it is always recommended to use Function components, unless you need a React functionality whose Function component equivalent is not present yet, like Error Boundaries.
 
 
@@ -604,6 +616,12 @@ Data Binding
 -Binding/Displaying  the variable value in UI is called data binding.
 
 
+Binding Type    | Description                 | React Example      
+--------------- | --------------------------- | ------------------ 
+One-way Binding | State → UI                  |  {value}         
+Two-way Binding | State ↔ UI using `onChange` |  value + onChange
+
+
  
 
 CSS in React
@@ -637,7 +655,7 @@ CSS Modules
 Conditional Rendering
 =====================
 -It is a common use case to show or hide elements based on certain conditions.
--it allows us to render different elements or components based on a condition.
+-It allows us to render different elements or components based on a condition.
 -use cases:
 	Rendering external data from an API.
 	Showing or hiding elements.
@@ -676,15 +694,29 @@ List Items - Lists and Keys
  
  
  
-read data from a JSON file
+Read data from a JSON file
 ==========================
 1. create a JSON file (employees.json/products.json/countries.json)
    [ {},{},{} ]
-2. import listData from './countries.json'
-3. use 'listData' in JSX
-   {countries.map((country,ind)=>{
-       return <option key={ind} value={country} />
+2. import EmployeeArr from './employees.json'
+3. use EmployeeArr(List data) in JSX
+   {EmployeeArr.map((emp,ind)=>{
+       return <option key={ind} value={emp} />
    })}
+   
+
+
+Read data from a Javascript file
+================================
+1. create a JSON file (employees.js/products.js/countries.js)
+   const employees = [ {},{},{} ];
+   export default employees;
+2. import EmployeeArr from './employees.json'
+3. use EmployeeArr(List data) in JSX
+   {EmployeeArr.map((emp,ind)=>{
+       return <option key={ind} value={emp} />
+   })}
+
 
 
 Assignment
@@ -841,20 +873,46 @@ Prop Drilling
 -Prop drilling is the process in a React app where props are passed from one component to another by going through other parts that do not need the data, but only help in passing it through the intermediate components.
 -The problem with this approach is that most of the components through which this data is passed have no actual need for this data. 
 -They are simply used as mediums for transporting this data to its destination component.
--as the components are forced to take in unrelated data and pass it to the next component, which in turn passes it, and so on, until it reaches its destination. 
- This can cause major issues with component reusability and app performance.
+-as the components are forced to take in unrelated data and pass it to the next component, until it reaches its destination. This can cause major issues with component reusability and app performance.
 -This Problem Can be avoided by using concepts like 'Context API' & 'REDUX'
 
 
 
+
+Limitations of Local Variables
+==============================
+No re-rendering : Changing a Local variable doesn't re-render, the component won't update to reflect the new value.
+No Persistence : Local variable are re-created on each render, any changes made to them are lost after re-render
+
+export default function StateDemo1() {
+    let count = 0;
+    const increment = ()=>{
+        count++;
+        console.log(count);
+    }
+    return <>
+        <h2>State Demo 1</h2>
+        <div>Count value is: {count}</div>
+        <button onClick={increment}>Increment</button>
+    </>
+}
+
+
+Why State variables
+===================
+Re-rendering : when state variable changes, React re-renders the component with new value
+Persistence : states are persisted accross re-renders
+
+
 States
 ======
--the State of a component is an object that holds some information 
- that may change over the lifetime of the component.
+-The State of a component is an object that holds some data that may change over the lifetime of the component.
 -whenever the state object changes,react will re-render the component. 
- render() gets re-invoked. 
- 
- 
+-States are Mutable(can be changed), and states are local to the component, cann't be used by other components directly
+-Keep the state minimal , avoid using state for static data. 
+
+
+
 State in Class Component
 ========================
 -class components have a state object , where all the state variables are declared. 
@@ -888,8 +946,8 @@ State in Functional Component
 -useState() is used to declare a state variable in function component.
 -The only argument to the useState() Hook is the initial state.
 -It returns a pair of values: 
-  a. the current state 
-  b. a function that updates the state. 
+  a. State value
+  b. function to update that state value. 
   ex: const [count, setCount] = useState(0);
 -state updation is asynchronous, 
    const increment = () => {
@@ -912,6 +970,16 @@ State in Functional Component
    this.props - class comp		  		   this.state={}   - Class Comp
 
 
+
+Assignments: 
+1. Have a paragraph & a toggle button, on click of the button control the visibility(Show/Hide) of the paragraph
+2. Create a text-area with maxLength=100, as the user keeps typing display updated Remaining characters.
+3. Create dropdown with state names, when user changes dropdown value, print the selected dropdown value in a div
+4. have 2 inputBoxes, and a dropdown(+,-,*,/) and perform arithmetic operations
+5. create a input box, toggle the type of that input box to (text/password)
+6. create a counter example with 3 controls(increment,decrement,reset)
+7. Have a toggle button and control Dark/Light theme of a page.
+8. Temperature Converter (celcius to fahrenheit)
 
 
 
