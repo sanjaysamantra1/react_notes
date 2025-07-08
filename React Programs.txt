@@ -31,7 +31,7 @@ Program-2 : Nested Element Without Create-react-app
     <script>
         const title = React.createElement('h1', {}, 'My First React Code');
         const paragraph = React.createElement('p', {}, 'Writing some more HTML');
-        const containerDiv = React.createElement('div', {}, [title, paragraph]);
+        const containerDiv = React.createElement('div', {id:myDiv1}, [title, paragraph]);
 		
         const domEle = document.getElementById('example');
         const root = ReactDOM.createRoot(domEle); 
@@ -1483,15 +1483,6 @@ export default function ToDoCRUD() {
 
 
 
-
-Assignment
-==========
--create a component to display list of products
--add a serch-bar to search products
--add 2 buttons (sort-Asc , sort-Desc)
--Add Pagination
-
-
 Program-44 Event with parameter
 ***********************************
 import React, { Component } from 'react';
@@ -2217,6 +2208,45 @@ export default function CounterDemo3() {
 
 
 
+
+
+Program : Search Filter with Deferred Value  (useState, useDeferredValue, useMemo)
+============================================
+// App.js
+import { useState, useDeferredValue, useMemo } from "react";
+const ITEMS = Array.from({ length: 10000 }, (_, i) => `Item ${i + 1}`);
+
+export default function SearchFilter() {
+  const [query, setQuery] = useState("");
+  const deferredQuery = useDeferredValue(query);
+
+  const filtered = useMemo(() => {
+    return ITEMS.filter(i =>
+      i.toLowerCase().includes(deferredQuery.toLowerCase())
+    );
+  }, [deferredQuery]);
+
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Search Filter</h2>
+      <input
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+        placeholder="Type to search"
+      />
+      <p>Showing {filtered.length} results</p>
+      <ul>
+        {filtered.slice(0, 20).map(i => (
+          <li key={i}>{i}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
+
+
 program-67  Form Submit
 **********************
 import React, { useState } from "react";
@@ -2414,6 +2444,124 @@ export default function Demo() {
 
 
 
+
+
+Controlled Form Example
+*****************************
+import React, { useState } from 'react'
+export default function FormDemo2() {
+    const defaultFormValues = {
+        name: '',
+        age: '',
+        gender: '',
+        dob: '',
+        interests: [],
+        country: '',
+        bio: ''
+    }
+    const [formData, setFormData] = useState(defaultFormValues);
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(formData);
+    }
+    const handleReset = () => {
+        setFormData(defaultFormValues);
+    }
+    const isFormValid = formData.name !== '' && formData.age !== '';
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
+
+        if (type === 'checkbox') {
+            if (checked) {
+                setFormData({ ...formData, interests: [...formData.interests, value] });
+            } else {
+                setFormData({
+                    ...formData,
+                    interests: [...formData.interests.filter(interest => interest !== value)]
+                });
+            }
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
+    }
+    return <>
+        <h3 className='text-center'>React Controlled Form</h3>
+        <div className='container'>
+            <div className='row'>
+                <div className='col-sm-6 offset-sm-3'>
+                    <div className='border border-3 rounded-3 p-2 m-2'>
+                        <form onSubmit={handleSubmit}>
+                            <p>
+                                <label>Name:</label>
+                                <input name='name' value={formData.name} onChange={handleChange} required></input>
+                            </p>
+                            <p>
+                                <label>Age:</label>
+                                <input name='age' value={formData.age} onChange={handleChange}></input>
+                            </p>
+                            <p>
+                                <label>Gender:</label>
+                                <input name='gender' type='radio'
+                                    value='male' checked={formData.gender === 'male'}
+                                    onChange={handleChange} /> Male
+                                <input name='gender' type='radio'
+                                    value='female' checked={formData.gender === 'female'}
+                                    onChange={handleChange} /> female
+                            </p>
+                            <p>
+                                <label>DOB:</label>
+                                <input name='dob' type='date'
+                                    value={formData.dob} onChange={handleChange} />
+                            </p>
+                            <p>
+                                <label>Interests:</label>
+                                <input name='interests' type='checkbox'
+                                    value='reading' checked={formData.interests.includes('reading')}
+                                    onChange={handleChange} />Reading
+
+                                <input name='interests' type='checkbox'
+                                    value='swimimg' checked={formData.interests.includes('swimimg')}
+                                    onChange={handleChange} />Swimimg
+                            </p>
+                            <p>
+                                <label>Country:</label>
+                                <select name='country' value={formData.country} onChange={handleChange}>
+                                    <option value=''>Select a Country</option>
+                                    <option value='india'>India</option>
+                                    <option value='usa'>USA</option>
+                                    <option value='srilanka'>Srilanka</option>
+                                    <option value='canada'>Canada</option>
+                                    <option value='mexico'>Mexico</option>
+                                </select>
+                            </p>
+                            <p>
+                                <label>Bio:</label>
+                                <textarea rows='2' cols='30' name='bio'
+                                    value={formData.bio} onChange={handleChange}>
+
+                                </textarea>
+                            </p>
+                            <input type='reset' value='Clear' className='mx-2 btn btn-danger'
+                                onClick={handleReset} />
+                            <input type='submit' value='Submit' className='btn btn-primary' disabled={!isFormValid} />
+                        </form>
+
+                        <pre>
+                            {JSON.stringify(formData,null,4)}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </>
+}
+
+
+
+
+Formik & Yup
+=============
+formik
 
 
 program-73  Form Validation while submitting
@@ -3258,7 +3406,7 @@ Program: graphQL
    npm install @apollo/client graphql
    
 2. Initialize ApolloClient (index.js)
-    import { ApolloClient, InMemoryCache } from '@apollo/client';	
+    import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';	
     const client = new ApolloClient({
 	  uri: 'http://localhost:5000/',
 	  cache: new InMemoryCache()
@@ -3272,15 +3420,16 @@ Program: graphQL
 4. Fetch data with useQuery
    import { gql, useQuery } from '@apollo/client';
    
-   const GET_COMMENTS = gql`
+   const GET_COMMENTS_QUERY = gql`
     query comments {
       comments {
         id
         name
+		email
       }
     }
   `;
-   const { loading, error, data } = useQuery(GET_COMMENTS);
+   const { loading, error, data } = useQuery(GET_COMMENTS_QUERY);
 
 
 
@@ -4208,7 +4357,7 @@ import React, { useMemo, useState } from "react";
 
 export default function Demo() {
   const [count, setCount] = useState(0);
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(['To Do-1', 'To Do-2']);
   const calculation = useMemo(() => expensiveCalculation(count), [count]);
   // const calculation = expensiveCalculation(count);
 

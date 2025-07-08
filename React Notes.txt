@@ -974,7 +974,7 @@ State in Functional Component
 Assignments: 
 1. Have a paragraph & a toggle button, on click of the button control the visibility(Show/Hide) of the paragraph
 2. Create a text-area with maxLength=100, as the user keeps typing display updated Remaining characters.
-3. Create dropdown with state names, when user changes dropdown value, print the selected dropdown value in a div
+3. Create dropdown with state names, when user changes dropdown value, print the selected (stateName)dropdown value in a div
 4. have 2 inputBoxes, and a dropdown(+,-,*,/) and perform arithmetic operations
 5. create a input box, toggle the type of that input box to (text/password)
 6. create a counter example with 3 controls(increment,decrement,reset)
@@ -1003,7 +1003,7 @@ How to use react-modal
 ======================
 1. npm i react-modal
 2. import Modal from 'react-modal';
-3. use Modal as below 
+3. use below Modal code in the component  
 	  let [modalIsOpen, setIsOpen] = useState(false);
 	  function openModal() {
 		setIsOpen(true);
@@ -1055,7 +1055,7 @@ Search
 ======
 1. Install react-js-search from npm
    npm i react-js-search
-2. Import SearchBar in your react component
+2. Import SearchBar in component
    import SearchBar from 'react-js-search';
 3. use the below HTML
    <SearchBar
@@ -1073,7 +1073,7 @@ Pagination
 ==========
 1. npm install react-paginate  
 2. import ReactPaginate from 'react-paginate';
-3.    <Employees> / <Products> / <Users>
+3. Add the below code in a component
       <ReactPaginate
         breakLabel="..."
         nextLabel="next >"
@@ -1083,7 +1083,18 @@ Pagination
         previousLabel="< previous"
         renderOnZeroPageCount={null}
       />
+Note: For complete code plz refer 'react_programs.txt' file
 
+
+Assignment
+==========
+1. create products.json with list of products. 
+   https://fakestoreapi.com/products
+2. display the products as cards
+3. add a Search bar to search products
+4. add pagination 
+5. Add 2 buttons to sort the products by price(asc,desc)
+6. crate a filter dropdown with category values(clothing/electronics), display the products of selected category only
 
 
 
@@ -1185,6 +1196,27 @@ Child To Parent:
 
 
 
+Assignment
+==========
+1. create 1 EmployeeCRUD component
+2. display list of employees in a table(data comes from an array)
+3. user should be able to delete Employee (ask user confirmation) 
+4. view the details of each employee in a modal (bootstrap Modal)
+5. add a new employee to the table (insert a new record to the array)
+   use SnackBar to display message ('Employ Added Successfully' - message should be maintained in a constant file)
+
+
+
+Assignment
+==========
+Todo CRUD Component with below functionalities
+1. Add Todo : User types a todo and clicks “Add” , add the item to the todo list
+2. Toggle Completion : User checks a checkbox to mark as completed or not completed
+3. Delete Todo : Each todo item should have a delete button to remove it from the list.
+4. Completed Count : Show the number of completed todos (e.g., 3 out of 5 tasks completed)
+ 
+
+
 Component vs PureComponent
 ==========================
 -PureComponent is exactly the same as Component except that it handles the 
@@ -1202,10 +1234,10 @@ Component vs PureComponent
 React Memo Component
 ====================
 -Introduced in React v16.6.  This improves performance.
--React.memo() is a higher-order component.
+-React.memo() is a higher-order component/function.
 -React.memo() can be used for both class & function components.
 -When a component is wrapped in React.memo(), React renders the component only if the props those are passed to that component changes.
--lets you skip re-rendering a component when its props are unchanged.
+-lets us skip re-rendering a component when its props are unchanged.
 -ex: export default React.memo(MyComponent);
  
 
@@ -1255,7 +1287,7 @@ LifeCycle Hooks
 -Every component in React goes through a lifecycle of events.
 -The three phases are: 
 	1.Mounting - (constructor,getDerivedStateFromProps,render,componentDidMount)
-	2.Updating - (getDerivedStateFromProps,shouldComponentUpdate,render, 		      getSnapshotBeforeUpdate, componentDidUpdate)
+	2.Updating - (getDerivedStateFromProps,shouldComponentUpdate,render,getSnapshotBeforeUpdate, componentDidUpdate)
 	3.Unmounting - (componentWillUnmount)
 
 
@@ -1368,11 +1400,11 @@ componentWillUnmount()
 useEffect()
 ----------
 -useEffect serves the same purpose as componentDidMount, componentDidUpdate, and componentWillUnmount.
--useEffect() takes a callBack Function as 1st argument and an arrray as 2nd argument.
+-useEffect() takes a callBack Function as 1st argument and Dependency arrray as 2nd argument.
  ex: useEffect(()=>{} , []);
--array contains dependencies for useEffect, that is, variables on which useEffect depends on to re-run.
+-array contains dependencies for useEffect,variables on which useEffect depends on to re-run.
 -If 2nd argument is not present, effect runs everytime there is a state change.
--When the array is empty, the effect runs only once.(on component load)
+-When 2nd argument is there and the array is empty, the effect runs only once.(on component load)
 -If 2nd arguement is present, effect will only run if the values in the list change.
 -we can have many useEffects() in a component to track changes for diff variables.
 
