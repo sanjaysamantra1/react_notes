@@ -1236,8 +1236,9 @@ React Memo Component
 -Introduced in React v16.6.  This improves performance.
 -React.memo() is a higher-order component/function.
 -React.memo() can be used for both class & function components.
+-React.memo() is used with child components only(the component receiving porps)
 -When a component is wrapped in React.memo(), React renders the component only if the props those are passed to that component changes.
--lets us skip re-rendering a component when its props are unchanged.
+-Avoids re-rendering a component when its props are unchanged.
 -ex: export default React.memo(MyComponent);
  
 
@@ -1246,7 +1247,8 @@ React Memo Component
 useMemo()
 ========
 -The functions called inside component are re-invoked on every state change.
--If we want the functions should be called only on page load and not on every state changes then for that function, useMemo should be used.
+-If we want the functions should be called only on component load and not on every state changes then for that function, 
+useMemo should be used.
 -useMemo Hook returns a memoized value.
 -The useMemo(()=>{} , []) hook accepts a second parameter to declare dependencies. 
  The function will only run when its dependencies are changed.
@@ -1458,18 +1460,21 @@ Q. How to display previous State & Current State data in functional Component us
 
 
 
+
+
+
 Forms
 =====
 -React uses forms to allow users to interact with the web page.(Collect User Data)
+-control the values of more than one input field by adding a name attribute to each element.
 -get the field value by using the 'event.target.value', 
  get the field name by using 'event.target.name'
--control the submit action by adding an event handler in the onSubmit attribute.
--Add a submit button and an event handler with onSubmit attribute.
+-control the submit action by adding an event handler with onSubmit attribute.
   <form onSubmit={this.submitHandler}> 
     <button>submit</button>
   </form>
 -use event.preventDefault() to prevent the form from actually being submitted.(to avoid page refresh)
--control the values of more than one input field by adding a name attribute to each element.
+
 
 -A form can be validated on change or while submitting the form.
 -The textarea element in React is slightly different from HTML Syntax.
@@ -1507,7 +1512,7 @@ dynamic inputs								no					yes
 
 -Uncontrolled inputs are like traditional HTML form inputs.
 -Form data is handled by the DOM itself.
--They remember what you typed. You can then get their value using a ref.
+-They remember what we typed. we can then get their value using a ref.
 -To write an uncontrolled component, instead of writing an event handler for every state update, you can use a ref to get form values from the DOM.
 -you have to ‘pull’ the value from the field when you need it.(ex:-form submit)
 -there is no updating of any state when you change the input-box value.
@@ -1526,6 +1531,7 @@ NPM Libraries for Form Handling
 ===============================
 1. https://www.npmjs.com/package/react-hook-form
 2. https://www.npmjs.com/package/formik
+3. https://www.npmjs.com/package/yup
 
 
 
@@ -1606,7 +1612,7 @@ https://medium.com/@devmrin/create-a-rest-api-json-server-in-less-than-1-minute-
 
 1.  Install json-server (not necessarily in a react project)
 	npm install -g json-server
-2. create a json file  and have some data (not necessarily in a project)
+2. create a json file  and add some data (not necessarily in a project)
     db.json (filename can be anything.json)
 3. start json server
    json-server --watch db.json --port=4000
@@ -1783,6 +1789,7 @@ React Higher Order Components (HOCs)
 -Higher order components are JavaScript functions used for adding additional functionalities to the existing component.
 -These functions are pure, which means they are receiving data and returning values according to that data. 
 -Authentication,Logging,Styling and Theming
+-the effect written inside HOC runs only when props change, if a component(Counter) updates its own state(count) without any changes in props, the effect won't run.
 
 use cases:
 -Infinite scroll in three different views, all having different data.
@@ -1805,7 +1812,7 @@ Routing
 -Routing in a Single Page Application is the way to introduce some features for navigating the application  through links.
 -Every time a link is clicked or browser URL changes, React Router makes sure 
  our application loads component accordingly.
--The browser should change the URL when you navigate to a different screen.
+-The browser should change the URL when we navigate to a different screen.
 -The browser back and forward button should work as expected.
 -Routing links together your application navigation with the navigation features offered by the browser: the address bar and the navigation buttons.
 -React Router offers a way to write your code so that it will show certain components of your app  only if the route matches what you define.
@@ -1821,12 +1828,12 @@ React Router provides two different kind of routes:
 https://application.com/dashboard     // BrowserRouter  ( IE>9 (OR) any other browser )
 https://application.com/#/dashboard   // HashRouter (IE<9)
 
--Which routes to use is mainly decided by the browsers you need to support. 
+-Which routes to use is mainly decided by the browsers we want to support. 
 -BrowserRouter uses the History API, which is relatively recent, and not supported in IE9 and below. 
--If you don’t have to worry about older browsers, BrowserRouter is the recommended one to use.
+-If we don’t have to worry about older browsers, BrowserRouter is the recommended one to use.
 
 
--The 3 components you will interact the most while working with React Router are:
+-Below are the 3 components used the most while working with React Router are:
 	1. BrowserRouter, usually aliased as Router (wraps all your Route components)
 	2. Link		(used to generate links to your routes)
 	3. Route    (showing or hiding the components they contain)
@@ -1845,7 +1852,7 @@ Steps for Routing
         <App />
    </BrowserRouter>	
 4. add the <Routes> element (ensures that only one component is rendered at a time)
-   and add <Route> to create the link between components   
+   and add <Route> to create the link between components    (Body.js)
     <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/home" element={<Home />} />
@@ -1866,6 +1873,7 @@ Link vs NavLink
 ===============
 -When we use <Link> there isn't any active class on selected element.
 -with <NavLink> the selected element is highlighted because this element adds an active class.
+ <NavLink to='home' className='nav-link'>Home</NavLink>
 -add below css: 
 	nav a.active{text-decoration:none;font-weight:bolder;background-color: aqua}
 
@@ -1898,17 +1906,12 @@ export default function AboutUs() {
 }
 
 
-Navigate to previous route
-==========================
+
+Navigate to previous/next route
+===============================
 const navigate = useNavigate();
 <button onClick={()=>navigate(-1)}>Go Back</button>
-
-
-Navigate to forward/next route
-==============================
-const navigate = useNavigate();
 <button onClick={()=>navigate(1)}>Go Next</button>
-
 
 
 
@@ -1934,6 +1937,7 @@ Query params
 ------------
 1. configure the route
    <Route path="/productdetails" element={<ProductDetails />} />
+   
 2. create a link & navigation logic
   const navigate = useNavigate();
   const navigateHandler = (title, price) => {
@@ -1992,7 +1996,7 @@ Protected Routes
 -Protected Routes are routes that can only be accessed if a condition is met(usually, if user is properly authenticated). 
 -It returns a Route that either renders a component or redirects a user to another route based on a set condition.
 
--create a component that accepts component and other route details as props.
+-create a component that accepts another component and other route details as props.
 -check a condition to confirm if user is authenticated or not. 
 -if the value is true, render the component, else, Redirect route to /signin page.
 
@@ -2000,16 +2004,24 @@ Protected Routes
 	
 Replace
 =======
--replaces the current location instead of pushing a new one onto the browser history stack
-<Navigate to="/home" replace />
-	  (OR)
-navigate("/home", { replace: true })
+-replaces the current location instead of pushing a new one onto the browser history stack.
+-Without replace : Adds a new entry to the browser history (Back button will go back)
+-With replace : Replaces current URL (Back button won’t return to the previous URL)
+-HTML Code : <Navigate to="/home" replace />
+-Javascript code: navigate("/home", { replace: true })
+-After successful Login,we use the above code to go to home page
+ 'replace' attribute prevents users from pressing Back and returning to the login page after successful login.
+-When to Use replace:
+	1. After login/logout to prevent users from going back to the login page.
+	2. For redirects where you don’t want the previous page in history.
+	3. For reset navigation flows.
 
 
 Exact
 =====
 -The exact param disables the partial matching for a route and makes sure that it only  returns the route if the path is an EXACT match to the current url.
-	
+-If you're using React Router v6+, don’t use exact—it’s no longer needed
+-In react-router-dom v6, all routes are matched exactly by default.
 	
 	
 	
@@ -2051,7 +2063,7 @@ when To Use try-Catch
 
 Error Boundaries
 ================
--A JavaScript error in a part of the UI shouldn’t break the whole app. 
+-A JavaScript error in a part of the UI shouldn’t break the whole application. 
  To solve this problem, React 16 introduced a new concept  “error boundary”
 -Error boundaries are React components that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed.
 -Error boundaries do not catch errors for below things:
@@ -2059,6 +2071,7 @@ Error Boundaries
 	Asynchronous code (e.g. setTimeout or requestAnimationFrame callbacks)
 	Server side rendering
 	Errors thrown in the error boundary itself (rather than its children)
+-Error Boundary is supported only in class components , not in functional components.
 -A class component becomes an error boundary if it defines componentDidCatch().
 -Error boundaries work like a JavaScript catch {} block, but for components.
 -Error boundaries only catch errors in the components below them in the tree. 
@@ -2253,13 +2266,9 @@ https://create-react-app.dev/docs/adding-custom-environment-variables/
 
 Context API
 ===========
--React context API helps to avoid the problem of props drilling.
--Context provides a way to pass data through the component tree without passing 
- props through intermediate components.
--Context is primarily used when some data needs to be accessible by many 
- components at different nesting levels.
--Context is designed to share data that can be considered “global” for a tree 
- of React components.
+-React context API helps to avoid the problem of props drilling & share global state easily.
+-Context provides a way to pass data through the component tree without passing props through intermediate components.
+-Context is primarily used when some data needs to be accessible by many components at different nesting levels.
 -useful and ideal for small applications where state changes are minimal.
 -ex: current authenticated user, theme, or preferred language.
 
@@ -2274,13 +2283,15 @@ Context API
 	   <MyContext.Consumer>
 			{value => /* render something based on the context value */}
 		</MyContext.Consumer>
+
 		
 Read Context data in Function Component
 ---------------------------------------
 const myContextObj = useContext(myContext);
 <div>Context Data is: {myContextObj}</div>
 
-  
+ 
+ 
 Redux
 =====
 -Redux is a state management library.
