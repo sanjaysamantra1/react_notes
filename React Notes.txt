@@ -2110,9 +2110,12 @@ Pre-requisites:
 
 React Portals
 =============
--Portals provide a way to render some Content into a DOM node that exists outside the DOM hierarchy of the parent component.
--To insert HTML Content into a different location(not in the parent) in the DOM.
--createPortal() allows to render some children into a different part of the DOM.
+-Portals provide a way to render components outside the main DOM tree.
+-Normally, React Components render inside #root DOM Node. ex: <div id="root"></div>
+-With Portals, we can render components outside of it(#root) , but still react capabilities can be used (props,state,context etc)
+-Poratls can be used for Modals, Tooltips, Dropdowns, Toasts/Notifications
+
+-createPortal() 
  createPortal(children, domNode, key?)
  
 import { createPortal } from 'react-dom';
@@ -2275,20 +2278,23 @@ Context API
 -There are 3 main steps to use the React context:
 1. Create context using the React.createContext({}) method.
 	export const MyContext = React.createContext(defaultValue);
-2. Provide a context value.
-	   <MyContext.Provider value={/* some value */}>
-	      <ComponentX />
-	   <MyContext.Provider>
-3. Consume the context value. (Class Component)
-	   <MyContext.Consumer>
-			{value => /* render something based on the context value */}
-		</MyContext.Consumer>
-
+	
+2. Create a Provider that supplies the data to components
+	<MyContext.Provider value={/* some value */}>
+	    <ComponentX />
+	<MyContext.Provider>
+	   
+3. Consume the context value. 
+	const myContextObj = useContext(myContext);
+	<div>Context Data is: {myContextObj}</div>
+			
+	   
 		
-Read Context data in Function Component
+Read Context data in Class Component
 ---------------------------------------
-const myContextObj = useContext(myContext);
-<div>Context Data is: {myContextObj}</div>
+<MyContext.Consumer>
+	{value => /* render something based on the context value */}
+</MyContext.Consumer>
 
  
  
