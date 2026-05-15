@@ -87,15 +87,17 @@ React app with Vite
 -Vite.js is a build tool and development server that is designed to optimize the development experience for modern web applications.
 -It includes built-in support for TypeScript, CSS preprocessors.
 
-
-1. Create a vite project
+1. download Nodejs and install
+   https://nodejs.org/en/download/
+   
+2. Create a vite project
 	npm create vite@latest
 		(OR)
 	npm create vite@latest my-app -- --template react  
 		(OR)
 	npm create vite@latest my-app -- --template react-ts
 	
-2. Go to the crated Project, install , and serve the application
+3. Go to the crated Project, install , and serve the application
 	cd my-app
 	npm install
 	npm run dev
@@ -108,10 +110,11 @@ What React is
 =============
 -React is a JavaScript library for building user interfaces.
 -It is an open-source, component based library. 
--It is created & maintained by Facebook.
--React is used to build single page applications.
+-It was created and is maintained by Meta (formerly Facebook).
+-React is used to build Single Page Applications (SPAs).
 -React allows us to create reusable UI components.
--ReactJS uses virtual DOM based mechanism to fill in data (views) in HTML DOM. 
+-It supports unidirectional data flow (data flows from parent to child components).
+-React uses JSX (JavaScript XML) to write UI in a syntax similar to HTML inside JavaScript.
 
 
 
@@ -119,8 +122,9 @@ What React is
 React is NOT a framework
 ========================
 -React is a library and not a framework.
--The difference between a library and a framework is that a library only helps 
- us in one aspect whereas a framework helps us in many aspects. 
+-The difference between a library and a framework is that 
+-a library only helps us in one aspect whereas a framework helps us in many aspects. 
+ 
 Let's take an example:
 -React is a library because it only takes care of our UI.
 -Angular, on the other hand, is a framework because it handles much more than the UI 
@@ -156,14 +160,14 @@ Let's take an example:
 
 
 React Features
-==============
--Light weight
--JSX
--Components  (easy to build, easy to extend,reusable,loosly coupled)
--Oneway Data Binding (watchers will not be there for bindings)
--Virtual DOM
--Easy to learn because of its simple Design
--Performance
+--------------
+-Component-based architecture (reusable, maintainable, loosely coupled)
+-JSX for writing UI in JavaScript
+-Virtual DOM for efficient updates
+-Unidirectional data flow
+-Hooks for state and lifecycle management
+-High performance with optimized rendering
+-Strong ecosystem and community support
 
 
 
@@ -174,48 +178,79 @@ DOM (Document Object Model)
 -Allows JavaScript to interact with and modify the page's content, structure, and style. 
 
 
-Why virtual DOM?
-===============
--Frequent DOM manipulations are expensive and performance heavy. 
--Every time the DOM changes, browser would need to recalculate the CSS, 
- run layout and repaint the web page.
--we need a way to minimize the time it takes to repaint the screen. 
- This is where the Virtual DOM comes in.
--React uses virtual DOM to enhance its performance.
- 
- 
-What Virtual DOM is
-===================
--A virtual DOM is a lightweight JavaScript object which is just a copy of the
- real DOM. 
--It is a node tree that lists the elements, their attributes and content as 
- Objects and their properties.
--Virtual DOM is a JavaScript object that mirrors the structure of the real DOM. 
--A virtual DOM is the DOM where a representation of the UI is kept in memory and synced with the DOM.
--React never reads from real DOM, only writes to it.
+Why Virtual DOM?
+================
+-Frequent direct DOM manipulations are expensive and can impact performance.
+-Every time the real DOM changes, the browser may need to:
+    • Recalculate CSS
+    • Perform layout (reflow)
+    • Repaint the screen
+-Updating the real DOM repeatedly is slower compared to updating JavaScript objects in memory.
+-To improve performance, React minimizes direct manipulation of the real DOM using the Virtual DOM.
+-React uses the Virtual DOM to efficiently update the UI.
 
 
-Virtual DOM Benefits:
-=====================
-Improved Performance: By reducing the number of direct DOM manipulations, the Virtual DOM significantly speeds up the update process. 
-Optimized Updates: React intelligently determines the most efficient way to update the real DOM, minimizing costly reflows and repaints. 
-Simplified Development: The Virtual DOM makes it easier to work with complex UIs by abstracting away the complexities of direct DOM manipulation. 
-
- 
-How does React Work? (Virtual DOM)
+What is Virtual DOM?
 ====================
-Initial Render: When page loads, React creates a virtual DOM tree based on the initial JSX or HTML code.
-State Changes: When the application's state changes (user input, data updates), Generates a new Virtual DOM tree based on updated data.
-Diffing: React compares the new Virtual DOM with the previous Virtual DOM, It identifies what exactly changed 
-Reconciliation: Based on diffing results, React calculates the minimal number of real DOM operations needed.
-Real DOM Update: Only the necessary changes are applied to the real DOM, resulting faster updates. 
+-The Virtual DOM is a lightweight JavaScript representation of the real DOM.
+-It is a tree of JavaScript objects representing UI elements, their attributes, and content.
+-Whenever state or props change, React creates a new Virtual DOM tree.
+-React compares the new Virtual DOM with the previous Virtual DOM using a process called Diffing.
+-After identifying the changes, React updates only the required parts of the real DOM.
+-This process is called Reconciliation.
+-The Virtual DOM helps React optimize rendering performance.
+
+
+Virtual DOM Benefits
+====================
+1. Improved Performance
+   - Reduces expensive direct DOM manipulations.
+2. Optimized Updates
+   - React updates only the changed elements instead of re-rendering the entire page.
+3. Faster Rendering
+   - Minimizes browser reflow and repaint operations.
+4. Simplified UI Development
+   - Developers work with declarative UI instead of manually manipulating the DOM.
 
 
 
-What is the difference between Shadow DOM and Virtual DOM?
-==========================================================
--Shadow DOM is a browser technology for scoping variables and CSS in web components. 
--Virtual DOM is a concept implemented by React on top of browser APIs.
+ 
+How Does React Work? (Virtual DOM)
+==================================
+1. Initial Render : When the application loads, React creates a Virtual DOM tree based on the JSX components.
+
+2. State or Props Change : Whenever state or props change (such as user input or API response), React creates a new Virtual DOM tree with the updated data.
+
+3. Diffing : React compares the new Virtual DOM with the previous Virtual DOM tree to identify what has changed.
+
+4. Reconciliation : Based on the diffing result, React determines the minimum changes required in the real DOM.
+
+5. Real DOM Update : React updates only the changed parts of the real DOM instead of re-rendering the entire page, resulting in faster UI updates.
+
+
+
+
+
+
+Shadow DOM
+----------
+- Shadow DOM is a browser technology used in Web Components.
+- It provides encapsulation for HTML structure and CSS styles.
+- Styles inside the Shadow DOM do not affect the outside DOM.
+- Mainly used for component isolation.
+
+Virtual DOM
+-----------
+- Virtual DOM is a programming concept used by React.
+- It is a lightweight JavaScript representation of the real DOM.
+- React uses the Virtual DOM to optimize UI rendering and improve performance.
+- It helps minimize direct DOM manipulations.
+
+Key Difference
+--------------
+- Shadow DOM focuses on encapsulation and component isolation.
+- Virtual DOM focuses on efficient UI updates and rendering performance.
+
 
 
 
@@ -241,8 +276,7 @@ React Reconciliation
 ====================
 -Reconciliation is the process through which React updates the DOM.
  (syncing the Virtual DOM to the actual DOM)
--Reconciliation is the mechanism that tracks changes in a component state and renders 
- the updated state to the screen.
+-Reconciliation is the mechanism that tracks changes in a component state and renders the updated state to the screen.
 -It's a step that happens between the render() function being called and the displaying of elements on the screen. This entire process is called reconciliation.
 
 
@@ -276,24 +310,51 @@ Fiber Reconciler
 
 React Project - Folder Structure
 ================================
-node_modules/	:  Provides npm packages to the entire workspace. Workspace-wide node_modules dependencies are visible to all projects.
-public/ 		:  Only files inside the `public` folder can be referenced from the HTML
-src/			:  Source files for the root-level application project.
-.gitignore		:  Specifies intentionally untracked files that Git should ignore.
-package.json	:  Configures npm package dependencies that are available to all projects in the workspace. 
-package-lock.json : Provides version information for all packages installed into node_modules by the npm client. 
-README.md		 : Introductory documentation for the application.
+.gitignore : Specifies intentionally untracked files that Git should ignore.
+README.md : Contains introductory documentation and setup instructions for the application.
+package.json : Contains project metadata, npm dependencies, scripts, and configuration details.
+package-lock.json : Stores the exact dependency tree and package versions installed by npm.
+node_modules : Contains all installed npm packages and project dependencies.
+public : Contains static files such as images, icons, and HTML files that are served directly.
+src : Contains the main source code of the React application such as components, styles, services, and utilities.
+
 
 
 
 
 React Project Flow
 ==================
-1. index.html  --> <div id="root"></div> (container to inject component)
-2. index.js    --> root = ReactDOM.createRoot(document.getElementById('root'));
-				   root.render(<App />)
-                   where        what
-3. App.js      -->  AppComponent Code
+1. index.html
+   ----------
+   Contains the root container element:
+   <div id="root"></div>
+   React injects the application into this container.
+
+2. main.js / main.jsx
+   -------------------
+-Entry point of the React application.
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+-createRoot() creates a React root.
+-render() renders the App component into the root container.
+
+
+3. App.js / App.jsx
+   -----------------
+   Main/root component of the application.
+
+   
+
+index.html
+   ↓
+main.js / main.jsx
+   ↓
+<App />
+   ↓
+Child Components
+   ↓
+UI rendered in browser
+
 
 
 
@@ -365,6 +426,7 @@ Module Systems
 1. CommonJS
    module.exports = {member1,member2};
    const member1 = require('Library/file name');
+   
 2. ECMASCRIPT
    export member1;
    export default member2;
@@ -379,6 +441,7 @@ imports & exports
   import { name1, name2 } from 'src/my_lib';
 -Combining a default import with named imports
   import DefaultMember, { name1, name2 } from 'src/my_lib';
+  import React, { Component } from 'react';
 
 
 Named Export vs Default Export
@@ -442,16 +505,10 @@ extensions
 
 Browser extension
 =================
-json viewer
-
-
-
-
-React Plugins
-=============
-1. React Developer Tools
-2. React-sight
-3. Redux DevTools
+1. json viewer
+2. mobile simulator
+3. React Developer Tools
+4. Redux DevTools
    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 
 
@@ -460,21 +517,22 @@ React Plugins
 
 React.StrictMode
 ================
--StrictMode is a tool for highlighting potential problems in a react application.
--It activates additional checks and warnings for its descendants(child elements).
--Strict mode checks are run in development mode only,they do not impact the production build.
--Strict Mode helps with the below things:
-	Identifying components with unsafe lifecycles (componentWillMount)
-	Warning about legacy string ref API usage
-	Warning about deprecated findDOMNode() usage
-	Detecting unexpected side effects
-	Detecting legacy context API
--ex: import React, { StrictMode } from "react";
+-StrictMode is a React development tool used for identifying potential problems in an application.
+-It enables additional checks and warnings for its descendant components.
+-StrictMode checks run only in development mode and do not affect the production build.
+-StrictMode helps with the following:
+    • Identifying unsafe lifecycle methods
+    • Warning about legacy string ref API usage
+    • Warning about deprecated findDOMNode() usage
+    • Detecting unexpected side effects
+    • Detecting legacy context API usage
+    • Detecting components with non-reusable state
+	
+-ex: import { StrictMode } from 'react'
      <StrictMode>
 		<App />
      </StrictMode>
-Note: StrictMode renders components twice (on dev but not production) in order to
-      detect any problems with our code and warn us about them.
+
 
 
 
@@ -486,8 +544,7 @@ Component
 -A Component Represents a part of the User Interface.
 -Components are Re-Usable and can be nested inside other component.
 -A React application contains a tree of components.
--React components let you split the UI into independent, reusable pieces, 
-  and think about each piece in isolation. 
+-React components split the UI into independent, reusable pieces, and think about each piece in isolation. 
 
 
 2 types Of Component
@@ -534,9 +591,8 @@ class Welcome extends React.Component {
 
 When to use a Class Component over a Function Component?
 ========================================================
--If the component needs state or lifecycle methods then use class component 
- otherwise use function component. 
--However, from React 16.8 with the addition of Hooks, we can use state , lifecycle methods and other features  that were only available in class component in function component also. 
+-If the component needs state or lifecycle methods then use class component otherwise use function component. 
+-However, from React 16.8 with the addition of Hooks, we can use state , lifecycle methods and other features that were only available in class component in function component also. 
 -So, it is always recommended to use Function components, unless you need a React functionality whose Function component equivalent is not present yet, like Error Boundaries.
 
 
@@ -544,30 +600,32 @@ When to use a Class Component over a Function Component?
 
 How to Use Bootstrap in a React application
 ===========================================
-1. install bootstrap
-   npm i bootstrap@3.3.7 (particular version)
-          OR
-   npm i bootstrap     (latest version)
-   npm i bootstrap-icons 
-   
-	
-2. use 'bootstrap.min.css' in index.js file
+1. npm i bootstrap     
+  	
+2. add below 2 imports in main.jsx file
    import "bootstrap/dist/css/bootstrap.min.css";
    import "bootstrap/dist/js/bootstrap.bundle.min.js";
-   import 'bootstrap-icons/font/bootstrap-icons.css';
    
-
+ 
 How to Use Bootstrap in a React application using CDN Link
 ===========================================================
--Bootstrap can be used in a react application just by adding the below CDN link in 'index.html'
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+-Bootstrap can be used in a react application just by adding the below 2 CDN links in 'index.html'
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
  
 
 
 How to use Bootstrap icons
 ==========================
-<i className="bi-alarm"></i>
-<i className="bi-airplane" style={{ fontSize: "2rem", color: "cornflowerblue" }}></i>
+1. npm i bootstrap-icons 
+
+2. add below import in main.jsx file
+   import 'bootstrap-icons/font/bootstrap-icons.css';
+
+3. use classnames in JSX
+   <i className="bi-alarm"></i>
+   <i className="bi-airplane" style={{ fontSize: "2rem", color: "cornflowerblue" }}></i>
 
 
 
@@ -586,7 +644,7 @@ How to use React-icons
 
 
 Fragments
-==========
+=========
 -While returning elements in JSX, we can only return 1 element at a time.
  That element can have children but we have to ensure that we are only returning 1 element at a time, or else we will get a syntax error. (ex: a function can return 1 value)
 -Fragments are way to render multiple elements without using a wrapper element.
@@ -611,16 +669,6 @@ Fragments
  
  
  
-Data Binding
-============
--Binding/Displaying  the variable value in UI is called data binding.
-
-
-Binding Type    | Description                 | React Example      
---------------- | --------------------------- | ------------------ 
-One-way Binding | State → UI                  |  {value}         
-Two-way Binding | State ↔ UI using `onChange` |  value + onChange
-
 
  
 
@@ -650,80 +698,205 @@ CSS Modules
 
 
  
+ 
+Data Binding
+============
+-Binding/Displaying the variable value in UI is called data binding.
+-React primarily uses one-way data binding. 
+-Two-way binding can be implemented manually using state, value, and onChange handlers.
 
+
+Binding Type    | Description                 | React Example      
+--------------- | --------------------------- | ------------------ 
+One-way Binding | State → UI                  |  {value}         
+Two-way Binding | State ↔ UI using `onChange` |  value + onChange
+
+
+ex:
+function App() {
+  const [name, setName] = useState("");
+  return (
+    <input value={name} onChange={(e) => setName(e.target.value)} />
+  );
+}
+ 
+ 
+
+ 
  
 Conditional Rendering
 =====================
--It is a common use case to show or hide elements based on certain conditions.
--It allows us to render different elements or components based on a condition.
--use cases:
-	Rendering external data from an API.
-	Showing or hiding elements.
-	Toggling application functionality.
-	Implementing permission levels.
-	Handling authentication and authorization.
--ways to implement conditional rendering:
-	Using an if…else Statement
-	Using a switch Statement
-	Using Ternary Operators
-	Using Logical && (Short Circuit Evaluation) 
-	
-	
-Ternary-  		<div>{flag ? <h1>Helllloooooo</h1> : null}</div>
-Short Circuit-  <div>{flag && <h1>Helllloooooo</h1>}</div>	
+-Conditional rendering means displaying different UI elements or components based on a condition.
+-It is commonly used to show, hide, or switch UI content dynamically.
+-React uses JavaScript conditions to control what gets rendered on the screen.
+
+
+Use Cases
+=========
+-Rendering data received from APIs
+-Showing or hiding elements
+-Toggling application functionality
+-Implementing role-based access or permission levels
+-Handling authentication and authorization
+-Displaying loading or error messages
+
+
+Ways to Implement Conditional Rendering
+=======================================
+1. Using if...else Statements
+2. Using switch Statements
+3. Using Ternary Operators
+4. Using Logical && Operator (Short Circuit Evaluation)
+
+Examples
+========
+Ternary Operator :  <div>{flag ? <h1>Hello</h1> : null}</div>
+Short Circuit Evaluation:  <div>{flag && <h1>Hello</h1>}</div>
 
 
 
-List Items - Lists and Keys
-===========================
--A 'key' is a special attribute which should be included while creating List Items.	
--There will be a warning message in the console if the key prop is not present on list items.
--'Key' gives the elements a stable unique Identity.	
--'Key' helps react to identify which items have changed,are added, or removed.	
--React relies on the key to identify items in the list.
- React uses a virtual DOM, and it only re-draws the components that changed since the last render.
--The first time a component like IdiomaticReactList is rendered, React will see that you want to render a bunch of items, and it will create DOM nodes for them.
--The next time that component renders, React will say, “I already have some list items on screen are these ones different?” It will avoid recreating DOM nodes if it can tell that the items are the same.
 
--Tip: Avoid using the index as key, if the list is filtered or sorted 
- it will cause the key value to change to the new index and React will consider 
- them different elements and repaint the whole list.
 
--Why map() is used to iterate array instead of forEach()
- JSX needs an array of items to render,forEach() does not return anything (i.e it returns undefined). map() returns an array.
+Assignments: 
+1. Have a paragraph and a toggle button; on clicking the button, control the visibility (Show / Hide) of the paragraph.
+2. Create a dropdown with state names; when the user changes the dropdown value, print the selected value in a div.
+3. create a input box, toggle the type of that input box to (text/password)
+4. Create a counter example with three controls: Increment, Decrement, and Reset.
+5. Create an inputBox to enter temperature in celcius, convert temperature from Celsius to Fahrenheit. 
+	formula:  f = (C × (9/5)) + 32
+6. greeting based on time (good mornig, good afternoon, good evening)
+7. Create a textarea with maxLength = 100; as the user keeps typing, count and display how many words and how many characters are typed and  also display remaining characters.
+8. Create two input boxes and a dropdown (+ , - , * , /) and perform arithmetic operations based on the selected operator.
+9. Create a button that increases font size and another button that decreases font size for a paragraph.
+10. Create a dropdown with colors and change the background color of a div based on selection.
+
+
+
+
+
+Lists and Keys
+==============
+-Lists are used to display multiple items dynamically.
+-Arrays are commonly rendered using the map() method.
+-Each item in the list is converted into a JSX element.
+
+    const fruits = ["Apple", "Mango", "Orange"];
+	<ul>
+		{fruits.map((fruit,ind)=>{
+            return <li key={ind}>{fruit}</li>
+        })}
+	</ul>
+
+
+-A 'key' is a special attribute that should be provided while rendering list items in React.
+-React displays a warning in the console if the key prop is missing for list items.
+-Keys provide a stable and unique identity to elements.
+-Keys help React identify:
+    • Which items changed
+    • Which items were added
+    • Which items were removed
+-React uses keys during the reconciliation process to optimize rendering performance.
+-During the initial render, React creates DOM nodes for all list items.
+-On subsequent renders, React compares the previous list with the new list using keys and updates only the modified elements instead of recreating the entire list.
+
+
+Tip
+===
+-Avoid using the array index as a key when:
+    • The list can be filtered
+    • The list can be sorted
+    • Items can be added or removed dynamically
+-In such cases, index values may change, causing React to treat items as different elements and unnecessarily re-render the list.
+
+
+Why map() is used instead of forEach()
+======================================
+-map() iterates through each element of the array. For every item, it returns a JSX element. 
+-React collects all returned JSX elements and renders them on the screen.
+-forEach() does not return anything (returns undefined), so it cannot be used directly inside JSX..
  
  
  
-Read data from a JSON file
+Read data from a JSON file (https://jsonplaceholder.typicode.com/users)
 ==========================
-1. create a JSON file (employees.json/products.json/countries.json)
+1. create a JSON file add data (user_data.json) 
    [ {},{},{} ]
-2. import EmployeeArr from './employees.json'
-3. use EmployeeArr(List data) in JSX
-   {EmployeeArr.map((emp,ind)=>{
-       return <option key={ind} value={emp} />
-   })}
+   
+2. import userArr from './user_data.json'
+
+3. use userArr(List data) in JSX
+			{userArr.map((user)=>{
+                return <tr>
+                    <td>{user.id}</td>
+                    <td>{user.name}</td>                    
+                </tr>
+            })}			
    
 
 
-Read data from a Javascript file
+Read data from a Javascript file (https://fakestoreapi.com/products)
 ================================
-1. create a JSON file (employees.js/products.js/countries.js)
-   const employees = [ {},{},{} ];
-   export default employees;
-2. import EmployeeArr from './employees.json'
-3. use EmployeeArr(List data) in JSX
-   {EmployeeArr.map((emp,ind)=>{
-       return <option key={ind} value={emp} />
-   })}
+1. create a javascript file and export data 
+   export default [ {},{},{} ]
+   
+2. import productArr from './product_data.ts'
+
+3. use productArr(List data) in JSX
+	      {productArr.map(product=>{
+                return <div className="col-sm-3" key={product.id}>
+                <div className="card">
+                  <img src={product.image} className="card-img-top" alt="..." height='200px' />
+                  <div className="card-body">
+                    <h5 className="card-title">{product.category}</h5>
+                    <p className="card-text text-truncate">{product.title}</p>
+                  </div>
+                </div>
+              </div>
+            })}
+ 
 
 
 
 Assignment
 ==========
-1. create products.json with list of products. 
-   https://fakestoreapi.com/products
-2. display the products in table & card
+1.Display List of employees in a table
+  display a dropdown with 'all' , 'male' & 'female' 
+  display the employees based on the dropdown value selected
+  
+  employees = [
+        { id: 1, name: 'Amit Sharma', role: 'Manager', salary: 85000, status: 'Active', gender: 'male' },
+        { id: 2, name: 'Priya Verma', role: 'Developer', salary: 65000, status: 'Active', gender: 'female' },
+        { id: 3, name: 'Rahul Mehta', role: 'Tester', salary: 38000, status: 'Inactive', gender: 'male' },
+        { id: 4, name: 'Sneha Iyer', role: 'Developer', salary: 42000, status: 'Inactive', gender: 'female' },
+        { id: 5, name: 'Karan Singh', role: 'Manager', salary: 52000, status: 'Active', gender: 'male' },
+        { id: 6, name: 'Neha Gupta', role: 'Tester', salary: 72000, status: 'Active', gender: 'female' }
+     ];
+ 
+	 
+2. Create an array of task objects, and display them using map
+   Every Element Should have a checkbox, When a checkbox is clicked, toggle completion status(true/false)
+   for completed tasks show them as striked-out
+   add a dropdown with 3 values 'All','Completed','Pending' , based on the value selected, show the tasks
+   display how many are completed, ex: 2 out of 5 tasks are completed 
+
+	tasks = [
+	  { id: 1, title: 'Complete Angular assignment', completed: false },
+	  { id: 2, title: 'Review pull requests', completed: true },
+	  { id: 3, title: 'Prepare project report', completed: false },
+	  { id: 4, title: 'Attend team meeting', completed: true },
+	  { id: 5, title: 'Update documentation', completed: false },
+	];
+
+3. Maintain a cart array
+	Use map() to display all cart items.
+	Show each item with quantity controls (+ and – buttons)
+	Calculate and display the total price
+	cartItems = [
+	  { id: 1, name: 'Wireless Headphones', price: 2499, qty: 1},
+	  { id: 2, name: 'Smart Watch', price: 4999, qty: 2 },
+	  { id: 3, name: 'Bluetooth Speaker', price: 1999, qty: 1 },
+	  { id: 4, name: 'Power Bank', price: 1299, qty: 3 }
+	];
 
 
 
