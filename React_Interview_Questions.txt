@@ -1,0 +1,273 @@
+
+1. What is Virtual DOM?
+-Virtual DOM is a lightweight JavaScript representation of the real DOM.
+-React compares old and new Virtual DOM trees and updates only changed elements in the real DOM.
+
+
+2. Explain Reconciliation in React.
+-Reconciliation is the process React uses to compare old and new Virtual DOM trees and determine minimal DOM updates.
+
+
+3. Difference between Props and State.
+Props:
+-Passed from Parent to Child
+-Immutable
+
+State:
+-Managed within component
+-Mutable using setState/useState
+
+
+
+4. Why should state not be mutated directly?
+-React relies on immutability and reference comparison for detecting changes efficiently.
+
+
+5. Difference between useEffect and useLayoutEffect.
+useEffect:
+-Runs after rendering
+
+useLayoutEffect:
+-Runs before browser paint
+
+
+6. Difference between Controlled and Uncontrolled Components.
+Controlled Components:
+-Controlled by React state
+
+Uncontrolled Components:
+-Controlled using DOM refs
+
+
+7. What is React.memo?
+-React.memo memoizes functional components and prevents unnecessary re-rendering when props do not change.
+
+
+8. Difference between useMemo and useCallback.
+useMemo:
+- Memoizes values
+
+useCallback:
+- Memoizes functions
+
+
+9. What are Higher Order Components (HOC)?
+-HOCs are functions that take a component and return an enhanced component.
+
+
+10. What is Context API?
+-Context API allows sharing global data without prop drilling.
+
+
+11. What is Prop Drilling?
+-Passing props through multiple intermediate components to deeply nested child components.
+
+
+12. Difference between Context API and Redux.
+Context API:
+- Suitable for small-medium applications
+
+Redux:
+- Better for large enterprise applications
+
+
+13. Why are Keys important in React?
+-Keys help React identify changed, added, or removed list items efficiently.
+
+
+14. Why should array index not be used as key?
+-Indexes change during filtering/sorting and may cause incorrect rendering behavior.
+
+
+15. What are Hooks?
+-Hooks allow functional components to use state and lifecycle features.
+
+
+16. Difference between useRef and useState.
+useState:
+-Triggers re-render
+
+useRef:
+-Does not trigger re-render
+
+
+17. What are Synthetic Events?
+-Synthetic Events are React wrapper objects around native browser events.
+
+
+18. Why is setState asynchronous?
+-React batches updates for performance optimization.
+
+
+19. What are Pure Components?
+-PureComponent performs shallow comparison of props and state to avoid unnecessary re-renders.
+
+
+20. What is Lazy Loading?
+-Lazy loading loads components only when required.
+
+
+21. What is Suspense?
+-Suspense displays fallback UI while lazy-loaded components are loading.
+
+
+22. What are Error Boundaries?
+-Error Boundaries catch runtime errors in child components and prevent application crashes.
+
+
+23. What are Custom Hooks?
+-Custom Hooks allow reusable stateful logic.
+
+
+24. What causes unnecessary re-renders?
+-Parent re-renders
+-New object/function references
+-State mutations
+-Missing memoization
+
+
+25. How do you optimize React performance?
+-React.memo
+-useMemo
+-useCallback
+-Lazy Loading
+-Code Splitting
+-Pagination
+-Virtualization
+
+
+26. A child component is re-rendering unnecessarily even though props are not changing. How would you optimize it?
+-Use React.memo().
+-Use useCallback() for functions.
+-Use useMemo() for derived values.
+
+
+27. A React application becomes slow while rendering a huge table with thousands of records. How would you improve performance?
+-Use pagination or virtualization.
+-Use memoization.
+-Avoid unnecessary re-renders.
+
+
+28. You are passing data through multiple nested components. How would you avoid prop drilling?
+-Use Context API.
+-Use Redux Toolkit for large applications.
+
+
+29. A component is making repeated API calls on every render. What could be the issue?
+-Missing dependency array in useEffect().
+-Infinite state update loop.
+
+
+30. A list behaves incorrectly when items are deleted or reordered. What could be wrong?
+-Array index is used as key.
+-Use stable unique IDs instead.
+
+
+31. How would you prevent unnecessary API calls while typing in a search input?
+-Use debouncing.
+
+
+32. How would you implement authentication token handling for all API requests?
+-Use Axios interceptors.
+
+
+33. A parent component re-renders and causes all child components to re-render. How would you optimize this?
+-Use React.memo().
+-Use useCallback().
+-Avoid unnecessary state updates.
+
+
+34. How would you handle cleanup of timers or event listeners in React?
+-Use cleanup function inside useEffect().
+
+
+35. A component crashes and breaks the entire application UI. How would you handle this?
+-Use Error Boundaries.
+
+
+36. How would you implement pagination for large datasets?
+-Use client-side or server-side pagination.
+-Render limited records per page.
+
+
+37. How would you persist application state after page refresh?
+-Use localStorage/sessionStorage.
+-Use Redux Persist.
+
+
+38. How would you dynamically load components only when required?
+-Use React.lazy() and Suspense.
+
+
+39. How would you secure private routes in React applications?
+-Use Protected Routes.
+-Validate authentication before rendering routes.
+
+
+40. A component updates state but UI is not re-rendering. What could be the possible reasons?
+
+- Direct state mutation.
+- Memoization preventing updates.
+- Incorrect dependency handling.
+
+
+41. How would you manage global state in a large enterprise application?
+-Use Redux Toolkit.
+-Organize state into slices/modules.
+
+
+42. How would you optimize a search/filter feature working on large datasets?
+-Debouncing
+-Memoization
+-Pagination
+-Virtualization
+
+
+43. How would you cancel API requests when a component unmounts?
+-Use AbortController or Axios cancellation token.
+
+
+44. How would you communicate between sibling components?
+-Lift state to common parent.
+-Use Context API/Redux.
+
+
+45. How would you implement dark/light theme switching across the application?
+-Use Context API.
+-Apply conditional CSS classes.
+
+
+46. A React app shows memory leak warnings. What are the possible causes?
+-Uncleaned timers
+-Event listeners
+-Pending API calls
+
+
+47. How would you structure a large-scale React project?
+
+- Separate:
+  • Components
+  • Pages
+  • Services
+  • Hooks
+  • Redux
+  • Utilities
+  • Routes
+
+
+48. How would you improve SEO in React applications?
+-Use SSR frameworks like Next.js.
+-Add proper meta tags.
+
+
+49. How would you improve first page load performance in React?
+-Code splitting
+-Lazy loading
+-Asset optimization
+-CDN usage
+
+
+50. How would you monitor/debug React performance issues?
+-React DevTools Profiler
+-Browser Performance tab
+-Lighthouse

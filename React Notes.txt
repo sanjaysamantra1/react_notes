@@ -2,16 +2,19 @@ Syllabus
 ========
 -ReactJs features (VirtualDOM , ReConciliation)
 -Local Environemnt Setup (Create-react-app , vite)
--JSX
+-React Project Structure, React Project Flow
+-JSX , Expressions in JSX
 -Class Components
 -Functional Components
 -React Object
 -Fragment
--Component Styling
+-Component Styling 
 -Conditional rendering
 -Lists & keys
 -Props : de-structuring,requiring props, proptypes,default props
 -State 
+-React Hooks (useState, useEffect, useRef, useMemo, useCallback)
+-Component Lifecycle using useEffect
 -Pure Component
 -Memo Component
 -HigherOrder Component
@@ -630,16 +633,7 @@ How to use Bootstrap icons
 
 
 
-How to use React-icons
-======================
-1. install react-icons
-   npm install react-icons
-2. import react-icons in component
-   import { FaEdit, FaTrash } from 'react-icons/fa';
-   import { BsFillCalendarDateFill,BsFillClockFill } from 'react-icons/bs';
-3. use the Icons
-   <FaEdit /> 
-   <FaTrash color='red' />
+
 
 
 
@@ -695,6 +689,39 @@ CSS Modules
 	import './another-stylesheet.css'; // Import regular stylesheet
 	<button className={styles.error}>Error Button</button>;
 -it will only apply the classname from css module even if both files have same 'error' class;
+
+
+
+Conditional CSS 
+================
+-Conditional CSS means applying styles dynamically based on conditions.
+-Conditional CSS is commonly used for:
+    • Theme switching
+    • Form validation
+    • Active/Inactive states
+    • Error highlighting
+    • Dynamic visibility
+    • Responsive UI behavior
+
+1. Conditional Inline Style : <h1 style={{ color: isActive ? "green" : "red" }}>Status</h1>
+
+2. Conditional className : <h1 className={success ? "success" : "error"}>Message</h1>
+
+3. Conditional Background Color : <div style={{ backgroundColor: darkMode ? "black" : "white" }}>Theme</div>
+
+4. Conditional Font Size : <p style={{ fontSize: large ? "30px" : "16px" }}>React Text</p>
+
+5. Conditional Visibility : <div style={{ display: show ? "block" : "none" }}>Content</div>
+
+6. Conditional Border Color : <input style={{ border: error ? "2px solid red" : "2px solid green" }} />
+
+7. Conditional Button Disable : <button disabled={name === ""}>Submit</button>
+
+8. Multiple Conditional Classes : <div className={isActive ? "box active" : "box"}>Card</div>
+
+9. Conditional Opacity : <img style={{ opacity: disabled ? 0.5 : 1 }} src="image.png" />
+
+10. Conditional Cursor : <button style={{ cursor: loading ? "not-allowed" : "pointer" }}>Save</button>
 
 
  
@@ -873,7 +900,7 @@ Assignment
      ];
  
 	 
-2. Create an array of task objects, and display them using map
+2. Create an array of task objects, and display them using map()
    Every Element Should have a checkbox, When a checkbox is clicked, toggle completion status(true/false)
    for completed tasks show them as striked-out
    add a dropdown with 3 values 'All','Completed','Pending' , based on the value selected, show the tasks
@@ -900,155 +927,216 @@ Assignment
 
 
 
-forceUpdate	
-===========	
--Declaring class variables/function variables is always a bad idea.	
--can be used for the below 2 use cases:
-	Setting and clearing timeouts	
-	Storing frequently-referenced values	
-		
--React components will only re-render when there are changes to props or state.	
--Updating the class/function variable does not trigger a re-render.	
--Its our responsibility of triggering the re-render when our class data changes.	
--Normally we should try to avoid all uses of forceUpdate() and only read from 
- this.props and this.state in render().
--In class components,this.forceUpdate() is used to force a re-render.
--In Functional components,there is no concept of force re-render.
+
+
+forceUpdate()
+=============
+-React components normally re-render when there are changes to state or props.
+-Updating normal class variables or function variables does not trigger a re-render.
+-In rare cases, forceUpdate() can be used to force a component to re-render.
+-forceUpdate() is available only in class components.
+
+Example:
+---------
+this.forceUpdate();
+-React recommends avoiding forceUpdate() in most situations.
+-Instead of using forceUpdate(), state updates should be preferred.
+-Common use cases for non-state variables:
+    • Storing timeout/interval IDs
+    • Storing frequently used values
+    • Referencing DOM elements
+    • Mutable values that do not affect UI
+-Normally, render() should depend only on:
+    • this.props
+    • this.state
+
+-Functional components do not have a forceUpdate() method.
+-In functional components, re-rendering is triggered using:
+    • useState()
+    • useReducer()
+-useRef() can store mutable values without causing re-renders.
 
 
 
-props
+Props
 =====
--Props are inputs to components.
--Props stand for properties and is a special keyword in React.
--Attributes on Components get converted into an object called Props.
--Helps to Pass custom data to a component.
--props are used to pass data and methods from a parent component to a child component.
--data with props are being passed in a uni-directional flow. (one way from parent to child).
--We can pass props to any component as we declare attributes for any HTML tag
- <ChildComponent someAttribute={value} anotherAttribute={value}/>
--React props passed with just their name have a value of true.
- <myComponent showTitle={true}> 
- <myComponent showTitle> 
--The props can be accessed as shown below
- this.props.propName; (Class Component)
- props.propName; (Functional Component)
+-Props stands for Properties. Props are inputs to components.
+-Props are used to pass data and methods from a parent component to a child component.
+-Attributes passed to components are received as an object called props.
+-Props help make components reusable and dynamic.
+-Data passed using props flows in one direction (Parent → Child). This is called unidirectional data flow.
+-We can pass props to components similar to HTML attributes.
+
+Example:
+---------
+<ChildComponent name="John" age={25} />
+-Boolean props passed without a value are treated as true.
+	<MyComponent showTitle={true} />
+	<MyComponent showTitle />
+
+-Props can be accessed as shown below:
+	Class Component: this.props.propName
+	Functional Component: props.propName
 
 
-1.They are immutable. data coming from the parent should not be changed by child components. we will get an error if you try to change their value.
-2.data with props are being passed in a uni-directional flow. (one way from parent to child)
+Important Points
+================
+1. Props are immutable.
+   -Child components should not modify props received from parent components.
+
+2. Props support unidirectional data flow.
+   -Data flows only from Parent → Child.
+
+3. Props help create reusable components.
+
+4. When parent data changes, updated props are automatically passed to child components.
 
 
 
 Props De-structuring
 ====================
--It’s a JavaScript feature that allows us to extract multiple pieces of data from an array or object and assign them to their own variables.
--Improves readability.
--we can get rid of props/this.props in front of each property. 
+-Destructuring is a JavaScript feature used to extract values from objects or arrays.
+-Props destructuring improves readability.
+-It helps avoid repeatedly writing props or this.props.
 
--props de-structuring in functional component
- export default function Greet({ name, msg }){}
--we de-structure props in the render() function.(class Component)
- ex: let { pId, name, price } = this.props.product;
+Functional Component:
+---------------------
+	export default function Greet({ name, msg }) {
+	}
 
+Class Component:
+----------------
+	render() {
+	   let { pId, name, price } = this.props.product;
+	}
 
 
 
 PropTypes
 =========
--React has some built-in typechecking abilities.
--To run typechecking on the props for a component,we can assign the special propTypes property.
--PropTypes exports a range of validators that can be used to make sure the data the component receive is valid.
--When an invalid value is provided for a prop, a warning will be shown in the browser console. 
--For performance reasons, propTypes is only checked in development mode.not in production.
+-React supports runtime prop validation using the prop-types package.
+-PropTypes help validate the data received by a component.
+-Warnings are shown in the browser console if invalid prop types are passed.
+-PropTypes are checked only in development mode.
 
-1. import PropTypes from 'prop-types';  
-2. ComponentName.propTypes = {	
-		variableName: PropTypes.string	
-	};	
+import PropTypes from 'prop-types';
 
+Syntax:
+-------
+ComponentName.propTypes = {
+   variableName: PropTypes.string
+};
 
-  optionalArray: PropTypes.array,
-  optionalBool: PropTypes.bool,
-  optionalFunc: PropTypes.func,
-  optionalNumber: PropTypes.number,
-  optionalObject: PropTypes.object,
-  optionalString: PropTypes.string,
-  optionalSymbol: PropTypes.symbol,
-  optionalElement: PropTypes.element,
-  optionalEnum: PropTypes.oneOf(['News', 'Photos']),
-  optionalArrayOf: PropTypes.arrayOf(PropTypes.number),
-  optionalObjectWithShape: PropTypes.shape({
-    color: PropTypes.string,
-    fontSize: PropTypes.number
-  }),
-
+Common Validators
+=================
+optionalArray: PropTypes.array,
+optionalBool: PropTypes.bool,
+optionalFunc: PropTypes.func,
+optionalNumber: PropTypes.number,
+optionalObject: PropTypes.object,
+optionalString: PropTypes.string,
+optionalSymbol: PropTypes.symbol,
+optionalElement: PropTypes.element,
+optionalEnum: PropTypes.oneOf(['News', 'Photos']),
+optionalArrayOf: PropTypes.arrayOf(PropTypes.number),
+optionalObjectWithShape: PropTypes.shape({
+   color: PropTypes.string,
+   fontSize: PropTypes.number
+}),
 
 
 
 Requiring Props
 ===============
--If prop values are not passed to a certain component, no error will be thrown.
-Instead, within the component that prop will have a value of 'undefined'.
--Apart from specifying the type of the prop that can be passed to the component, 
- we can also make sure the prop is always provided to the component by chaining 
- isRequired at the end of the prop validator.
+-If a prop is not passed to a component, its value becomes undefined.
+-isRequired ensures that a prop must be provided.
 
+Example:
+---------
 Student.propTypes = {
-  name: PropTypes.string.isRequired, // Required Prop
-  age: PropTypes.number  // Optional Prop
+   name: PropTypes.string.isRequired,
+   age: PropTypes.number
+};
+
+
+
+Default Props
+=============
+-Default props allow setting default values for props.
+
+Example:
+---------
+Greet.defaultProps = {
+   msg: 'this is my default message'
+}
+
+Functional Component:
+---------------------
+export default function Greet({ name, msg = 'good morning' }) {
 }
 
 
 
-Default props
-=============
--defaultProps allows to set default value for props. 
--ex: 	
-	Greet.defaultProps = {	
-		msg: 'this is my default message'	
-	}	
--Functional Component & destructuring
- export default function Greet({name , msg='good morning'}) {
- }
- 
- 
+Props.children
+==============
+-props.children represents the content placed between the opening and closing tags of a component.
+-props.children can contain text, JSX, single elements, or multiple elements.
+-props.children is available in every component.
 
-Props.children	
-==============	
--props.children represents the content between the tags of a Component.
--props.children can be an array or a single item.
--props.children is available on every component.	
--<Welcome>Hello world!</Welcome>	
--The string Hello world! is available in props.children in the Welcome component.	
--class Welcome extends React.Component {	
-  render() {	
-    return <p>{this.props.children}</p>;	
-  }	
+Example:
+---------
+<Welcome>Hello world!</Welcome>
+
+Class Component:
+----------------
+class Welcome extends React.Component {
+   render() {
+      return <p>{this.props.children}</p>;
+   }
 }
 
 
 
 Ensuring Single Child
 =====================
--We can use PropTypes.element to enforce that only a single child can be passed 
- to a component as children.
--If we try to pass more than 1 child to the component, we will get an error.
-Ex: 	
-Greet.propTypes = {	
-    children: PropTypes.element	
+-PropTypes.element ensures that only one child element is passed to a component.
+-Passing multiple child elements will show a warning.
+
+Example:
+---------
+Greet.propTypes = {
+   children: PropTypes.element
 };
 
 
 
-Prop Drilling
-=============
--Prop drilling is the process in a React app where props are passed from one component to another by going through other parts that do not need the data, but only help in passing it through the intermediate components.
--The problem with this approach is that most of the components through which this data is passed have no actual need for this data. 
--They are simply used as mediums for transporting this data to its destination component.
--as the components are forced to take in unrelated data and pass it to the next component, until it reaches its destination. This can cause major issues with component reusability and app performance.
--This Problem Can be avoided by using concepts like 'Context API' & 'REDUX'
+Passing Functions as Props
+==========================
+-Functions can also be passed as props from parent to child components.
+-This helps child components communicate with parent components.
 
+Example:
+---------
+<Child onDelete={deleteUser} />
+
+
+
+Props Drilling
+==============
+-Props drilling means passing props through multiple intermediate components to reach deeply nested child components.
+-It can make component structures difficult to maintain.
+-Context API/REDUX is commonly used to avoid props drilling.
+
+
+
+Props Assignment
+================
+-Create a component(EmployeeCRUD), which holds array of employees.
+-Create 2 Child Components(EmployeeTable , EmployeeAdd)
+-Pass data from EmployeeCRUD to EmployeeTable, EmployeeTable should display the data in table
+-add delete button against every employee(row) to perform delete operation
+-EmployeeAdd component should have form to add a new Employee to the employee list
+-all the logic/functions should be present in Parent Component(EmployeeCRUD)
 
 
 
@@ -1116,7 +1204,7 @@ Note:
 State in Functional Component
 =============================
 -State in functional Component can be maintained using useState() hook.
--useState() is used to declare a state variable in function component.
+-useState() is used to declare a state variable in functional component.
 -The only argument to the useState() Hook is the initial state.
 -It returns a pair of values: 
   a. State value
@@ -1156,19 +1244,30 @@ Assignments:
 
 
 
+
+How to use React-icons
+======================
+1. install react-icons
+   npm install react-icons
+2. import react-icons in component
+   import { FaEdit, FaTrash } from 'react-icons/fa';
+   import { BsFillCalendarDateFill,BsFillClockFill } from 'react-icons/bs';
+3. use the Icons
+   <FaEdit /> 
+   <FaTrash color='red' />
+
+
+
 How to use SweetAlert	
 =====================
 https://sweetalert2.github.io/#examples
 	
 1. npm i sweetalert2	
 2. import Swal from 'sweetalert2'	
-3. on button click call a function, which has the below code	
-	Swal.fire(	
-	  'Good job!',	
-	  'You clicked the button!',	
-	  'success'	
-	)	
-
+3. on button click call a function & write sweetalert code	
+	const openSweetAlert = ()=>{
+		Swal.fire('Good job!','You clicked the button!',	'success'	)	
+	}
 
 
 
@@ -1226,19 +1325,18 @@ How to use react-bootstrap modal
 
 Search
 ======
-1. Install react-js-search from npm
-   npm i react-js-search
-2. Import SearchBar in component
-   import SearchBar from 'react-js-search';
-3. use the below HTML
-   <SearchBar
-        onSearchTextChange={(term, filteredData) => {
-          setFilteredEmployees([...filteredData]);
-        }}
-        onSearchButtonClick={onSearchClick}
-        placeHolderText={"Search here..."}
-        data={employees}
-      />	  
+1. npm i react-select
+2. import Select from "react-select";
+3. 	 <Select
+            placeholder="Search Product..."
+            isClearable
+            value={selectedProduct}
+            onChange={setSelectedProduct}
+            options={productsArr.map(product => ({
+              value: product.id,
+              label: product.title
+            }))}
+          /> 
 	   
 
 
