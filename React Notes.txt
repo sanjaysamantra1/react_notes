@@ -24,6 +24,7 @@ Syllabus
 -Http - Axios
 -Interceptors
 -Routing
+-Context API
 -REDUX  (State Management)
 -Unit Testing (JEST)
 -EsLint
@@ -237,22 +238,22 @@ How Does React Work? (Virtual DOM)
 
 Shadow DOM
 ----------
-- Shadow DOM is a browser technology used in Web Components.
-- It provides encapsulation for HTML structure and CSS styles.
-- Styles inside the Shadow DOM do not affect the outside DOM.
-- Mainly used for component isolation.
+-Shadow DOM is a browser technology used in Web Components.
+-It provides encapsulation for HTML structure and CSS styles.
+-Styles inside the Shadow DOM do not affect the outside DOM.
+-Mainly used for component isolation.
 
 Virtual DOM
 -----------
-- Virtual DOM is a programming concept used by React.
-- It is a lightweight JavaScript representation of the real DOM.
-- React uses the Virtual DOM to optimize UI rendering and improve performance.
-- It helps minimize direct DOM manipulations.
+-Virtual DOM is a programming concept used by React.
+-It is a lightweight JavaScript representation of the real DOM.
+-React uses the Virtual DOM to optimize UI rendering and improve performance.
+-It helps minimize direct DOM manipulations.
 
 Key Difference
 --------------
-- Shadow DOM focuses on encapsulation and component isolation.
-- Virtual DOM focuses on efficient UI updates and rendering performance.
+-Shadow DOM focuses on encapsulation and component isolation.
+-Virtual DOM focuses on efficient UI updates and rendering performance.
 
 
 
@@ -958,6 +959,7 @@ this.forceUpdate();
 
 
 
+
 Props
 =====
 -Props stands for Properties. Props are inputs to components.
@@ -1357,6 +1359,7 @@ Pagination
 Note: For complete code plz refer 'react_programs.txt' file
 
 
+
 Assignment
 ==========
 1. create products.json with list of products. 
@@ -1452,6 +1455,7 @@ SyntheticEvent
 
 
 
+
 Component Communication
 =======================
 ->Parent to Child :  props
@@ -1497,20 +1501,26 @@ Component vs PureComponent
 -Class components that extend the React.PureComponent class are treated as pure components.
 	Ex: class myComp extends React.PureComponent {
 		}
--in Functional components, re-render happens only if the state changes. 
+		
+
 -Every Functional Component is a Pure-Component.
+-PureComponent checks previous State and new State , if nothing changed , it skips re-rendering
+   const [name, setName] = useState("pavan");
+   const updateName = () => {setName("pavan")};
+  
 
 
 
 React Memo Component
 ====================
--Introduced in React v16.6.  This improves performance.
+-Introduced in React v16.6 
+-This improves performance
 -React.memo() is a higher-order component/function.
 -React.memo() can be used for both class & function components.
--React.memo() is used with child components only(the component receiving porps)
+-React.memo() is used with child components only(the component receiving props)
 -When a component is wrapped in React.memo(), React renders the component only if the props those are passed to that component changes.
 -Avoids re-rendering a component when its props are unchanged.
--ex: export default React.memo(MyComponent);
+-ex: export default React.memo(UserCard);
  
 
 
@@ -1670,16 +1680,27 @@ componentWillUnmount()
 
 
 
+
+
+
+
 useEffect()
 ----------
--useEffect serves the same purpose as componentDidMount, componentDidUpdate, and componentWillUnmount.
--useEffect() takes a callBack Function as 1st argument and Dependency arrray as 2nd argument.
- ex: useEffect(()=>{} , []);
--array contains dependencies for useEffect,variables on which useEffect depends on to re-run.
--If 2nd argument is not present, effect runs everytime there is a state change.
--When 2nd argument is there and the array is empty, the effect runs only once.(on component load)
--If 2nd arguement is present, effect will only run if the values in the list change.
--we can have many useEffects() in a component to track changes for diff variables.
+-useEffect() takes a callback function as the 1st argument and a dependency array as the 2nd argument.
+  Example:
+  useEffect(() => {}, []);
+-The dependency array contains values that React watches to determine when the effect should re-run.
+-If the 2nd argument is omitted, the effect runs after every render (including state and prop changes).
+-When the dependency array is empty ([]), the effect runs only once after the initial render (similar to componentDidMount).
+-If dependencies are provided, the effect runs whenever any dependency value changes.
+-We can have multiple useEffect() hooks in the same component to handle different side effects.
+-To perform cleanup (similar to componentWillUnmount), return a function from useEffect().
+  Example:
+  useEffect(() => {
+    const timer = setInterval(() => {}, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
 
 
@@ -1707,16 +1728,16 @@ useLayoutEffect
 
 
 
+
+
 Refs (Template Reference Variable)
 ==================================
--reference variables: help  to use data from one part of a template in another part of the template.
--with reference variables, we can perform tasks such as respond to user input or
- fine tune your application's forms.
+-Refs are mainly used when we need to work with the DOM directly instead of using React state.
 -Refs provide a way to access DOM nodes or React elements.
--used to modify child comp (OR) DOM.
 -Managing focus, text selection , animations.
 -ex: this.myRef1 = React.createRef();  (class component)
      const myRef1 = useRef();          (function component)
+	 const myRef1 = useRef<HTMLInputElement>(null);
      
 
 -React supports another way to set refs called “callback refs”, 
@@ -1732,11 +1753,18 @@ Q. How to display previous State & Current State data in functional Component us
 
 
 
+	State           		 Ref                                   
+----------------------------------------------
+ -Causes re-render     -Does not cause re-render              
+ -Used for UI data     -Used for DOM access or mutable values 
+ -Reactive             -Non-reactive                          
+
+
 
 
 Forms
 =====
--React uses forms to allow users to interact with the web page.(Collect User Data)
+-Forms are used to collect User Data.
 -control the values of more than one input field by adding a name attribute to each element.
 -get the field value by using the 'event.target.value', 
  get the field name by using 'event.target.name'
@@ -1878,15 +1906,15 @@ Fake Online REST API for Testing
 
 
 Create REST API with json-server
---------------------------------
+================================
 https://medium.com/@devmrin/create-a-rest-api-json-server-in-less-than-1-minute-acf286600f03
 
-1.  Install json-server (not necessarily in a react project)
+1.Install json-server (not necessarily inside angular project, run the below command in cmd)
 	npm install -g json-server
-2. create a json file  and add some data (not necessarily in a project)
-    db.json (filename can be anything.json)
-3. start json server
-   json-server --watch db.json --port=4000
+2.create a json file with some data(not necessarily inside an angular project)
+    employees.json (filename can be anything.json) (copy con employees.json)(MAC: touch employees.json)
+3.start json server(go to the folder where json file is present,run the below command in cmd)
+   json-server employees.json
    
    
 http://localhost:3000/employees   
@@ -1943,16 +1971,22 @@ HTTP with axios
   
 
 
-		Axios												fetch()
-===========================================================================
--built-in XSRF protection.						-Fetch does not.
--uses the data property.						-Fetch uses the body property.
--data contains the object.						-Fetch’s body has to be stringified.
--request is ok when status is 200 and statusText is ‘OK’.	Fetch request is ok when response object contains the ok property.
--performs automatic transforms of JSON data.		Fetch is a two-step process when handling JSON data- first, to make the actual request; second, to call the .json() method on the response.
--allows cancelling request and request timeout.	Fetch does not.
--has the ability to intercept HTTP requests.	Fetch, by default, doesn’t 
--has built-in support for download progress.	Fetch does not support upload progress.
+Fetch API 
+=========
+-Built into modern browsers and Node.js (no installation required).
+-Request body usually needs JSON.stringify().
+-Requires response.json() to parse JSON responses.
+-Supports request cancellation via AbortController, but no built-in timeout.
+-No native support for interceptors.
+
+
+Axios
+=====
+-Requires installation (npm install axios).
+-Automatically serializes request data and parses JSON responses.
+-Supports request cancellation and built-in timeout configuration.
+-Supports request and response interceptors.
+-Automatically rejects promises for HTTP errors (4xx/5xx), simplifying error handling                                                       
 
 
 

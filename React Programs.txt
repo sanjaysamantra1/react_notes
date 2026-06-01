@@ -67,6 +67,7 @@ Program-3 : Nested Element using JSX (Babel)
 </html>
 
 
+
 Program-4: use Bootstrap
 ************************
 1. install bootstrap	
@@ -124,17 +125,12 @@ setInterval(tick, 1000);
 Program-8:  Fragments
 *********************
 import React from 'react';
-class Header extends React.Component {
-    render() {
-        return (
-            <React.Fragment>
-                <div>I am an element!</div>
-                <button>I am another element</button>
-            </React.Fragment>
-        );
-    }
+export default function Footer() {
+  return <React.Fragment>
+      <div>I am an element!</div>
+      <button>I am another element</button>
+    </React.Fragment>
 }
-export default Header;
 
 
 
@@ -142,27 +138,21 @@ export default Header;
 
 program-9: Data Binding
 ***********************
-import React from 'react';
-class App extends React.Component {
-   render() {
-		function formatName(user) {
-            return user.firstName + ' ' + user.lastName;
-        }
-        let user = {
-            firstName: 'sanjay',
-            lastName: 'samantra'
-        };
-      return (
-          <div>  
-				<h2>React Version is {React.version}</h2>
-                <h2>{1 + 1}</h2>
-                <h2>my name is- {user.firstName}</h2>
-                <h2>my full name is- {formatName(user)}</h2>
-           </div>
-      );
-   }
+export default function App() {
+  const formatName = (user) => user.firstName + " " + user.lastName;
+  const user = {
+    firstName: "sanjay",
+    lastName: "samantra",
+  };
+  return (
+    <div>
+      <h2>React Version is {React.version}</h2>
+      <h2>{1 + 1}</h2>
+      <h2>my name is- {user.firstName}</h2>
+      <h2>my full name is- {formatName(user)}</h2>
+    </div>
+  );
 }
-export default App;
 
 
 
@@ -182,24 +172,20 @@ program-10 display Image
 
 program-11 : CSS
 ****************
-import React from 'react';
-class App extends React.Component {
-   render() {
-	  var myStyle={
-			color:'blue',
-			backgroundColor:'yellow',
-			border:'5px solid green'
-	  }
-      return (
-         <div>
-            Hello World!!!
-			<p style={{color:'red',fontSize:'42px'}}>this is paragraph</p>
-			<div style={myStyle}>this is a div</div>
-         </div>
-      );
-   }
+export default function App() {
+  const myStyle = {color: "blue", backgroundColor: "yellow", border: "5px solid green"};
+  return (
+    <div>
+      Hello World!!!
+      <p style={{ color: "red", fontSize: "42px" }}>
+        this is paragraph
+      </p>
+      <div style={myStyle}>
+        this is a div
+      </div>
+    </div>
+  );
 }
-export default App;
 
 
 
@@ -247,7 +233,6 @@ export default DashedBox;
 
 Program-13 conditional CSS
 **************************
-import React from 'react';
 export default function Demo1() {
     let num = 5;
     let style1 = { color: 'blue' }
@@ -272,16 +257,14 @@ export default function Demo1() {
    
 program-14 : Conditional Operator
 *********************************
-import React from 'react';
-class Conditional extends React.Component {
-    render() {
-        let x = 4;
-        return (
-            <h1>{x % 2 == 0 ? `${x} is Even` : `${x} is odd`}</h1>
-        )
-    }
+export default function Conditional() {
+  const x = 4;
+  return (
+    <h1>
+      {x % 2 === 0 ? `${x} is Even` : `${x} is Odd`}
+    </h1>
+  );
 }
-export default Conditional;
 
 
 
@@ -289,37 +272,33 @@ export default Conditional;
 
 Program-15 : if else
 *******************
-import React from 'react';
-class Conditional extends React.Component {
-    render() {
-        let x = prompt("enter a number")
-        if(x%2==0){
-            return ( <h2>{x} is even</h2> )
-        }
-        else{
-            return ( <h2>{x} is odd</h2> )
-        }     
-    }
+export default function Conditional() {
+  const x = prompt("Enter a number");
+  if (x % 2 === 0) {
+    return <h2>{x} is even</h2>;
+  } else {
+    return <h2>{x} is odd</h2>;
+  }
 }
-export default Conditional;
 
 
 
 
 Program-16 Logical &&
 **********************
-import React, { Component } from 'react'
-export default class Conditional extends Component {
-    render() {
-       <div>
-		  <h1>Hello!</h1>
-		  {unreadMessages.length > 0 &&
-			<h2>
-			  You have {unreadMessages.length} unread messages.
-			</h2>
-		  }
-      </div>
-    }
+export default function Conditional() {
+  const unreadMessages = ["Hi", "Hello", "Welcome"];
+  return (
+    <div>
+      <h1>Hello!</h1>
+
+      {unreadMessages.length > 0 && (
+        <h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      )}
+    </div>
+  );
 }
 
 
@@ -327,7 +306,6 @@ export default class Conditional extends Component {
 program-17 switch case
 **********************
 import React from "react";
-
 export default function ConditionalDemo2() {
   const dayNumber = new Date().getDay();
   switch (dayNumber) {
@@ -354,28 +332,19 @@ export default function ConditionalDemo2() {
 
 program-18 List of items
 ************************
-import React from 'react';
-class List extends React.Component {
-    render() {
-        let cars = ['tata', 'honda', 'maruti', 'hundai', 'toyota']
-        return (
-            cars.map((car, ind) => {
-                return <li>{ind} - {car}</li>
-            })
-        )
-    }
+export default function App() {
+  const cars = ["tata", "honda", "maruti", "hundai", "toyota"];
+  return (
+    <div>
+      <h2>Car List</h2>
+      <ul>
+        {cars.map((car, index) => (
+          <li key={index}>{car}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
-export default List;
-		(OR)
-import React from 'react';
-class List extends React.Component {
-    render() {
-        let cars = ['tata', 'honda', 'maruti', 'hundai', 'toyota'];
-		let carList = cars.map(car => <h2>{car}</h2>)
-        return <div>{carList}</div>
-    }
-}
-export default List;
 
 
 
@@ -430,52 +399,10 @@ export default function EmployeeList {
 }
 
 
--------------------(OR)--------------------------------------
-import React, { Component } from 'react';
-export default class Demo extends Component {
-    render() {
-        let employees = [
-            { eId: 101, name: "sanjay", sal: 5000 },
-            { eId: 104, name: "deepak", sal: 8000 },
-            { eId: 103, name: "ranjan", sal: 7000 },
-            { eId: 102, name: "manoj", sal: 9000 }
-        ]
-        const empRows = [];
-        for (let emp of employees) {
-            const row = (
-                <tr key={emp.eId}>
-                    <td>{emp.eId}</td>
-                    <td>{emp.name}</td>
-                    <td>{emp.sal}</td>
-                </tr>
-            );
-            empRows.push(row);
-        }
-        return (
-            <table className='table table-bordered table-striped'>
-                <thead>
-                    <tr>
-                        <th>Emp Id</th>
-                        <th>Name</th>
-                        <th>Salary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {empRows}
-                </tbody>
-            </table>
-        );
-    }
-}
-
-
-
-
 
 Program-21 Iterate objects
 **************************
 import React, { Component } from 'react'
-
 export default class Demo1 extends Component {
     render() {
         let employees = [
@@ -512,50 +439,10 @@ export default class Demo1 extends Component {
 
 
 
-		
-Program-22 productList & Product
-********************************
-import React, { Component } from 'react'
-import Product from './product'
-export default class Productlist extends Component {
-    productList = [
-		{ pId: 101, name: "iphone", price: 5000 },
-		{ pId: 102, name: "samsung", price: 4000 },
-		{ pId: 103, name: "oppo", price: 3000 },
-	];
-    render() {
-        return (
-            <div>
-                <h1>This is Product-List Component</h1>
-                {this.productList.map(item => (
-                    <Product product={item} />
-                ))}
-            </div>
-        )
-    }
-}
---------------------------------------
-import React, { Component } from 'react';
-import './product.css';
-export default class Product extends Component {
-    render() {
-        return (
-            <div class='product'>
-                {this.props.product.id} <br />
-                {this.props.product.name} <br />
-                {this.props.product.price} <br />
-                <button class='btn btn-success'>Buy Now</button>
-            </div>
-        )
-    }
-}
 
 
-
-
-
-Task List
-========
+program-22 		Task List
+***************************
 import { useState } from "react";
 export default function TaskList() {
   const [tasks, setTasks] = useState([
@@ -621,6 +508,7 @@ export default class Test extends Component {
     }
 }
 // render() method gets invoked only if there is a change in props/state
+
 
 
 program-24  Force Update
@@ -986,28 +874,6 @@ export default function Demo1() {
 
 Program-35 Show/Hide 
 *********************
-import React from 'react';
-class MyClass extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { flag: true };
-    }
-    toggleFlag = () => {
-        this.setState({ flag: !this.state.flag });
-    }
-    render() {
-        return (
-            <div>
-                {this.state.flag ? <div>Hellllllo</div> : null}
-                <button onClick={this.toggleFlag}>
-                    {this.state.flag ? 'HIDE' : 'SHOW'}
-                </button>
-            </div>
-        );
-    }
-}
-export default MyClass;
---------------------------------------
 import React, { useState } from 'react';
 export default function Demo() {
     const [flag, toggleFlag] = useState(true);
@@ -1026,37 +892,9 @@ export default function Demo() {
 
 
 
-
-
-
 Program-36 Show/Hide Password
 *****************************
-import React, { Component } from 'react';
-export default class Test extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            flag: true,
-        }
-    }
-    togglePassword = () => {
-        this.setState({
-            flag: !this.state.flag
-        })
-    }
-    render() {
-
-        return (
-            <div>
-                <input type={this.state.flag ? 'password' : 'text'} />
-                <button onClick={this.togglePassword}>{this.state.flag ? 'Show password' : 'Hide password'}</button>
-            </div>
-        )
-    }
-}
-------------------------------------------------
 import React, { useState } from "react";
-
 export default function Demo() {
   const [flag, toggleFlag] = useState(true);
   const toggle = function () {
@@ -1151,38 +989,6 @@ export default function ThemeDemo() {
 
 Program-39 Addition 
 *******************
-import React from 'react';
-
-class Addition extends React.Component {
-    state = {
-        a: 0,
-        b: 0,
-        total: 0
-    }
-    changeFirst = (e) => {
-        this.setState({ a: parseInt(e.target.value) })
-    }
-    changeSecond = (e) => {
-        this.setState({ b: parseInt(e.target.value) })
-    }
-    addition = () => {
-        this.setState({ total: this.state.a + this.state.b })
-    }
-    render() {
-        return (
-            <div>
-                Addition Works!!!
-                <input onKeyUp={this.changeFirst}></input>
-                <input onKeyUp={this.changeSecond}></input>
-
-                <h2>Addition is {this.state.total}</h2>
-                <button onClick={this.addition}>Addddddd</button>
-            </div>
-        );
-    }
-}
-export default Addition;
-----------------------------------------------------
 import React, { useState } from 'react'
 export default function Demo() {
     const [num1, setnum1] = useState(0);
@@ -1208,6 +1014,8 @@ export default function Demo() {
         </div>
     );
 }
+
+
 
 
 Program-40 : Folder Explorer
@@ -1241,8 +1049,8 @@ export default function Folder({ folderInfo }) {
 }
 
 
-
-
+Program   Traffic Light
+************************
 import React, { useEffect, useState } from 'react';
 import './TrafficLight.css';
 
@@ -2197,22 +2005,18 @@ export default class Test extends Component {
 --------------------------------------------------
 import React, { useRef } from "react";
 export default function Addition() {
-  const inputRef1 = useRef();
-  const inputRef2 = useRef();
-  
-  const add = () => {
-    const val1 = +inputRef1.current.value;
-    const val2 = +inputRef2.current.value;
-    alert(val1 + val2);
+  const inputRef1 = useRef<HTMLInputElement>(null)
+  const inputRef2 = useRef<HTMLInputElement>(null)
+  const addition = () => {
+    const val1 = +(inputRef1.current?.value || 0);
+    const val2 = +(inputRef2.current?.value || 0);
+    console.log(`Addition of ${val1} and ${val2} is ${val1 + val2}`);
   };
-
-  return (
-    <div>
+  return <div>
       num1: <input ref={inputRef1} />
       num2: <input ref={inputRef2} />
-      <button onClick={add}>Add</button>
+      <button onClick={addition}>Add</button>
     </div>
-  );
 }
 
 
@@ -2462,92 +2266,146 @@ export default MyForm;
 
 Program-71  form data in an object
 *********************************
-import React, { useState } from "react";
+import { useState } from "react";
 
-export default function Form1() {
-  const [user, setUser] = useState({ fname: "sachin", lname: "tendulkar" });
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log(user);
+export default function FormDemo1() {
+  const defaultUserData = {
+    firstName: "Sanjay",
+    lastName: "",
+    email: "",
+    salary: 0,
+    phone: 0,
   };
+  const [user, setUser] = useState(defaultUserData);
 
+  const changeHandler = (e:any)=>{
+    setUser({...user , [e.target.name]:e.target.value})
+  }
+  const submitMyForm = (e:any)=>{
+    e.preventDefault();
+    console.log('Form Submitted', user)
+  }
+  const resetMyForm = ()=>{
+    setUser({...defaultUserData});
+  }
   return (
     <>
-      <form onSubmit={submitHandler}>
-        First Name:
-        <input
-          name="fname"
-          value={user.fname}
-          onChange={(e) => setUser({ ...user, fname: e.target.value })}
-        />
-        Last Name:
-        <input
-          name="lname"
-          value={user.lname}
-          onChange={(e) => setUser({ ...user, lname: e.target.value })}
-        />
-        <br />
-        <br />
-        state data: {user.fname + " " + user.lname}
-        <button>submit</button>
-      </form>
+      <div className="col-sm-4 offset-4 border border-3 rounded-3 p-3">
+        <h3>Form</h3>
+
+        <form onSubmit={submitMyForm} onReset={resetMyForm}>
+          <p>
+            FirstName: <input name='firstName' value={user.firstName} onChange={changeHandler} />
+          </p>
+          <p>
+            lastName: <input name='lastName' value={user.lastName} onChange={changeHandler} />
+          </p>
+          <p>
+            Email: <input name='email' value={user.email} onChange={changeHandler} />
+          </p>
+          <p>
+            Salary: <input name='salary' value={user.salary} onChange={changeHandler} />
+          </p>
+          <p>
+            Phone: <input name='phone' value={user.phone} onChange={changeHandler} />
+          </p>
+
+          <input type="reset" value="Reset" />
+          <input type="submit" value="Submit" />
+        </form>
+
+      </div>
+    <pre>{JSON.stringify(user)}</pre>
     </>
   );
 }
 
 
+
 program-72  Form Validation while typing
 *****************************************
-import React, { useState } from "react";
+import { useState } from "react";
 
-export default function Demo() {
-  const [fname, setFname] = useState("sachin");
-  const [lname, setLname] = useState("tendulkar");
-  const [fNameErrorMsg, setfNameErrorMsg] = useState("");
-  const [lNameErrorMsg, setlNameErrorMsg] = useState("");
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    alert(fname + " " + lname);
+export default function FormDemo1() {
+  const defaultUserData = {
+    firstName: "Sanjay",
+    lastName: "samantr",
+    email: "",
+    salary: "",
+    phone: "",
   };
 
-  const changeHandler = (e) => {
-    const inputField = e.target.name;
-    if (inputField == "fname") {
-      setFname(e.target.value);
-      if (!e.target.value) {
-        setfNameErrorMsg("firstname should not be empty");
-      } else if (e.target.value.length < 5) {
-        setfNameErrorMsg("firstname should have atleast 5 chars");
-      } else {
-        setfNameErrorMsg("");
-      }
-    } else if (inputField == "lname") {
-      setLname(e.target.value);
-      if (!e.target.value) {
-        setlNameErrorMsg("lastname should not be empty");
-      } else if (e.target.value.length < 5) {
-        setlNameErrorMsg("lastname should have atleast 5 chars");
-      } else {
-        setlNameErrorMsg("");
-      }
-    } else {
-    }
+  const defaultErrors = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    salary: "",
+    phone: "",
+  };
+
+  const [user, setUser] = useState(defaultUserData);
+  const [errors, setErrors] = useState(defaultErrors);
+
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const fieldName = e.target.name;
+    const fieldValue = e.target.value;
+
+    setUser({ ...user, [fieldName]: fieldValue });
+
+    setErrors({
+      ...errors,
+      [fieldName]:fieldValue.trim() === "" ? `${fieldName} is required`: "",
+    });
+  };
+
+  const submitMyForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log("Form Submitted", user);
+  };
+
+  const resetMyForm = () => {
+    setUser(defaultUserData);
+    setErrors(defaultErrors);
   };
 
   return (
     <>
-      <form onSubmit={submitHandler}>
-        First Name:
-        <input name="fname" value={fname} onChange={changeHandler} />
-        <span class="text-danger">{fNameErrorMsg}</span> <br/>
-        Last Name:
-        <input name="lname" value={lname} onChange={changeHandler} />
-        <span class="text-danger">{lNameErrorMsg}</span>
-        <br /><br />
-        <button>submit</button>
-      </form>
+      <div className="col-sm-4 offset-4 border border-3 rounded-3 p-3">
+        <h3>Form</h3>
+
+        <form onSubmit={submitMyForm} onReset={resetMyForm}>
+          <p>
+            FirstName: <input name="firstName" value={user.firstName} onChange={changeHandler} />
+            <span className="text-danger">{errors.firstName}</span>
+          </p>
+
+          <p>
+            LastName: <input name="lastName" value={user.lastName} onChange={changeHandler} />
+            <span className="text-danger">{errors.lastName}</span>
+          </p>
+
+          <p>
+            Email: <input name="email" type="email" value={user.email} onChange={changeHandler} />
+            <span className="text-danger">{errors.email}</span>
+          </p>
+
+          <p>
+            Salary: <input name="salary" value={user.salary} onChange={changeHandler} />
+            <span className="text-danger">{errors.salary}</span>
+          </p>
+
+          <p>
+            Phone: <input name="phone" value={user.phone} onChange={changeHandler} />
+            <span className="text-danger">{errors.phone}</span>
+          </p>
+
+          <input type="reset" value="Reset" />
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+
+      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <pre>{JSON.stringify(errors, null, 2)}</pre>
     </>
   );
 }
