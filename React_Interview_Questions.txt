@@ -7,10 +7,8 @@
 
 
 2. Explain Reconciliation in React.
--Reconciliation is React's process of comparing old and new Virtual DOM trees.
--It uses the Diffing Algorithm to detect changes.
--React updates only the affected nodes in the Real DOM.
--This minimizes DOM operations and improves performance.
+Diffing = The algorithm React uses to compare old and new Virtual DOM trees and identify changes
+Reconciliation = Finding differences + updating only the changed parts of the Real DOM.
 
 
 3. Difference between Props and State.
@@ -51,12 +49,10 @@ useLayoutEffect:
 Controlled Components:
 -Form data is managed by React state.
 -Input value is controlled using value and onChange.
--React is the single source of truth.
 
 Uncontrolled Components:
 -Form data is managed by the DOM.
 -Access values using refs.
--Useful for simple forms or integrating with non-React code.
 
 
 
@@ -158,7 +154,7 @@ useRef:
 
 19. What are Pure Components?
 -PureComponent performs shallow comparison of props and state.
--It skips re-rendering when there are no changes.
+-It skips re-rendering when there are no changes in the state.
 -Used as a performance optimization technique.
 
 
@@ -359,3 +355,484 @@ useRef:
 -Browser Performance tab.
 -Lighthouse.
 -Analyze unnecessary re-renders and bundle size.
+
+
+
+
+
+
+
+
+
+
+
+
+
+React MCQs
+===========
+
+1. Why does this log old state?
+
+const [count, setCount] = useState(0);
+const handleClick = () => {
+  setCount(count + 1);
+  console.log(count);
+};
+
+Answer:
+-Logs old value (0).
+-State updates are asynchronous.
+-React updates state on the next render.
+
+
+
+2. What is the output?
+const [count, setCount] = useState(0);
+const handleClick = () => {
+  setCount(count + 1);
+  setCount(count + 1);
+  setCount(count + 1);
+};
+
+
+Answer:
+-Result = 1
+-Both updates use the same stale value=0.
+
+Correct:
+setCount(prev => prev + 1);
+setCount(prev => prev + 1);
+setCount(prev => prev + 1);
+Result = 3
+
+
+
+3. Infinite Loop
+
+useEffect(() => {
+  setCount(count + 1);
+}, [count]);
+
+Answer:
+-Infinite render loop.
+-Updating count triggers effect again.
+
+
+
+4. Why does this useEffect run every render?
+
+const obj = { name: "John" };
+useEffect(() => {
+  console.log("Run");
+}, [obj]);
+
+Answer:
+-New object reference created on every render.
+-React compares references, not values.
+
+
+
+5. React.memo Not Working
+
+const Child = React.memo(({ user }) => {
+  return <h1>{user.name}</h1>;
+});
+<Child user={{ name: "John" }} />
+
+Answer:
+-New object reference on every render.
+-React.memo performs shallow comparison.
+
+
+
+6. JavaScript Trap
+console.log([] == false);
+console.log([] === false);
+
+Answer:
+true
+false
+
+
+
+
+7. Why is this component re-rendering?
+
+const handleClick = () => {};
+<Child onClick={handleClick} />
+
+Answer:
+-New function reference on every render.
+-Use useCallback when needed.
+
+
+
+8. What is wrong with this key?
+users.map((user, index) =>
+  <User key={index} />
+)
+
+Answer:
+-Index keys break during:
+  -Sorting
+  -Filtering
+  -Deletion
+  -Reordering
+Use unique IDs.
+
+
+
+9. Why doesn't UI update?
+const [user, setUser] = useState({
+  name: "John"
+});
+user.name = "David";
+setUser(user);
+
+
+Answer:
+-State mutation.
+-Reference remains unchanged.
+-React may skip re-render.
+
+
+
+10. What is the output?
+function App() {
+  console.log("Parent");
+  return <Child />;
+}
+function Child() {
+  console.log("Child");
+  return <h1>Hello</h1>;
+}
+
+Answer:
+Parent
+Child
+Parent re-render ⇒ Child also re-renders.
+
+
+
+11. Stale Closure Problem
+const [count, setCount] = useState(0);
+useEffect(() => {
+  const id = setInterval(() => {
+    console.log(count);
+  }, 1000);
+
+  return () => clearInterval(id);
+}, []);
+
+
+Answer:
+-Always logs initial value.
+-Stale closure issue.
+
+
+
+12. Controlled Component
+const [value, setValue] = useState("");
+<input
+  value={value}
+  onChange={(e) => setValue(e.target.value)}
+/>
+
+Answer:
+-Controlled Component.
+-React state is source of truth.
+
+
+
+13. Reference Mutation
+const arr = [1, 2, 3];
+const newArr = arr;
+newArr.push(4);
+console.log(arr);
+
+Answer: [1,2,3,4]
+
+
+
+
+14. Why useCallback?
+const handleSave = useCallback(() => {
+  saveUser();
+}, []);
+
+Answer:
+-Preserves function reference.
+-Useful for memoized child components.
+
+
+
+15. Large Table Performance
+Scenario:
+-Rendering 10,000 rows is slow.
+
+Answer:
+-Debounce search.
+-Virtualization.
+-Memoization.
+-Server-side filtering.
+
+
+
+16. What is the output?
+const [count, setCount] = useState(0);
+useEffect(() => {
+  console.log(count);
+}, []);
+
+setCount(5);
+
+Answer:
+-Logs 0.
+-Effect uses values from render in which it was created.
+
+
+
+17. Why Does This Run Twice?
+useEffect(() => {
+  console.log("API Call");
+}, []);
+
+Answer:
+-React 18 StrictMode runs effects twice in development.
+-Production runs once.
+
+
+
+18. What is Wrong?
+const [user, setUser] = useState({
+  name: "John"
+});
+
+setUser({
+  name: "John"
+});
+
+
+Answer:
+-Causes re-render.
+-New object reference.
+
+
+
+19. Why Does useEffect Keep Running?
+const fetchUsers = () => {};
+useEffect(() => {
+  fetchUsers();
+}, [fetchUsers]);
+
+Answer:
+-Function recreated on every render.
+-Use useCallback.
+
+
+
+20. What is the Output?
+setCount(c => c + 1);
+setCount(c => c + 1);
+setCount(c => c + 1);
+
+Answer:
+-Result = 3
+-Functional updates use latest state.
+
+
+
+21. Why Doesn't React.memo Help?
+
+const Child = React.memo(({ items }) => {
+  return <div />;
+});
+<Child items={[1,2,3]} />
+
+Answer:
+-Array recreated every render.
+-Reference changes.
+
+
+
+22. What is the Output?
+useEffect(() => {
+  console.log("Effect");
+});
+console.log("Render");
+
+
+Answer:
+Render
+Effect
+
+
+
+
+23. Dependency Array Trap
+const user = {
+  id: 1
+};
+useEffect(() => {
+  loadUser();
+}, [user]);
+
+Answer:
+-Effect runs every render.
+-Object reference changes.
+
+
+
+24. Why Doesn't Child Update?
+const [items, setItems] = useState([]);
+items.push("A");
+setItems(items);
+
+Answer:
+-State mutation.
+-Reference unchanged.
+
+
+25. Parent vs Child Rendering
+function Parent() {
+  console.log("Parent");
+  return <Child />;
+}
+
+function Child() {
+  console.log("Child");
+  return null;
+}
+
+
+Answer:
+Parent
+Child
+
+
+Every Parent render triggers Child render.
+
+
+26. Which is Better?
+const total = useMemo(
+  () => calculateTotal(items),
+  [items]
+);
+
+vs
+const total = calculateTotal(items);
+
+
+Answer:
+-useMemo only for expensive calculations.
+-Overusing useMemo can hurt performance.
+
+
+
+27. What is Wrong?
+const [name, setName] = useState("");
+<input
+  defaultValue={name}
+  onChange={(e) => setName(e.target.value)}
+/>
+
+Answer:
+-Mixed controlled/uncontrolled behavior.
+-Should use value.
+
+
+
+28. Context API Trap
+<UserContext.Provider value={{ user }}>
+
+Answer:
+-New object every render.
+-All consumers re-render.
+-Memoize provider value.
+
+
+
+29. Memory Leak
+useEffect(() => {
+  window.addEventListener("resize", handler);
+}, []);
+
+Answer:
+-Missing cleanup.
+-Remove listener on unmount.
+
+
+
+30. Why is API Called Multiple Times?
+useEffect(() => {
+  fetchData();
+  setLoading(false);
+}, [loading]);
+
+Answer:
+-Updating loading triggers effect again.
+-Potential loop.
+
+
+
+31. What is the Output?
+const [user, setUser] = useState({
+  name: "John"
+});
+console.log(user === {
+  name: "John"
+});
+
+
+Answer:
+-false
+-Objects are compared by reference.
+
+
+
+32. Context/Redux Performance Scenario
+Problem:
+-Updating theme re-renders entire app.
+
+Answer:
+-Split contexts.
+-Memoize provider values.
+-Avoid frequently changing global state.
+
+
+
+33. Rendering 50,000 Records
+Answer:
+-Virtualization.
+-Pagination.
+-Memoization.
+-Server-side filtering.
+
+
+
+34. Hidden Stale Closure
+useEffect(() => {
+  fetchUsers();
+}, []);
+
+
+Answer:
+-Looks fine.
+-Problem if fetchUsers depends on props/state.
+-Possible stale closure.
+
+
+
+35. Dashboard Performance Design
+Scenario:
+-20 widgets
+-Live updates every second
+
+Answer:
+-React.memo
+-Virtualization
+-Debouncing
+-WebSockets
+-Context optimization
+-Lazy loading
+
