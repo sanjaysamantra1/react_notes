@@ -352,7 +352,7 @@ export default function App() {
 Program:19 Countries DropDown & Datalist
 **************************************
 export default function ListDemo2() {
-	const countries = ["Afghanistan","Albania","Algeria"]
+  const countries = ['india' , 'srilanka' , 'Japan', 'singapore' , 'canada']
   return <>
     <h2>Countries Dropdown</h2>
     Dropdown: 
@@ -490,7 +490,7 @@ export default function TaskList() {
 
 
 program-23 problem with Local Variables declared inside render()
-*********************************************************
+****************************************************************
 import React, { Component } from 'react'
 export default class Test extends Component {
     render() {
@@ -536,33 +536,36 @@ export default class Conditional extends Component {
 
 program-25: Props
 ******************
-import React from 'react';
-import Child from '../child/child';
-class Parent extends React.Component {
-    render() {
-        let user = { name: 'sachin', age: 35 }
-        return (
-            <div>
-                This is Parent Component
-                <Child name={user.name} age={user.age} />
-            </div>
-        );
-    }
+import ProductCard from "./ProductCard";
+function ProductList() {
+  const products = [
+   { id: 1, name: "iPhone 16", price: 79999 },
+   { id: 2, name: "Samsung Galaxy S25", price: 74999 }
+  ];
+  return (
+    <div>
+      {products.map(product => (
+        <ProductCard
+          key={product.id}
+          name={product.name}
+          price={product.price}
+        />
+      ))}
+    </div>
+  );
 }
-export default Parent;
+
+export default ProductList;
 -------------------
-import React from 'react';
-class Child extends React.Component {
-    render() {
-        return (
-            <div>
-                <h2>This is child component</h2>
-                <h2>{this.props.name}--{this.props.age}</h2>
-            </div>
-        );
-    }
+function ProductCard(props) {
+  return (
+    <div className="card">
+      <h3>{props.name}</h3>
+      <p>Price: ₹{props.price}</p>
+    </div>
+  );
 }
-export default Child;
+export default ProductCard;
 
 
 
@@ -570,21 +573,13 @@ export default Child;
 
 Program-26  Props De-structuring
 ******************************
-import React, { Component } from 'react'
-
-export default class Product extends Component {
-    render() {
-        let { pId, name, price } = this.props.prodObj;
-        return (
-            <div style={{ border: '2px solid red' }}>
-                {pId} <br />
-                {name} <br />
-                {price} <br />
-                <button class='btn btn-success'>Buy Now</button>
-                <h2>the text from my parent comp is {this.props.children}</h2>
-            </div>
-        )
-    }
+function ProductCard({ name, price }) {
+  return (
+    <div>
+      <h3>{name}</h3>
+      <p>₹{price}</p>
+    </div>
+  );
 }
 
 
@@ -594,24 +589,16 @@ export default class Product extends Component {
 
 Program-27 propTypes
 *******************
-import React from 'react';
-import { PropTypes } from 'prop-types';
-class Student extends React.Component {
-  
-  render() {
-    return (
-      <div>
-        <p>Student Name: {this.props.name}</p>
-        <p>Age: {this.props.age}</p>
-      </div>
-    );
-  }
+import PropTypes from "prop-types";
+function ProductCard({ name, price }) {
+  return <h3>{name} - ₹{price}</h3>;
 }
-Student.propTypes = {
-  name: PropTypes.string.isRequired,
-  age: PropTypes.number
+ProductCard.propTypes = {
+  name: PropTypes.string,
+  price: PropTypes.number
 };
-export default Student;
+
+export default ProductCard;
 
 
 
@@ -763,89 +750,45 @@ class Counter extends React.Component {
 
 Program-32  asynchronous state
 *******************************
-import React, { Component } from "react";
-export default class Counter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: 0,
-    };
-  }
-  incrementCountFiveTimes() {
-    this.increment();
-    this.increment();
-    this.increment();
-    this.increment();
-    this.increment();
-  }
-  increment() {
-    this.setState({ count: this.state.count + 1 });
-    console.log(this.state.count);
-  }
-  render() {
-    return (
-      <h2>
-        counter works
-        <div>Count - {this.state.count}</div>
-        <button className="btn btn-primary m-2" onClick={this.increment}>
-          Increment
-        </button>
-        <button className="btn btn-primary m-2" onClick={this.incrementCountFiveTimes}>
-          Increment
-        </button>
-      </h2>
-    );
-  }
+import { useState } from "react";
+export default function Counter() {
+  const [count, setCount] = useState(0);
+  const increment = () => {
+    setCount(count + 1);
+    console.log(count);
+  };
+  /*const increment = () => {
+    setCount(prevCount => prevCount + 1);
+  };*/
+  const incrementCountFiveTimes = () => {
+    increment();
+    increment();
+    increment();
+    increment();
+    increment();
+  };
+  return (
+    <h2>
+      Counter Works
+      <div>Count - {count}</div>
+      <button className="btn btn-primary m-2" onClick={increment}>
+        Increment
+      </button>
+      <button
+        className="btn btn-primary m-2"
+        onClick={incrementCountFiveTimes}
+      >
+        Increment 5 Times
+      </button>
+    </h2>
+  );
 }
+Note: All five calls use the same count value from the current render
 
 
 
-
-
-Program-33 setState() in Detail-2
-*********************************
-//React may group multiple setState calls in to a single update for better performance
-//when we want to update the state based on the previous State,
-//we need to pass a function as an arguement to setState() instead passing an object
-
-import React from 'react';
-class Counter extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count: 0
-        }
-    }
-    increment() {
-        this.setState((prevState) => ({
-            count: prevState.count + 1
-        }))
-    }
-    incrementFive() {
-        this.increment();
-        this.increment();
-        this.increment();
-        this.increment();
-        this.increment();
-    }
-    render() {
-        return (
-            <h2>
-                counter works
-                <div>Count - {this.state.count}</div>
-                <button onClick={() => this.incrementFive()}>Increment</button>
-            </h2>
-        );
-    }
-}
-export default Counter;
-
-
-
-
-
-Program -34 Batch update
-***********************
+Program -33 Batch update
+*************************
 import React, { useState } from "react";
 
 export default function Demo1() {
@@ -868,11 +811,11 @@ export default function Demo1() {
     </div>
   );
 }
+Note: each update receives the latest state value via prevCount
 
 
 
-
-Program-35 Show/Hide 
+Program-34 Show/Hide 
 *********************
 import React, { useState } from 'react';
 export default function Demo() {
@@ -892,7 +835,7 @@ export default function Demo() {
 
 
 
-Program-36 Show/Hide Password
+Program-35 Show/Hide Password
 *****************************
 import React, { useState } from "react";
 export default function Demo() {
@@ -914,7 +857,7 @@ export default function Demo() {
 
 
 
-Program:37 Remaining Character
+Program:36 Remaining Character
 ******************************
 export default function RemainingChar() {
   const [remaining, setRemaining] = useState(100);
@@ -933,7 +876,7 @@ export default function RemainingChar() {
 
 
 
-Program:38 Selected value from dropdown
+Program:37 Selected value from dropdown
 ***************************************
 import React, { useState } from 'react'
 export default function StateDropDown() {
@@ -954,7 +897,7 @@ export default function StateDropDown() {
 
 
 
-Program:39 Dark/Light Mode
+Program:38 Dark/Light Mode
 **************************
 import React, { useEffect, useState } from 'react';
 import './ThemeDemo.css';
@@ -987,7 +930,7 @@ export default function ThemeDemo() {
 
 
 
-Program-39 Addition 
+Program-38 Addition 
 *******************
 import React, { useState } from 'react'
 export default function Demo() {
@@ -1018,7 +961,7 @@ export default function Demo() {
 
 
 
-Program-40 : Folder Explorer
+Program-39 : Folder Explorer
 ****************************
 import React, { useState } from "react";
 export default function Folder({ folderInfo }) {
@@ -1049,7 +992,7 @@ export default function Folder({ folderInfo }) {
 }
 
 
-Program   Traffic Light
+Program-40   Traffic Light
 ************************
 import React, { useEffect, useState } from 'react';
 import './TrafficLight.css';
@@ -1115,7 +1058,7 @@ export default function TrafficLight() {
 
 
 
-Program: 41 Search
+Program:41 Search
 ******************
 import React, { useState } from "react";
 import SearchBar from "react-js-search";
@@ -1183,6 +1126,8 @@ export default function EmployeeList() {
     </>
   );
 }
+
+
 
 
 Program-42   Pagination 
@@ -1294,8 +1239,8 @@ ProductsPagination.css
 
 
 
-react-Select
-============
+Program- react-Select For Search
+***********************************
 import { useState } from "react";
 import Select from "react-select";
 import productsArr from "./product_data.ts";
@@ -1403,20 +1348,20 @@ export default function ToDoCRUD() {
 
 Program-44 Event with parameter
 ***********************************
-import React, { Component } from 'react';
-export default class EventDemo1 extends Component {
-    f1 = () => {
-        console.log('I am F1...')
-    }
-    add = (a, b) => {
-        console.log(`Addition of ${a} & ${b} is ${a + b}`)
-    }
-    render() {
-        return <>
-            <button onClick={this.f1} className='btn btn-primary'>btn-1</button>
-            <button onClick={() => { this.add(2, 3) }} className='btn btn-secondary m-1'>Add</button>
-        </>
-    }
+export default function EventDemo1() {
+  const f1 = () => {
+    console.log("I am F1...");
+  };
+  const add = (a, b) => {
+    console.log(`Addition of ${a} & ${b} is ${a + b}`);
+  };
+  return (
+    <>
+      <button onClick={f1} className="btn btn-primary">btn-1</button>
+      <button onClick={() => add(2, 3)}
+        className="btn btn-secondary m-1">Add</button>
+    </>
+  );
 }
 
 
@@ -1925,6 +1870,44 @@ export default function Demo() {
 
 
 
+Program: UserDetails using UseEffect() 
+**************************************
+import axios from "axios";
+import { useEffect, useState } from "react";
+
+export default function UserDetails() {
+  const [userId, setUserId] = useState(1);
+  const [user, setUser] = useState(null);
+  const fetUserDetails = async()=>{
+    let response = await axios.get(`https://jsonplaceholder.typicode.com/users/${userId}`);
+    setUser(response.data);
+  }
+  useEffect(()=>{
+    console.log('Use Effect Called....')
+    fetUserDetails();
+  },[userId]); 
+  return (
+    <>
+      <h3 className="text-center">User Details For User: {userId}</h3>
+      <select value={userId} onChange={(e)=>setUserId(+e.target.value)}>
+        <option value={1}>User 1</option>
+        <option value={2}>User 2</option>
+        <option value={3}>User 3</option>
+      </select>
+      <div className="card h-100">
+        <div className="card-body">
+          <p>{user?.id}</p>
+          <p>{user?.name}</p>
+          <p>{user?.phone}</p>
+          <p>{user?.email}</p>
+          <p>{user?.address?.city}</p>
+        </div>
+      </div>
+    </>
+  );
+}
+
+
 
 program: 62  componentWillUnmount in functional component
 *****************************************************
@@ -1957,19 +1940,20 @@ export default function Demo3() {
 
 Program:63 How to get prev state and props 
 ******************************************
-import { useEffect, useRef, useState } from "react";
-export default function Counter() {
-  const [count, setCount] = useState(0);
-    const myRef = useRef();    
+export default function CounterDemo3() {
+    let [counter, updateCounter] = useState(0);
+    let prevValue = useRef(0);
+
+    let increment = () => {
+        updateCounter(counter + 1);
+    }
     useEffect(() => {
-      myRef.val = count;
-    });
-    return (
-      <h1>
-        Now: {count}, before: {myRef.val}
-        <button onClick={()=>{setCount(count+1)}}>Increment</button>
-      </h1>
-    );
+        prevValue.current = counter;
+    }, [counter]);
+    return <>
+        <p>Current value - {counter} , previous Value is-{prevValue.current}</p>
+        <button onClick={increment}>Increment</button>
+    </>
 }
 
 
@@ -2101,32 +2085,10 @@ export default FancyButton;
 
 
 
-Program : display previous State & Current State
-************************************************
-export default function CounterDemo3() {
-    let [counter, updateCounter] = useState(0);
-    let prevValue = useRef(0);
-
-    let increment = () => {
-        updateCounter(counter + 1);
-    }
-    useEffect(() => {
-        prevValue.current = counter;
-    }, [counter]);
-    return <>
-        <p>Current value - {counter} , previous Value is-{prevValue.current}</p>
-        <button onClick={increment}>Increment</button>
-    </>
-}
-
-
-
-
 
 
 Program : Search Filter with Deferred Value  (useState, useDeferredValue, useMemo)
 ============================================
-// App.js
 import { useState, useDeferredValue, useMemo } from "react";
 const ITEMS = Array.from({ length: 10000 }, (_, i) => `Item ${i + 1}`);
 
@@ -2216,52 +2178,6 @@ export default function FormDemo2() {
     </form>
 }
 
-
-Program-70 Multiple input fields
-********************************
-import React from 'react';
-
-class MyForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            age: null,
-        };
-    }
-    mySubmitHandler = (event) => {
-        event.preventDefault();
-        alert("You are submitting " + this.state.username + " " + this.state.age);
-    }
-    myChangeHandler = (event) => {
-        let nam = event.target.name;
-        let val = event.target.value;
-        console.log(nam, val)
-        this.setState({ [nam]: val });
-    }
-    render() {
-        return (
-            <form onSubmit={this.mySubmitHandler}>
-                <h1>Hello {this.state.username} {this.state.age}</h1>
-                <p>Enter your name:</p>
-                <input
-                    type='text'
-                    name='username'
-                    onChange={this.myChangeHandler}
-                />
-                <p>Enter your age:</p>
-                <input
-                    type='text'
-                    name='age'
-                    onChange={this.myChangeHandler}
-                />
-                <input type='submit' />
-                <input type='reset' value='clear' />
-            </form>
-        );
-    }
-}
-export default MyForm;
 
 
 Program-71  form data in an object
@@ -2414,8 +2330,8 @@ export default function FormDemo1() {
 
 
 
-Controlled Form Example
-*****************************
+Program - Controlled Form Example
+********************************
 import React, { useState } from 'react'
 export default function FormDemo2() {
     const defaultFormValues = {
@@ -2654,323 +2570,12 @@ export default function FormDemo3() {
 
 
 
-program-73  Form Validation while submitting
-*********************************************
-import React from 'react';
-class MyForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      age: null,
-    };
-  }
-  mySubmitHandler = (event) => {
-    event.preventDefault();
-    let age = this.state.age;
-    if (!Number(age)) {
-      alert("Your age must be a number");
-    }
-  }
-  myChangeHandler = (event) => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    this.setState({[nam]: val});
-  }
-  render() {
-    return (
-      <form onSubmit={this.mySubmitHandler}>
-      <h1>Hello {this.state.username} {this.state.age}</h1>
-      <p>Enter your name:</p>
-      <input
-        type='text'
-        name='username'
-        onChange={this.myChangeHandler}
-      />
-      <p>Enter your age:</p>
-      <input
-        type='text'
-        name='age'
-        onChange={this.myChangeHandler}
-      />
-      <br/>
-      <br/>
-      <input type='submit' />
-      </form>
-    );
-  }
-}
-export default MyForm;
-
-
-
-Program-74 Error Message While Typing
-**************************************
-import React from 'react';
-class MyForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            age: null,
-            nameErrorMsg: '',
-            ageErrorMsg: '',
-        };
-    }
-    myChangeHandler = (event) => {
-        let nam = event.target.name;
-        let val = event.target.value;
-        let err1= '';
-        let err2 = '';
-        if (nam === "username") {
-            if (val.length < 5) {
-                err1 = <strong>Your name must contain 5 chars</strong>;
-            }
-        }
-        if (nam === "age") {
-            if (val !== "" && !Number(val)) {
-                err2 = <strong>Your age must be a number</strong>;
-            }
-        }
-        this.setState({ nameErrorMsg: err1 });
-        this.setState({ ageErrorMsg: err2 });
-        this.setState({ [nam]: val });
-    }
-    render() {
-        return (
-            <form>
-                <h1>Hello {this.state.username} {this.state.age}</h1>
-                <p>Enter your name:</p>
-                <input
-                    type='text'
-                    name='username'
-                    onChange={this.myChangeHandler}
-                />
-                {this.state.nameErrorMsg}
-
-                <p>Enter your age:</p>
-                <input
-                    type='text'
-                    name='age'
-                    onChange={this.myChangeHandler}
-                />
-                {this.state.ageErrorMsg}
-            </form>
-        );
-    }
-}
-
-export default MyForm;
-
-
-
-Program-75  Error Message onSubmit
-*********************************
-import React from 'react';
-
-class MyForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            age: null,
-            nameErrorMsg: '',
-            ageErrorMsg: '',
-        };
-    }
-    myChangeHandler = (event) => {
-        let nam = event.target.name;
-        let val = event.target.value;
-        this.setState({ [nam]: val });
-    }
-    mySubmitHandler = (event) => {
-        event.preventDefault();
-
-        let err1 = '';
-        let err2 = '';
-
-        if (this.state.username.length < 5) {
-            err1 = <strong>Your name mustcontain 5 chars</strong>;
-        }
-        if (this.state.age !== "" && !Number(this.state.age)) {
-            err2 = <strong>Your age must be a number</strong>;
-        }
-        this.setState({ nameErrorMsg: err1, ageErrorMsg: err2 });
-        //alert("You are submitting " + this.state.username + " " + this.state.age);
-    }
-    render() {
-        return (
-            <form onSubmit={this.mySubmitHandler}>
-                <h1>Hello {this.state.username} {this.state.age}</h1>
-                <p>Enter your name:</p>
-                <input
-                    type='text'
-                    name='username'
-                    onChange={this.myChangeHandler}
-                />
-                {this.state.nameErrorMsg}
-
-                <p>Enter your age:</p>
-                <input
-                    type='text'
-                    name='age'
-                    onChange={this.myChangeHandler}
-                />
-                {this.state.ageErrorMsg}
-
-                <input type="submit" />
-            </form>
-        );
-    }
-}
-export default MyForm;
-
-
-
-program-76   Load a Form With Default Values
-********************************************
-import React from 'react';
-
-class MyForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: 'sachin',
-            age: 35,
-            address: 'bang'
-        };
-    }
-    myChangeHandler = (event) => {
-        let nam = event.target.name;
-        let val = event.target.value;
-        this.setState({ [nam]: val });
-    }
-    mySubmitHandler = (event) => {
-        event.preventDefault();
-        alert(this.state.username + " " + this.state.age + " " + this.state.address);
-    }
-    render() {
-        return (
-            <form onSubmit={this.mySubmitHandler}>
-                <h2>Hello {this.state.username} age is {this.state.age}
-                    address is {this.state.address} </h2>
-                <p>Enter your name:</p>
-                <input
-                    type='text'
-                    name='username'
-                    onChange={this.myChangeHandler}
-                    value={this.state.username}
-                />
-                <p>Enter your age:</p>
-                <input
-                    type='text'
-                    name='age'
-                    onChange={this.myChangeHandler}
-                    value={this.state.age}
-                />
-                <p>Enter your Address:</p>
-                <textarea
-                    name='address'
-                    onChange={this.myChangeHandler}
-                    value={this.state.address} />
-                    
-                <br></br>
-                <input type="submit" />
-            </form>
-        );
-    }
-}
-export default MyForm;
-
-
-
-Program-77  DropDown
-********************
-class MyForm extends React.Component {
-  import React, { Component } from 'react'
-
-export default class Test extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            mycar: 'Volvo'
-        };
-    }
-    changeHandler = (event) => {
-        this.setState({ mycar: event.target.value })
-    }
-    render() {
-        return (
-            <form>
-                <select value={this.state.mycar} onChange={this.changeHandler}>
-                    <option value="Ford">Ford</option>
-                    <option value="Volvo">Volvo</option>
-                    <option value="Fiat">Fiat</option>
-                    <option value="Maruti">Maruti</option>
-                    <option value="Tata">Tata</option>
-                </select>
-                <div>Selected Car: {this.state.mycar}</div>
-            </form>
-        );
-    }
-}
-
-}
-
-
 
 
 
 
 Program-79  Fetch() Example
 ****************************
-import React, { Component } from 'react'
-
-export default class Test extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            users: []
-        }
-    }
-
-    fetchUsers = () => {
-        const myURL = 'https://jsonplaceholder.typicode.com/users';
-
-        fetch(myURL)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                this.setState({ 'users': data })
-            });
-    }
-    componentDidMount() {
-        this.fetchUsers();
-    }
-    render() {
-        return (
-            <table className='table table-bordered table-striped'>
-                <thead>
-                    <tr>
-                        <th>userID</th>
-                        <th>name</th>
-                        <th>email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.users.map((user, ind) => {
-                        return (<tr key={ind}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                        </tr>)
-                    })}
-                </tbody>
-            </table>
-        )
-    }
-}
------------------------------------------------------
 import React, { useEffect, useState } from "react";
 export default function Comments() {
   const [comments, setComments] = useState([]);
@@ -3272,156 +2877,141 @@ export default class Curd extends Component {
 
 Program:81 CRUD example Functional component
 *******************************************
-import axios from "axios";
-import React, { useState } from "react";
-import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
+const URL = "http://localhost:3000/employees";
+export default function EmployeeCrud() {
+  const [employees, setEmployees] = useState([]);
+  const [employee, setEmployee] = useState({
+    name: "",
+    salary: "",
+    department: "",
+  });
 
-export default function Crud() {
-  const [users, setUsers] = useState([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
 
-  const fetchUsers = async function() {
-    let response = await axios.get("http://localhost:4000/users");
-    setUsers(response.data);
+  const fetchEmployees = async () => {
+    const response = await fetch(URL);
+    const data = await response.json();
+    setEmployees(data);
   };
-  const addUser = async function() {
-    const newUser = {
-        "name": name,
-        "email": email,
-        "phone": phone,
-        "address": address,
-    }
-    let response = await axios.post("http://localhost:4000/users", newUser);
-    Swal.fire("Employee Added Successfully", "", "success");
-    fetchUsers();
-  };
-  const deleteUser = (id) => {
-    axios.delete(`http://localhost:4000/users/${id}`).then((res) => {
-      Swal.fire("Employee Deleted Successfully", "", "success");
-      fetchUsers();
+
+  const addEmployee = async () => {
+    if (!employee.name) return;
+
+    await fetch(URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(employee),
     });
-  };
-  const editUser = (id) => {
-   
-  };
-  const mySubmitHandler = function(event) {
-    event.preventDefault();
-    addUser();
-  };
-  return (
-    <>
-      <h1 className="text-center">CRUD Example</h1>
-      <hr />
-      <button onClick={fetchUsers}>get data</button>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-8">
-            <table className="table table-bordered table-striped table-responsive">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>email</th>
-                  <th>phone</th>
-                  <th>address</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.length > 0 ? (
-                  users.map((user) => (
-                    <tr key={user.id}>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>{user.phone}</td>
-                      <td>{user.address}</td>
-                      <td>
-                        <button className="btn btn-danger" onClick={() => deleteUser(user.id)}>
-                          DELETE
-                        </button> &nbsp;
-                        <button className="btn btn-secondary" onClick={() => editUser(user.id)}>
-                          EDIT
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={5} className='text-center'>No data yet</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="col-sm-4">
-            <form onSubmit={mySubmitHandler}>
-              Name: <input name="name" value={name} onChange={e=>setName(e.target.value)} /> <br /><br />
-              email: <input name="email" value={email} onChange={e=>setEmail(e.target.value)} /> <br /><br />
-              phone: <input name="phone" value={phone} onChange={e=>setPhone(e.target.value)} /> <br /><br />
-              address: <input name="address" value={address} onChange={e=>setAddress(e.target.value)} /><br />
-              <br />
-              <button className="btn btn-primary">Add Employee</button>
-            </form>
-          </div>
-        </div>
+    setEmployee({
+      name: "",
+      salary: "",
+      department: "",
+    });
+
+    fetchEmployees();
+  };
+
+  const deleteEmployee = async (id) => {
+    await fetch(`${URL}/${id}`, {
+      method: "DELETE",
+    });
+
+    fetchEmployees();
+  };
+
+  const viewEmployee = (emp) => {
+    alert(`
+ID: ${emp.id}
+Name: ${emp.name}
+Salary: ${emp.salary}
+Department: ${emp.department}
+    `);
+  };
+
+  return (
+    <div className="container mt-3">
+      <h2>Employee CRUD</h2>
+
+      <div className="mb-3">
+        <input
+          className="form-control mb-2"
+          placeholder="Name"
+          value={employee.name}
+          onChange={(e) =>
+            setEmployee({ ...employee, name: e.target.value })
+          }
+        />
+
+        <input
+          className="form-control mb-2"
+          placeholder="Salary"
+          value={employee.salary}
+          onChange={(e) =>
+            setEmployee({ ...employee, salary: e.target.value })
+          }
+        />
+
+        <input
+          className="form-control mb-2"
+          placeholder="Department"
+          value={employee.department}
+          onChange={(e) =>
+            setEmployee({ ...employee, department: e.target.value })
+          }
+        />
+
+        <button className="btn btn-success" onClick={addEmployee}>
+          Add Employee
+        </button>
       </div>
-    </>
+
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Salary</th>
+            <th>Department</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {employees.map((emp) => (
+            <tr key={emp.id}>
+              <td>{emp.id}</td>
+              <td>{emp.name}</td>
+              <td>{emp.salary}</td>
+              <td>{emp.department}</td>
+              <td>
+                <button
+                  className="btn btn-info btn-sm me-2"
+                  onClick={() => viewEmployee(emp)}
+                >
+                  View
+                </button>
+
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => deleteEmployee(emp.id)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 
 
-
-program: 82 axios & async-await
-******************************
-import React, { Component } from 'react';
-import axios from 'axios';
-
-export default class Test extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            users: []
-        }
-    }
-    async fetchUsers() {
-        try {
-            let response = await axios.get('https://jsonplaceholder.typicode.com/users');
-            this.setState({ users: response.data })
-        }
-        catch (error) {
-            console.log(error)
-        }
-    }
-    componentDidMount() {
-        this.fetchUsers()
-    }
-    render() {
-        return (
-            <table className='table table-bordered table-striped'>
-                <thead>
-                    <tr>
-                        <th>userID</th>
-                        <th>name</th>
-                        <th>email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.users.map((user, ind) => {
-                        return (<tr key={ind}>
-                            <td>{user.id}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                        </tr>)
-                    })}
-                </tbody>
-            </table>
-        )
-    }
-}
 
 
 Program-83 Request Interceptor
@@ -3487,39 +3077,6 @@ err => {
 })();
 
 
-
-
-
-Program: graphQL
-=================
-1. install apollo-client and graphQL
-   npm install @apollo/client graphql
-   
-2. Initialize ApolloClient (index.js)
-    import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';	
-    const client = new ApolloClient({
-	  uri: 'http://localhost:5000/',
-	  cache: new InMemoryCache()
-	});
-
-3. Connect your Apollo-client to React / Set Up ApolloProvider
-  <ApolloProvider client={client}>
-    <App />
-  </ApolloProvider>
-  
-4. Fetch data with useQuery
-   import { gql, useQuery } from '@apollo/client';
-   
-   const GET_COMMENTS_QUERY = gql`
-    query comments {
-      comments {
-        id
-        name
-		email
-      }
-    }
-  `;
-   const { loading, error, data } = useQuery(GET_COMMENTS_QUERY);
 
 
 
@@ -3636,7 +3193,7 @@ export default CounterHOC(HoverCounterWithHOC);
 
 
 
-Program- Logging
+Program- Logging using HOC
 ==========================
 const withLogger = (WrappedComponent) => {
   const WithLogger = (props) => {
@@ -4437,6 +3994,54 @@ const expensiveCalculation = (num) => {
 
 
 
+
+
+
+
+Program- Usememo  and user search
+=================================
+import { useState, useMemo } from "react";
+
+export default function UseMemoTest() {
+  const [searchText, setSearchText] = useState("")
+  const [count, setCount] = useState(0);
+
+  const products = ["Laptop", "Mobile", "Keyboard", "Mouse", "Monitor", "Headphones", "Tablet"];
+  
+  const filteredProducts = useMemo(() => {
+    console.log("Filtering products...");
+    return products.filter(product => product.toLowerCase().includes(searchText.toLowerCase()));
+  }, [searchText]);
+
+  /* const filteredProducts = products.filter((product) => {
+    console.log("filtering...");
+    return product.toLowerCase().includes(searchText.toLowerCase());
+  }); */
+
+  return (
+    <div>
+      <h2>Product Search</h2>
+      <input className="mx-2" type="text" placeholder="Search product..." value={searchText} onChange={e => setSearchText(e.target.value)} />
+      <button onClick={() => setCount(count + 1)}>Counter: {count}</button>
+      <ul>
+        {filteredProducts.map((product, index) => (
+          <li key={index}>{product}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
 Program-99 Error Boundary
 *************************
 import React, { Component } from 'react';
@@ -4660,3 +4265,37 @@ describe("UserService API calls", () => {
   });
 
 });
+
+
+
+
+Program: graphQL
+=================
+1. install apollo-client and graphQL
+   npm install @apollo/client graphql
+   
+2. Initialize ApolloClient (index.js)
+    import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';	
+    const client = new ApolloClient({
+	  uri: 'http://localhost:5000/',
+	  cache: new InMemoryCache()
+	});
+
+3. Connect your Apollo-client to React / Set Up ApolloProvider
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+  
+4. Fetch data with useQuery
+   import { gql, useQuery } from '@apollo/client';
+   
+   const GET_COMMENTS_QUERY = gql`
+    query comments {
+      comments {
+        id
+        name
+		email
+      }
+    }
+  `;
+   const { loading, error, data } = useQuery(GET_COMMENTS_QUERY);

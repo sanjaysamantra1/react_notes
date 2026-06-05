@@ -19,7 +19,6 @@ Syllabus
 -Memo Component
 -HigherOrder Component
 -Events : Synthetic Event
--Lifecycle Hooks
 -Form
 -Http - Axios
 -Interceptors
@@ -1273,6 +1272,18 @@ https://sweetalert2.github.io/#examples
 
 
 
+
+How to Use SnackBar
+====================
+1. npm i awesome-snackbar
+2. import Snackbar from 'awesome-snackbar'
+3. on button click call a function, function should have the below code	
+	new Snackbar('Helloooo, Good Morning',
+      { position: 'top-center', theme: 'light', timeout: 5000, actionText: 'X' }
+    );
+
+
+
 How to use react-modal
 ======================
 1. npm i react-modal
@@ -1511,55 +1522,79 @@ Component vs PureComponent
 
 
 
-React Memo Component
-====================
--Introduced in React v16.6 
--This improves performance
--React.memo() is a higher-order component/function.
--React.memo() can be used for both class & function components.
--React.memo() is used with child components only(the component receiving props)
--When a component is wrapped in React.memo(), React renders the component only if the props those are passed to that component changes.
--Avoids re-rendering a component when its props are unchanged.
--ex: export default React.memo(UserCard);
+React.memo()
+============
+-Introduced in React v16.6.
+-React.memo() is a Higher-Order Component (HOC).
+-It is used to improve performance by preventing unnecessary re-renders.
+-It is used with child components that receive props.
+-When a component is wrapped with React.memo(), React re-renders it only when its props change.
+-React.memo() performs a shallow comparison of props. If the props are unchanged, React reuses the previous rendered result.
+-Avoids unnecessary re-rendering when parent components re-render.
+
+Example:
+function UserCard({ name }) {
+  console.log("UserCard rendered");
+  return <h3>{name}</h3>;
+}
+export default React.memo(UserCard);
  
+
 
 
 
 useMemo()
-========
--The functions called inside component are re-invoked on every state change.
--If we want the functions should be called only on component load and not on every state changes then for that function, 
-useMemo should be used.
--useMemo Hook returns a memoized value.
--The useMemo(()=>{} , []) hook accepts a second parameter to declare dependencies. 
- The function will only run when its dependencies are changed.
--The main difference between usememo() and useCallBack() is that 
- useMemo() returns a memoized value and useCallback() returns a memoized function.
-ex: 
-  // const calculation = expensiveCalculation(count); // function gets called on every state change
-  // const calculation = useMemo(() => expensiveCalculation(count), []); // function gets called on page load
-  const calculation = useMemo(() => expensiveCalculation(count), [count]); // function gets called on count change
+=========
+-useMemo() is used to cache (memoize) the result of an expensive calculation.
+-It helps avoid unnecessary re-calculations during re-renders.
+-useMemo() returns a memoized value.
+-The function passed to useMemo() executes only when one of its dependencies changes.
+-If the dependency array is empty ([]), the calculation runs only on the initial render.
+-useMemo() should be used for expensive calculations such as filtering, sorting, or complex computations.
+-useMemo() returns a memoized value, whereas useCallback() returns a memoized function.
+
+Example:
+// Runs on every render
+const calculation = expensiveCalculation(count);
+const filteredProducts = products.filter((product) => {
+    console.log("filtering...");
+    return product.toLowerCase().includes(searchText.toLowerCase());
+  });
+
+// Runs only when dependency changes
+const calculation = useMemo(
+  () => expensiveCalculation(count),
+  [count]
+);
+const filteredProducts = useMemo(() => {
+    console.log("Filtering products...");
+    return products.filter(product => product.toLowerCase().includes(searchText.toLowerCase()));
+  }, [searchText]);
 
 
 
 
-useCallBack()
+useCallback()
 =============
--useCallback() Hook returns a memoized callback function.
--useCallback() Hook only runs when one of its dependencies update.
--useCallback() should be used to prevent a component from re-rendering unless its props have changed.
--When a function is passed as a props from parent to child component,child component re-renders even if no props data changes(even though the child is a memo component)
--the function that gets passed as a props gets a new reference everytime there is a state change in parent component.
-ex:
- <ToDoDemo todos={todos} addTodo={addTodo} />
- 
- const addTodo = () => {
-	setTodos((t) => [...t, "New Todo"]);
- };
- -----------------
- const addTodo = useCallback(() => {
-    setTodos((t) => [...t, "New Todo"]);
-  }, []);
+-useCallback() returns a memoized function.
+-It preserves the same function reference between renders until its dependencies change.
+-It is commonly used when passing functions as props to child components.
+-Without useCallback(), a new function object is created on every render.
+-This can cause React.memo() child components to re-render unnecessarily.
+-useCallback() is useful for optimizing performance when function references matter.
+
+Example:
+<ToDoDemo todos={todos} addTodo={addTodo} />
+
+// New function created on every render
+const addTodo = () => {
+  setTodos(t => [...t, "New Todo"]);
+};
+
+// Same function reference reused
+const addTodo = useCallback(() => {
+  setTodos(t => [...t, "New Todo"]);
+}, []);
 
 
 
@@ -1681,19 +1716,35 @@ componentWillUnmount()
 
 
 
+LifeCycle hooks in Functional Component
+========================================
+-Functional Components don't have lifecycle methods like class components.
+-lifecycle behaviour is handled with hooks , primarily useEffect()
 
 
 
 useEffect()
 ----------
+-useEffect() is a React hook that allows to execute some code after the component is initially rendered & when state change happens.
+-Common Functionalities : fetching data from API , Updating DOM , timers , event listeners
+-fetching user data when selected user Id changes
+
 -useEffect() takes a callback function as the 1st argument and a dependency array as the 2nd argument.
   Example:
-  useEffect(() => {}, []);
--The dependency array contains values that React watches to determine when the effect should re-run.
--If the 2nd argument is omitted, the effect runs after every render (including state and prop changes).
--When the dependency array is empty ([]), the effect runs only once after the initial render (similar to componentDidMount).
+  useEffect(() => {}, [])
+
+-If the 2nd argument is omitted, the effect runs after every render (state and prop changes).
+  useEffect(() => {})
+  
+-When the dependency array is empty ([]), the effect runs only once after the initial render 
+ the effect will not re-run when state value changes
+ useEffect(() => {}, [])
+
 -If dependencies are provided, the effect runs whenever any dependency value changes.
+ useEffect(() => {}, [a,b])
+  
 -We can have multiple useEffect() hooks in the same component to handle different side effects.
+
 -To perform cleanup (similar to componentWillUnmount), return a function from useEffect().
   Example:
   useEffect(() => {
@@ -2005,27 +2056,47 @@ Create an Axios Instance
 
 
 
-Making multiple requests with axios  
-===================================
-const promise1 = axios.get('https://api.github.com/users/defunkt')
-const promise2 = axios.get('https://api.github.com/users/evanphx')
-const [response1, response2] = await axios.all([promise1, promise2]);
+Making multiple requests with axios.all() 
+========================================
+-Executes multiple requests in parallel, not sequentially.
+-Similar to Javascript's Promise.all()
+-Total execution time depends on the slowest request.
+-If one request fails, Promise.all()/axios.all() fails immediately.
+
+ex:
+	const promise1 = axios.get("https://api.github.com/users/defunkt");
+    const promise2 = axios.get("https://api.github.com/users/evanphx");
+    const promise3 = axios.get("https://api.github.com/users/sanjaysamantra1");
+    const responseArr = await axios.all([promise1, promise2, promise3]);
+    let responseData = responseArr.map((response) => response.data);
+    console.log(responseData);
+
   
+
+
 
 
 Http Interceptors
 =================
--Interceptor is a feature that allows an application to intercept/modify requests or  responses before they are handled by  .then() or the .catch()
+-Interceptors allow us to intercept/modify HTTP requests or responses before they are sent to the server or before they are processed by then() / catch().
  
- httpRequest ----> Interceptor ----> ModifiedRequest ----> Server
- ModifiedResponse<---- Interceptor <---- httpResponse <---- Server
+ Client Sends httpRequest ----> Interceptor ----> ModifiedRequest ----> Backend Server
+ Client receives ModifiedResponse<---- Interceptor <---- httpResponse <---- Backend Server
+ 
+ 
+Why Interceptors:
+-Centralized request/response handling.
+-Attach authentication tokens automatically.
+-Handle errors globally.
+-Refresh expired tokens.
+-Avoid duplicate code across API calls.
+ 
+ 
+ 
 
 Request interceptor use cases:
--Assume you want to check before making a request if your credentials are valid. 
- So, instead of actually making an API call, you can check at the interceptor level that your credentials are valid.
--Assume you need to attach a token to every request made, instead of duplicating 
- the token addition logic at every Axios call, you can make an interceptor that 
- attaches a token on every request that is made.
+-Validate the presence of authentication tokens before sending requests.
+-Redirect users to login if authentication information is missing.
 
 export function myInterceptor() {
   axios.interceptors.request.use((req) => {
@@ -2036,15 +2107,13 @@ export function myInterceptor() {
 -call the above function in app.js
 
 
-response interceptor use cases -
--Assume you got a response, and judging by the API responses you want to deduce that the user is logged in. 
- So, in the response interceptor, you can initialize a class that handles the user logged in state and 
- update it accordingly on the response object you received.
--Assume you have requested some API with valid API credentials, but you do not have the valid role to access the data. 
- So, you can trigger an alert from the response interceptor saying that the user is not allowed. 
- This way you'll be saved from the unauthorized API error handling that you would have to perform on every Axios request that you made.
+response interceptor use cases:
+-Handle 401 Unauthorized responses globally.
+-Redirect users to login page.
+-Refresh expired access tokens.
+-Centralized error handling.
  
-url-->response-->interceptor-->modifiedResponse-->component
+Backend Server --> response --> interceptor --> modifiedResponse --> component
 
 axios.interceptors.response.use(
   res => res,
