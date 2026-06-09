@@ -1449,8 +1449,33 @@ const changeHandler = (e) => {
 
 SyntheticEvent
 ==============
--SyntheticEvent is a cross-browser wrapper around the browser’s native event.
--in React event handlers receive 'SyntheticEvent' object as arguement insteadof browser's native 'Event' object.
+-Instead of working directly with the browser's native event system(MouseEvent, KeyboardEvent, PointerEvent, etc.), 
+ React provides its own event system called SyntheticEvent.
+-A SyntheticEvent is a cross-browser wrapper around the browser's native event.
+-It normalizes browser differences, ensuring that events behave consistently across different browsers(Chrome, Firefox, Safari)
+-In React, event handler functions receive a SyntheticEvent object as an argument instead of the browser's native Event object.
+-SyntheticEvent provides the same interface as native events, including properties and methods such as:
+    * target
+    * currentTarget
+    * preventDefault()
+    * stopPropagation()	
+-If access to the underlying native browser event is required, it can be obtained using: event.nativeEvent
+
+Example:
+---------
+function handleClick(event) {
+    console.log(event);             // SyntheticEvent
+    console.log(event.nativeEvent); // Native browser event
+}
+<button onClick={handleClick}>Click Me</button>
+
+Advantages:
+-----------
+1. Cross-browser compatibility.
+2. Consistent event behavior across all supported browsers.
+3. Improved performance through React's event delegation mechanism.
+4. Simplifies event handling for developers.
+
 
 -To register an event handler for the capture phase, append Capture to the event name.
   <button onClick={f1}>click me</button>  // bubbling
@@ -1576,12 +1601,15 @@ const filteredProducts = useMemo(() => {
 
 useCallback()
 =============
--useCallback() returns a memoized function.
--It preserves the same function reference between renders until its dependencies change.
--It is commonly used when passing functions as props to child components.
--Without useCallback(), a new function object is created on every render.
--This can cause React.memo() child components to re-render unnecessarily.
--useCallback() is useful for optimizing performance when function references matter.
+-useCallback() is a React Hook that returns a memoized version of a function.
+-It helps prevent unnecessary re-creation of functions during component re-renders.
+-It is used when passing functions as props to child components.
+-It preserves the same function reference between parent renders unless its dependencies change.
+
+-Without useCallback(), a new function object is created every time the parent component renders.
+-When this function is passed as a prop to a child component, the child may re-render because the prop reference has changed
+-This can cause child components to re-render unnecessarily(even if the child is using React.memo())
+
 
 Example:
 <ToDoDemo todos={todos} addTodo={addTodo} />
@@ -2155,23 +2183,53 @@ client.interceptors.request.use((req) => {
 
 
 React Higher Order Components (HOCs)
-=============================
--A higher-order component (HOC) is a technique in React for re-using component logic.
--To Share Common Functionalities accross components without repeating the code.
--Higher order Component takes one or more components as arguments, and return a new upgraded component.
-  newComponent = higherOrderComponent( originalComponent )
--Higher order components are JavaScript functions used for adding additional functionalities to the existing component.
--These functions are pure, which means they are receiving data and returning values according to that data. 
--Authentication,Logging,Styling and Theming
--the effect written inside HOC runs only when props change, if a component(Counter) updates its own state(count) without any changes in props, the effect won't run.
+====================================
+-Higher Order Components  are used for reusing component logic across multiple components without duplicating code.
+-A Higher Order Component is a JavaScript function that accepts a component as an argument and returns a new enhanced component.
+	EnhancedComponent = higherOrderComponent(OriginalComponent)
+-HOCs do not modify the original component. Instead, they wrap the originalcomponent and provide additional functionality.
+-Benefits:	1. Code Reusability, 2.Centralized Logic
 
-use cases:
--Infinite scroll in three different views, all having different data.
--Components using data from third party subscription.
--Components that need logged in user data.
--Showing multiple lists(e.g. Users, Locations) with search feature.
+-HOCs are generally used for:
+    * Authentication and Authorization
+    * Logging and Analytics
+    * Styling and Theming
+    * Data Fetching
+    * Subscription Handling
+    * Permission Management
 
-https://www.codingame.com/playgrounds/8595/reactjs-higher-order-components-tutorial
+
+How HOC Works
+-------------
+Original Component
+        ↓
+Higher Order Component (Wrapper)
+        ↓
+Enhanced Component
+
+
+Example:
+--------
+export default function withLogger(WrappedComponent: any) {
+  return function EnhancedComponent(props: any) {
+    useEffect(() => {
+      console.log(`${WrappedComponent.name} mounted`);
+      return () => {
+        console.log(`${WrappedComponent.name} unmounted`);
+      };
+    }, []);
+    console.log(`${WrappedComponent.name} rendered`);
+    return <WrappedComponent {...props} />;
+  };
+}
+
+export default MyCounter;  				// without Logging
+export default withLogger(MyCounter);   // with Logging
+
+
+
+
+
 
 
 
@@ -2180,16 +2238,14 @@ https://www.codingame.com/playgrounds/8595/reactjs-higher-order-components-tutor
 
 Routing
 =======
--Single Page Applications(SPAs) are web applications that load a single HTML page and 
- dynamically update that page as user interacts with the application.
--Complete page Re-load doesn't happen. only a portion of a page gets loaded.
--Routing in a Single Page Application is the way to introduce some features for navigating the application  through links.
--Every time a link is clicked or browser URL changes, React Router makes sure 
- our application loads component accordingly.
--The browser should change the URL when we navigate to a different screen.
--The browser back and forward button should work as expected.
--Routing links together your application navigation with the navigation features offered by the browser: the address bar and the navigation buttons.
--React Router offers a way to write your code so that it will show certain components of your app  only if the route matches what you define.
+-Single Page Applications (SPAs) load a single HTML page and dynamically update content without reloading the entire page.
+-Only the required portion of the page is updated, resulting in a faster and smoother user experience.
+-Routing enables navigation between different views or components within an SPA.
+-When a user clicks a link or the URL changes, React Router renders the appropriate component without refreshing the page.
+-Routing keeps the browser URL synchronized with the application's current view.
+-Browser Back and Forward buttons work seamlessly, just like in traditional websites.
+-It connects application navigation with browser navigation features such as the address bar, history stack, and navigation buttons.
+-React Router allows us to display specific components based on the current URL (route) that matches the requested path.
 
 
 
@@ -2207,6 +2263,7 @@ https://application.com/#/dashboard   // HashRouter (IE<9)
 -If we don’t have to worry about older browsers, BrowserRouter is the recommended one to use.
 
 
+
 -Below are the 3 components used the most while working with React Router are:
 	1. BrowserRouter, usually aliased as Router (wraps all your Route components)
 	2. Link		(used to generate links to your routes)
@@ -2218,9 +2275,9 @@ Steps for Routing
 =================
 1. Install  React Router DOM
    npm install react-router-dom   
-2. Create Components
-   create components like - (Home,About,Contact,NotFound)   
-3. set up the application to work with React Router. (index.js)
+2. Create Pages/Components
+   create components like - (Home,About,Contact,Careers,NotFound)   
+3. set up the application to work with React Router. (index.js / main.tsx)
    import { BrowserRouter } from 'react-router-dom';	
    <BrowserRouter>
         <App />
@@ -2235,49 +2292,58 @@ Steps for Routing
         <Route path="*" element={<NotFound />} /> (No Match Route)
     </Routes>	
 5. Add a Link for each component and use to="URL" to link them.
-   <div>
-      <Link to="/">Home </Link>
-      <Link to="/about">About Us </Link>
-      <Link to="/shop">Shop Now </Link>
-    </div>
+		<ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <Link className="nav-link" to="/home">Home</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/aboutus">AboutUs</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/careers">Careers</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/contactus">Contact Us</Link>
+            </li>
+         </ul>
 	
 
 
 Link vs NavLink
 ===============
--When we use <Link> there isn't any active class on selected element.
--with <NavLink> the selected element is highlighted because this element adds an active class.
- <NavLink to='home' className='nav-link'>Home</NavLink>
+<Link> does not automatically apply any styling to the currently active route.
+<NavLink> is similar to <Link>, but it automatically adds an 'active' class to the link that matches the current URL.
+-This makes it easy to highlight the currently selected navigation item.
+ex: <NavLink to='home' className='nav-link'>Home</NavLink>
+
 -add below css: 
-	nav a.active{text-decoration:none;font-weight:bolder;background-color: aqua}
+	nav .active{background-color: aquamarine;}
 
 
 
 Navigate from one Route to another Route
 =========================================
-<Link to="/products">go to Product</Link>
+-Using <a> tag is not recommended because it refreshes the entire application.
+	<a href="/home">Go To Home</a>
+
+-Using <Link> is recommended because it navigates without reloading the page.
+	<Link to="/home">Go To Home</Link>
 
 			
 			
 Navigating Programatically
 ========================== 
-import React from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-export default function AboutUs() {
-  const navigate = useNavigate();
-  const func1 = function () {
-    alert("do something");// logic
-    navigate('/products');
-  };
-  return (
-    <>
-      <h1>this is about us component</h1>
-      <Link to="/products">Take me to products page</Link>
-      <button onClick={func1}>Take me To product</button>
-    </>
-  );
-}
+1. Import useNavigate hook
+   import { useNavigate } from 'react-router-dom';
+   
+2. Create navigate object
+   const navigate = useNavigate();
+   
+3. on user action call a function, that function should call navigate()
+   const doSomethingAndGoToHome=()=>{
+    console.log('Execute Some Logic....');
+    navigate('/home')
+  }
 
 
 
@@ -2291,17 +2357,19 @@ const navigate = useNavigate();
 
 Route Params
 ============
-1. Path params    (productdetails/101)
+1. Path params    (userdetails/1)
 2. Query Params   (search?name=sachin&age=25)
 
 
 Path Params
 -----------
 1. configure the route
-   <Route path="/productdetails/:id" element={<ProductDetails />} />
-2. create a link to that route (ProductList - for Every Product)
-   <Link to={`/productdetails/${id}`}> View Details</Link>
-3. collect the params data and display
+   <Route path="/userdetails/:id" element={<UserDetails />} />
+   
+2. create a link to that route (UserList - for Every User)
+   <Link to={`/userdetails/${id}`}>Details</Link>
+   
+3. Read the Parameter data and display
    const { id } = useParams();
    <h1>This is the details of product - {id}</h1>
    
@@ -2312,7 +2380,7 @@ Query params
 1. configure the route
    <Route path="/productdetails" element={<ProductDetails />} />
    
-2. create a link & navigation logic
+2. create a link & navigation logic (ProductList page)
   const navigate = useNavigate();
   const navigateHandler = (title, price) => {
     navigate({
@@ -2322,16 +2390,24 @@ Query params
   };
    <button className="btn btn-secondary" onClick={() => {
               navigateHandler(title, price);
-            }}>query param</button>
+            }}>details</button>
 
 3. collect params data and display
-  const [searchParams] = useSearchParams();
-  useEffect(() => {
-    const currentParams = Object.fromEntries([...searchParams]);
-    console.log(currentParams); // get new values onchange
-	console.log(searchParams.get("title"), searchParams.get("price"));
-  }, [searchParams]);
+    const [searchParams] = useSearchParams();
+    const id = searchParams.get("id");
+    const title = searchParams.get("title");
+    const price = searchParams.get("price");
+    return <>
+            <h2>Product Details</h2>
+            <p>Id : {id}</p>
+            <p>Title : {title}</p>
+            <p>Price : {price}</p>
+        </>
+	
   
+  
+Note: To get all the query params as object, below code can be used
+      productObj = Object.fromEntries([...searchParams]);
   
   
 Nested Routing
