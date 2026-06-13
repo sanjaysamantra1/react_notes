@@ -25,7 +25,7 @@ Syllabus
 -Routing
 -Context API
 -REDUX  (State Management)
--Unit Testing (JEST)
+-Unit Testing (JEST / vitest)
 -EsLint
 
 
@@ -2412,17 +2412,16 @@ Note: To get all the query params as object, below code can be used
   
 Nested Routing
 ==============
--nested routing is used so that a parent component has control over its child component 
- at the route level.
--Route: Products (nested Routes: featured Products, New products)
-	<Route path="/products" element={<Products />}>
-        <Route path="featured" element={<FeaturedProducts />} />
-        <Route path="new" element={<NewProducts/>}/>
-    </Route>
--add a nav in Parent(products) component, and a outlet	
-     <div className="courses-nav">
-        <Link to="featured">featured</Link>
-        <Link to="new">New</Link>
+-nested routing is used so that a parent component has control over its child component at the route level.
+-Route: Careers (nested Routes: PermanentJobs, ContractJobs)
+		<Route path="/careers" element={<Careers />}>
+            <Route path="/careers/permanent" element={<PermanentJobs />} />
+            <Route path="/careers/contract" element={<ContractJobs />} />
+        </Route>
+-add a nav in Parent(Careers) component, and a outlet	
+     <div>
+        <Link to="permanent" className="mx-2">Permanent Jobs</Link>
+        <Link to="contract">Contract Jobs</Link>
       </div>
       <Outlet />
 	  
@@ -2431,15 +2430,16 @@ Nested Routing
 	  
 Index Route
 ===========
--A child route with no path that renders in the parent's outlet at the parent's URL.
--Child Path would remain same like parent route.
-	<Route path="/products" element={<Products />}>
-		<Route index element={<FeaturedProducts />} />
-        <Route path="featured" element={<FeaturedProducts />} />
-        <Route path="new" element={<NewProducts/>}/>
-    </Route>
-	<Outlet />
+-an index route is a special child route that renders by default when parent route loads/matches.
+<Route path="/careers" element={<Careers />}>
+    <Route index element={<PermanentJobs />} />
+    <Route path="/careers/permanent" element={<PermanentJobs />} />
+    <Route path="/careers/contract" element={<ContractJobs />} />
+</Route>
 	
+	
+
+
 
 Protected Routes
 ================
@@ -2467,11 +2467,7 @@ Replace
 	3. For reset navigation flows.
 
 
-Exact
-=====
--The exact param disables the partial matching for a route and makes sure that it only  returns the route if the path is an EXACT match to the current url.
--If you're using React Router v6+, don’t use exact—it’s no longer needed
--In react-router-dom v6, all routes are matched exactly by default.
+
 	
 	
 	
@@ -2479,20 +2475,28 @@ Exact
 
 Code Splitting/Lazy Loading
 ===========================
--Code-Splitting is a feature supported by bundlers like Webpack which can create 
- multiple bundles that can be dynamically loaded at runtime.
--The best way to introduce code-splitting into your app is through the dynamic import()
+-Eager Loading: Components are loaded when the application starts.
+-Lazy Loading: Components are loaded only when they are required.
 
--Lazy loading helps to load a module/component whenever it is required(on-demand).
--React.lazy() allows  to render a dynamic import as a regular component.
-	before - import OtherComponent from './OtherComponent';  
-    after- const OtherComponent = React.lazy(() => import('./OtherComponent')); 
--lazy component should then be rendered inside a Suspense component, which allows us to show some fallback content (such as a loading indicator) while we’re waiting for the lazy component to load.
- <Suspense fallback={<div>Loading...</div>}>
-     <OtherComponent />
- </Suspense>
+-Faster initial page load, Loads components only when needed
+-React.lazy() is used to load a component dynamically.
+
+  Eager Import: import OtherComponent from './OtherComponent';
+  Lazy Import : const OtherComponent = React.lazy(() => import('./OtherComponent'));
+
+Suspense
+--------
+-A lazy-loaded component must be wrapped inside Suspense.
+-Suspense displays fallback content while the component is being loaded.
+
+<Suspense fallback={<div>Loading...</div>}>
+    <OtherComponent />
+</Suspense>
  
- 
+
+
+
+
 
 Q: What are the ways to handle errors in react application?
 Ans: 1. try-Catch    2. Error Boundary
@@ -2684,14 +2688,17 @@ Available Scripts
 
 ESLint
 ======
--ESLint is a static code analysis tool for identifying problematic patterns found in JavaScript code.
+-ESLint is a static code analysis tool for identifying problematic code present in JavaScript/Typescript code.
+-It Examines and list down the errors , bad practices, style issues present in our project.
+
 
 1. npm i eslint -g
-2. npm init @eslint/config@latest   
+2. npm init @eslint/config@latest --force
          (OR) 
    npx eslint --init
 	
 3. eslint . --config eslint.config.mjs
+   npm run lint 
 
 // eslint.config.mjs from step-2
 import js from '@eslint/js';
@@ -3027,7 +3034,33 @@ Jest
 -need to add 'react-test-renderer' for rendering snapshots.
   npm i react-test-renderer
 
- 
+
+
+
+vitest
+======
+1. install vitest
+   npm install -D vitest@latest @vitest/coverage-v8@latest 
+2. create a script in package.json
+    "test": "vitest"
+	"test:coverage": "vitest run --coverage"
+3. Run tests
+   npm run test
+   npm run test:coverage
+4. create vitest.config.ts
+   import { defineConfig } from 'vitest/config'
+	export default defineConfig({
+	  test: {
+		coverage: {
+		  // Directs the coverage module to look specifically inside src
+		  include: ['src/**/*.{ts,tsx,js,jsx}'], 
+		  exclude: ['src/main.tsx', 'src/vite-env.d.ts'],
+		},
+	  },
+	})   
+
+
+
 
 -To run testcases,run the below command
  npm run test / npm test

@@ -3111,40 +3111,30 @@ export default LoggerHOC;
 
 program-78 without HOC
 **********************
-import React,{ useState } from "react";
+import { useState } from "react";
 export default function ClickCounter() {
-  const [count, setCount] = useState(0);
-
+ const [count, setCount] = useState(0);
   const increment = () => {
     setCount(count + 1);
   };  
-  return (
-    <>
+  return <>
       <h2>In Click Counter Component - count is {count}</h2>
       <button onClick={increment}>Click me</button>
     </>
-  );
 }
 
-
 ------------------------------------------------
-import React, { useState } from "react";
-
+import { useState } from "react";
 export default function HoverCounter() {
   const [count, setCount] = useState(0);
   const increment = () => {
     setCount(count + 1);
   };
-  return (
-    <>
-      <h2>In Hover Counter Component - count is {count}</h2>
-      <button onMouseOver={increment}>Hover me</button>
+  return <>
+      <h2>In HoverCounter Component - count is {count}</h2>
+      <button onMouseEnter={increment}>Click me</button>
     </>
-  );
 }
-
-
-
 
 
 
@@ -3267,6 +3257,35 @@ nav.js
 
 
 
+Path Param 
+===========
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+function UserDetail() {
+  const { id } = useParams();
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+      .then((res) => res.json())
+      .then((data) => setUser(data));
+  }, [id]);
+  if (!user) {
+    return <h3>Loading User...</h3>;
+  }
+  return (
+    <>
+      <h2>User Details</h2>
+      <p>Id: {user.id}</p>
+      <p>Name: {user.name}</p>
+      <p>Email: {user.email}</p>
+      <p>Phone: {user.phone}</p>
+    </>
+  );
+}
+export default UserDetail;
+
+
 
 Program : 87 Protected Routes
 ==========================
@@ -3282,7 +3301,7 @@ export default function ProtectedRoute({ children }) {
   const role = "student";
   if (role === "student") {
       alert('you are not allowed to go to this route')
-    return <Navigate to="/home" replace />;
+      return <Navigate to="/home" replace />;
   }
   return children;
 }
@@ -3598,8 +3617,8 @@ export default Dashboard;
 
 
 
-Program- 94 Redux Counter
-*************************
+Program- 94 Redux Counter WithOut @reduxjs/toolkit
+**************************************************
 1. create a new project 
    npx create-react-app counter-app
    
@@ -3682,6 +3701,80 @@ Program- 94 Redux Counter
 			</div >
 		</>
 	}
+
+
+
+
+
+Program- 94 Redux Counter With @reduxjs/toolkit
+**********************************************
+1. install below packages
+   npm install react-redux @reduxjs/toolkit
+   
+2. Create a Slice (features/counter/counterSlice.ts)
+    import { createSlice } from "@reduxjs/toolkit";
+	const initialState = 0;
+	const counterSlice = createSlice({ // Slice = actions + reducers
+	  name: "counter",
+	  initialState,
+	  reducers: {
+		increment: (state) => {
+		  return state + 1;
+		},
+		decrement: (state) => {
+		  return state - 1;
+		},
+		reset: (state) => {
+		  return 0;
+		},
+	  },
+	});
+
+export const { increment, decrement, reset } = counterSlice.actions;
+export default counterSlice.reducer;
+
+   
+3. create Redux Store (store/store.ts)
+    import { configureStore } from "@reduxjs/toolkit";
+	import counterReducer from "../features/counter/counterSlice";
+	export const store = configureStore({
+	  reducer: {
+		counter: counterReducer,
+	  },
+	});
+
+
+4. Provide the Store to React (main.tsx / index.jsx)
+	import { Provider } from "react-redux";
+	import { myStore } from "./store/store.ts";
+   <Provider store={myStore}>
+       <App />
+   </Provider>
+
+
+5. Add Counter Component
+
+import { useDispatch, useSelector } from "react-redux";
+import { increment,decrement, reset } from "../../features/counter/counterSlice";
+
+export default function CounterWithRedux() {
+  const count = useSelector((state: any) => state.counter); // Selector
+  const dispatch = useDispatch();
+
+  return (
+    <>
+      <h2>Counter With Redux</h2>
+      <h3>Count:{count}</h3>
+
+      <button onClick={()=>{dispatch(decrement())}} >decrement</button>
+      <button onClick={()=>{dispatch(reset())}} className="mx-1">Reset</button>
+      <button onClick={()=>{dispatch(increment())}}>increment</button>
+    </>
+  );
+}
+
+
+
 
 
 
