@@ -13,7 +13,7 @@ Syllabus
 -Lists & keys
 -Props : de-structuring,requiring props, proptypes,default props
 -State 
--React Hooks (useState, useEffect, useRef, useMemo, useCallback)
+-React Hooks (useState, useEffect, useRef, useMemo, useCallback,useReducer)
 -Component Lifecycle using useEffect
 -Pure Component
 -Memo Component
@@ -44,11 +44,11 @@ React Local Setup
    npm -v    
    
 4.  go to the folder where you want to create project(d:/sanjay/react)& run the below command	
-	npx create-react-app project1 (npx-node package executer)
+	npx create-react-app react_project1 (npx-node package executer)
 	
                  
 5. go to the created project folder(project1) and start your React application
-   cd project1
+   cd react_project1
    npm start 
   
 6. A new browser window will pop up with your newly created React App! 
@@ -84,6 +84,8 @@ NPX
 -It can execute any package that you want from the npm registry without even installing that package.
  ex: npx create-react-app my-app
  
+
+
 
 React app with Vite
 ===================
@@ -155,7 +157,7 @@ Let's take an example:
 5. Virtual DOM					 5. Regular DOM
 6. Axios 				 		 6. HttpClientModule 
 7. No 		 					 7. Dependency Injection
-8. No							 8. Form Validation
+8. No	(formik)				 8. Form Validation
 9. extra libraries needed		 9. No additional libraries
 10. UI heavy					 10. Functionality Heavy
 
@@ -181,6 +183,38 @@ DOM (Document Object Model)
 -Allows JavaScript to interact with and modify the page's content, structure, and style. 
 
 
+
+-Actual/Browser DOM : <h1 className="title">Hello</h1> 
+-Virtual DOM : {
+	"type":"h1",
+	"props" :{
+		"className":"title",
+		"children":"Hello"
+	}
+}
+
+
+-Browser 
+	Actual/Browser DOM : <h1 className="title">Hello</h1> 
+		
+	Javascript Engine 
+		Heap Memory : javascript objects , React State , Virtual DOM
+
+
+
+
+
+		Actual-DOM   	  				Virtual-DOM
+============================================================
+1. Browser 						1. Heap Memory of Js Engine
+2. Managed by browser			2. Managed by react
+3. Elements Tab we can see      3. We cannt see
+
+
+
+
+
+
 Why Virtual DOM?
 ================
 -Frequent direct DOM manipulations are expensive and can impact performance.
@@ -204,6 +238,7 @@ What is Virtual DOM?
 -The Virtual DOM helps React optimize rendering performance.
 
 
+
 Virtual DOM Benefits
 ====================
 1. Improved Performance
@@ -220,7 +255,7 @@ Virtual DOM Benefits
  
 How Does React Work? (Virtual DOM)
 ==================================
-1. Initial Render : When the application loads, React creates a Virtual DOM tree based on the JSX components.
+1. Initial Render : When the application loads, React creates a Virtual DOM tree based on the Real DOM.
 
 2. State or Props Change : Whenever state or props change (such as user input or API response), React creates a new Virtual DOM tree with the updated data.
 
@@ -251,8 +286,8 @@ Virtual DOM
 
 Key Difference
 --------------
--Shadow DOM focuses on encapsulation and component isolation.
--Virtual DOM focuses on efficient UI updates and rendering performance.
+-Shadow DOM : browser technology , focuses on encapsulation and component isolation.
+-Virtual DOM : programming concept used by React , focuses on efficient UI updates and rendering performance.
 
 
 
@@ -333,7 +368,8 @@ React Project Flow
    <div id="root"></div>
    React injects the application into this container.
 
-2. main.js / main.jsx
+
+2. main.js / index.js
    -------------------
 -Entry point of the React application.
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -350,7 +386,7 @@ root.render(<App />);
 
 index.html
    ↓
-main.js / main.jsx
+main.js / index.js
    ↓
 <App />
    ↓
@@ -664,6 +700,132 @@ Fragments
  
  
 
+
+Limitations of Local Variables
+==============================
+No re-rendering : Changing a Local variable doesn't re-render, the component won't update to reflect the new value.
+No Persistence : Local variable are re-created on each render, any changes made to them are lost after re-render
+
+export default function StateDemo1() {
+    let count = 0;
+    const increment = ()=>{
+        count++;
+        console.log(count);
+    }
+    return <>
+        <h2>State Demo 1</h2>
+        <div>Count value is: {count}</div>
+        <button onClick={increment}>Increment</button>
+    </>
+}
+
+
+Why State variables
+===================
+Re-rendering : when state variable changes, React re-renders the component with new value
+Persistence : states are persisted accross re-renders
+
+
+States
+======
+-The State of a component is an object that holds some data that may change over the lifetime of the component.
+-whenever the state object changes,react will re-render the component. 
+-States are Mutable(can be changed), and states are local to the component, cann't be used by other components directly
+-Keep the state minimal , avoid using state for static data. 
+
+
+
+State in Class Component
+========================
+-class components have a state object , where all the state variables are declared. 
+ To update state variables, setState() should be used;
+-State object is usually initialized inside the constructor in class components.
+-UI will not Re-render when we change state directly, setState() should be used.
+  this.counter = this.counter + 1; // re-render won't happpen
+  this.setState({counter:this.state.counter+1});  // re-render will happpen
+-use setState() to change the state of react Component. 
+ it ensures that render() gets called.
+-If a piece of code needs to be executed only after the state has been updated, then 
+ place that code in the callback function which is the second arguement to setState()
+ Syntax: setState( StateObject, callbackFunction);
+  ex:    setState( {} , ()=>{} );
+ 
+ 
+Note:
+-----
+-setState() actions are asynchronous. setState() doesn’t immediately mutate this.state.
+-React may group multiple setState() calls in to a single update for better performance
+-when we want to update the state based on the previous State value,
+ we need to pass a function as an arguement to setState() instead passing an object.
+ ex:- this.setState({ value: this.state.value + 1 });   
+      this.setState(prevState => ({ value: prevState.value + 1 }));   
+	
+
+
+State in Functional Component
+=============================
+-State in functional Component can be maintained using useState() hook.
+-useState() is used to declare a state variable in functional component.
+-The only argument to the useState() Hook is the initial state.
+-It returns a pair of values: 
+  a. State value
+  b. function to update that state value. 
+  ex: const [count, setCount] = useState(0);
+-state updation is asynchronous, 
+   const increment = () => {
+    setCount(count + 1);
+	console.log(count);  // this will be executed before state update
+  };
+-If a piece of code needs to be executed only after the state has been updated, then place that code in the 'useEffect()'
+-when we want to update the state based on the previous State value,pass a callBack to setter
+ ex: setCount((prevState) => prevState + 1);
+	 setCount(count + 1);
+
+-React may batch/group the state updates, so reading {count} will print outdated value
+	setCount(count+1)
+    setCount(count+1)
+    setCount(count+1)
+    setCount(count+1)
+    setCount(count+1)
+ 
+
+ 
+ 
+Conditional Rendering
+=====================
+-Conditional rendering means displaying different UI elements or components based on a condition.
+-It is commonly used to show, hide, or switch UI content dynamically.
+-React uses JavaScript conditions to control what gets rendered on the screen.
+
+
+Use Cases
+=========
+-login vs logout button
+-loading vs actual Data(loaded)
+-error vs success
+-admin vs normal user
+-dark mode vs light mode
+-empty cart vs items in cart
+
+
+
+Ways to Implement Conditional Rendering
+=======================================
+1. Using if...else Statements
+2. Using switch Statements
+3. Using Ternary Operators
+4. Using Logical && Operator (Short Circuit Evaluation)
+
+Examples
+========
+Ternary Operator :  <div>{flag ? <h1>Hello</h1> : null}</div>
+Short Circuit Evaluation:  <div>{flag && <h1>Hello</h1>}</div>
+
+
+
+
+
+
  
 
 CSS in React
@@ -703,83 +865,16 @@ Conditional CSS
     • Dynamic visibility
     • Responsive UI behavior
 
-1. Conditional Inline Style : <h1 style={{ color: isActive ? "green" : "red" }}>Status</h1>
-
-2. Conditional className : <h1 className={success ? "success" : "error"}>Message</h1>
-
-3. Conditional Background Color : <div style={{ backgroundColor: darkMode ? "black" : "white" }}>Theme</div>
-
-4. Conditional Font Size : <p style={{ fontSize: large ? "30px" : "16px" }}>React Text</p>
-
-5. Conditional Visibility : <div style={{ display: show ? "block" : "none" }}>Content</div>
-
-6. Conditional Border Color : <input style={{ border: error ? "2px solid red" : "2px solid green" }} />
-
-7. Conditional Button Disable : <button disabled={name === ""}>Submit</button>
-
-8. Multiple Conditional Classes : <div className={isActive ? "box active" : "box"}>Card</div>
-
-9. Conditional Opacity : <img style={{ opacity: disabled ? 0.5 : 1 }} src="image.png" />
-
-10. Conditional Cursor : <button style={{ cursor: loading ? "not-allowed" : "pointer" }}>Save</button>
-
-
- 
- 
-Data Binding
-============
--Binding/Displaying the variable value in UI is called data binding.
--React primarily uses one-way data binding. 
--Two-way binding can be implemented manually using state, value, and onChange handlers.
-
-
-Binding Type    | Description                 | React Example      
---------------- | --------------------------- | ------------------ 
-One-way Binding | State → UI                  |  {value}         
-Two-way Binding | State ↔ UI using `onChange` |  value + onChange
-
-
-ex:
-function App() {
-  const [name, setName] = useState("");
-  return (
-    <input value={name} onChange={(e) => setName(e.target.value)} />
-  );
-}
- 
- 
-
- 
- 
-Conditional Rendering
-=====================
--Conditional rendering means displaying different UI elements or components based on a condition.
--It is commonly used to show, hide, or switch UI content dynamically.
--React uses JavaScript conditions to control what gets rendered on the screen.
-
-
-Use Cases
-=========
--Rendering data received from APIs
--Showing or hiding elements
--Toggling application functionality
--Implementing role-based access or permission levels
--Handling authentication and authorization
--Displaying loading or error messages
-
-
-Ways to Implement Conditional Rendering
-=======================================
-1. Using if...else Statements
-2. Using switch Statements
-3. Using Ternary Operators
-4. Using Logical && Operator (Short Circuit Evaluation)
-
-Examples
-========
-Ternary Operator :  <div>{flag ? <h1>Hello</h1> : null}</div>
-Short Circuit Evaluation:  <div>{flag && <h1>Hello</h1>}</div>
-
+-Conditional Inline Style : <h1 style={{ color: isActive ? "green" : "red" }}>Status</h1>
+-Conditional className : <h1 className={success ? "success" : "error"}>Message</h1>
+-Conditional Background Color : <div style={{ backgroundColor: darkMode ? "black" : "white" }}>Theme</div>
+-Conditional Font Size : <p style={{ fontSize: large ? "30px" : "16px" }}>React Text</p>
+-Conditional Visibility : <div style={{ display: show ? "block" : "none" }}>Content</div>
+-Conditional Border Color : <input style={{ border: error ? "2px solid red" : "2px solid green" }} />
+-Conditional Button Disable : <button disabled={name === ""}>Submit</button>
+-Multiple Conditional Classes : <div className={isActive ? "box active" : "box"}>Card</div>
+-Conditional Opacity : <img style={{ opacity: disabled ? 0.5 : 1 }} src="image.png" />
+-Conditional Cursor : <button style={{ cursor: loading ? "not-allowed" : "pointer" }}>Save</button>
 
 
 
@@ -836,6 +931,7 @@ Tip
 -In such cases, index values may change, causing React to treat items as different elements and unnecessarily re-render the list.
 
 
+
 Why map() is used instead of forEach()
 ======================================
 -map() iterates through each element of the array. For every item, it returns a JSX element. 
@@ -843,10 +939,11 @@ Why map() is used instead of forEach()
 -forEach() does not return anything (returns undefined), so it cannot be used directly inside JSX..
  
  
- 
+
+
 Read data from a JSON file (https://jsonplaceholder.typicode.com/users)
 ==========================
-1. create a JSON file add data (user_data.json) 
+1. create a JSON file & add data (user_data.json) 
    [ {},{},{} ]
    
 2. import userArr from './user_data.json'
@@ -863,7 +960,7 @@ Read data from a JSON file (https://jsonplaceholder.typicode.com/users)
 
 Read data from a Javascript file (https://fakestoreapi.com/products)
 ================================
-1. create a javascript file and export data 
+1. create a javascript file(product_data.js) and export data 
    export default [ {},{},{} ]
    
 2. import productArr from './product_data.ts'
@@ -1141,85 +1238,6 @@ Props Assignment
 
 
 
-Limitations of Local Variables
-==============================
-No re-rendering : Changing a Local variable doesn't re-render, the component won't update to reflect the new value.
-No Persistence : Local variable are re-created on each render, any changes made to them are lost after re-render
-
-export default function StateDemo1() {
-    let count = 0;
-    const increment = ()=>{
-        count++;
-        console.log(count);
-    }
-    return <>
-        <h2>State Demo 1</h2>
-        <div>Count value is: {count}</div>
-        <button onClick={increment}>Increment</button>
-    </>
-}
-
-
-Why State variables
-===================
-Re-rendering : when state variable changes, React re-renders the component with new value
-Persistence : states are persisted accross re-renders
-
-
-States
-======
--The State of a component is an object that holds some data that may change over the lifetime of the component.
--whenever the state object changes,react will re-render the component. 
--States are Mutable(can be changed), and states are local to the component, cann't be used by other components directly
--Keep the state minimal , avoid using state for static data. 
-
-
-
-State in Class Component
-========================
--class components have a state object , where all the state variables are declared. 
- To update state variables, setState() should be used;
--State object is usually initialized inside the constructor in class components.
--UI will not Re-render when we change state directly, setState() should be used.
-  this.counter = this.counter + 1; // re-render won't happpen
-  this.setState({counter:this.state.counter+1});  // re-render will happpen
--use setState() to change the state of react Component. 
- it ensures that render() gets called.
--If a piece of code needs to be executed only after the state has been updated, then 
- place that code in the callback function which is the second arguement to setState()
- Syntax: setState( StateObject, callbackFunction);
-  ex:    setState( {} , ()=>{} );
- 
- 
-Note:
------
--setState() actions are asynchronous. setState() doesn’t immediately mutate this.state.
--React may group multiple setState() calls in to a single update for better performance
--when we want to update the state based on the previous State value,
- we need to pass a function as an arguement to setState() instead passing an object.
- ex:- this.setState({ value: this.state.value + 1 });   
-      this.setState(prevState => ({ value: prevState.value + 1 }));   
-	
-
-
-State in Functional Component
-=============================
--State in functional Component can be maintained using useState() hook.
--useState() is used to declare a state variable in functional component.
--The only argument to the useState() Hook is the initial state.
--It returns a pair of values: 
-  a. State value
-  b. function to update that state value. 
-  ex: const [count, setCount] = useState(0);
--state updation is asynchronous, 
-   const increment = () => {
-    setCount(count + 1);
-	console.log(count);  // this will be executed before state update
-  };
--If a piece of code needs to be executed only after the state has been updated, then place that code in the 'useEffect()'
--when we want to update the state based on the previous State value,pass a callBack to setter
- ex: setCount((prevState) => prevState + 1);
-	 setCount(count + 1);
 	
 
 		Props        		  vs 					State
@@ -1385,72 +1403,95 @@ Assignment
 
 React Events
 ============
+-React events allow our components respond to user actins like clicks, typing, form submission, mouse movement, keyboard actions etc. 
+
+-few most commonly used Events are: onClick , onChange , onSubmit, onKeyUp, onMouseEnter
+
 -React events are written in camelCase
 	onClick-correct
 	onclick-wrong
+	
 -React event handlers are written inside curly braces
-	onClick={shoot}  instead of onClick="shoot()"
-	<button onClick={shoot}>Take the Shot!</button>   // calls the function on click
-	<button onClick={shoot()}>Take the Shot!</button> // calls the function on load
--For methods in React,the 'this' keyword should represent the component that owns the method.
--That is why we should use arrow functions. 
- With arrow functions, 'this' will always represent the object that defined the arrow function.
--In class components, the this keyword is not defined by default, 
- so with regular functions the this keyword represents the object that called the method, which can be the global window object, a HTML button, or whatever.
--If you must use regular functions instead of arrow functions you have to
- bind 'this' to the component instance using the bind() method.
-    constructor(props) {
-        super(props);
-        this.f1 = this.f1.bind(this);
+	onClick={increment}  instead of onClick="shoot()"
+	<button onClick={increment}>Increment</button>   // calls the function on click
+	<button onClick={increment()}>Increment</button> // calls the function on render
+	
+-React passes an event object as the first arguement to the event handler function
+	const increment = (event) => {
+        console.log(`Event Type:${event.type} , Target: ${event.target}`)
     }
-    state = {
-        counter: 0
-    }
-    f1() {
-        alert("hi");
-        console.log(this)
-        console.log(this.state.counter)
-    }
- 
- 
--If you want to send parameters into an event handler, you have two options:
-1. Make an anonymous arrow function:
-	shoot = (a) => {
-     alert(a);
-   }
-   <button onClick={() => this.shoot("Goal")}>Take the shot!</button>
-   
 
-2. Bind the event handler to this
-   shoot(a) {
-    alert(a);
+-React Event has 2 things: event.target , event.currentTarget
+ <button onClick={increment}><span>Increment</span></button>
+    const increment = (event) => {
+        console.log(event.type)   			// click
+        console.log(event.target)			// Actual Element Clicked - Span
+        console.log(event.currentTarget)    // Element where handler is added - Button
+    }
+
+-use an Empty arrow function when the handler needs custom arguments
+    const deleteEmployee = (id)=>{
+        console.log(`Employee with id ${id} is being deleted...`)
+    }
+   <button onClick={()=>deleteEmployee(emp.id)} className="btn btn-danger">Delete</button>
+
+-To use both (custom arguement + Event Object)
+	const deleteEmployee = (id, event)=>{
+        console.log(`Employee with id ${id} is being deleted...`)
+    }
+    <button onClick={(event)=>deleteEmployee(emp.id,event)} className="btn btn-danger">Delete</button>
+
+-preventDefault() is used for Preventing default browser behaviours
+  const handlePaste = (event)=>{
+    event.preventDefault()
+    alert('Paste is not allowed in thin input box')
   }
-  <button onClick={this.shoot.bind(this, "Goal")}>Take the shot!</button>
-  
-
--If you send arguments without using the bind method, (this.shoot(this, "Goal") instead of this.shoot.bind(this, "Goal")), 
-the shoot function will be executed when the page is loaded instead of waiting for the button to be clicked.
+  <input onPaste={handlePaste} type="search" placeholder='Search...' />
  
+-Event Bubbling : Events bubble from the clicked child element up through the parent elements 
+   <div onClick={()=>console.log("Div clicked...")}>
+      <p onClick={()=>console.log("Paragraph clicked...")}>
+        <button onClick={()=>console.log("Button clicked...")}>
+          <span onClick={()=>console.log("Span clicked...")}>Click Me</span>
+        </button>
+      </p>
+    </div>
+	
+-To register an event handler for the capture phase, append Capture to the event name.
+  <button onClick={f1}>click me</button>  // bubbling
+  <button onClickCapture={f1}>click me</button>  // capturing
+  <div onClickCapture={() => console.log('div clicked')}>
+            div <br/>
+            <span onClickCapture={() => console.log('span clicked')}>
+                Span <br/>
+                <button onClickCapture={() => console.log('button clicked')}>button</button>
+            </span>
+	</div>
  
-Single Event Handler for multiple input elements	
-=================================================	
- changeHandler = (e) => {
-    const { name, value } = e.target;
-    this.setState({ [name]: +value });
-  }; 
-================================= 
-let [obj, setObj] = useState({ num1: 0, num2: 0 });
-const changeHandler = (e) => {
-   setObj({ ...obj, [e.target.name]: +e.target.value })
-}
-  
+-use stopPropagation() when we do not want the parent event handler to run.
+ event.stopPropagation();
+ 
+-Event handlers are a normal place to update state data
+ const increment = (event) => {
+	setCount(count + 1)
+ }
+ 
+-Controlled Input : A controlled input stores its value in a react state , updates the state when value is changed
+  const [name,setName] = useState('virat');
+  const handleChange = (event)=>{
+    setName(event.target.value);
+  }
+  return <>
+    <input value={name} onChange={handleChange} />
+    <p>Hello, {name}</p>
+  </>
 
-
+	
 
 SyntheticEvent
 ==============
 -Instead of working directly with the browser's native event system(MouseEvent, KeyboardEvent, PointerEvent, etc.), 
- React provides its own event system called SyntheticEvent.
+ React provides its own event system called SyntheticEvent/SyntheticBaseEvent.
 -A SyntheticEvent is a cross-browser wrapper around the browser's native event.
 -It normalizes browser differences, ensuring that events behave consistently across different browsers(Chrome, Firefox, Safari)
 -In React, event handler functions receive a SyntheticEvent object as an argument instead of the browser's native Event object.
@@ -1477,32 +1518,23 @@ Advantages:
 4. Simplifies event handling for developers.
 
 
--To register an event handler for the capture phase, append Capture to the event name.
-  <button onClick={f1}>click me</button>  // bubbling
-  <button onClickCapture={f1}>click me</button>  // capturing
- 
-  <div onClickCapture={() => console.log('div clicked')}>
-            div <br/>
-            <span onClickCapture={() => console.log('span clicked')}>
-                Span <br/>
-                <button onClickCapture={() => console.log('button clicked')}>button</button>
-            </span>
-	</div>
+
+
 
 
 
 
 Component Communication
 =======================
-->Parent to Child :  props
-->Child to Parent :  callback and states
-->Between Siblings :  Combine the above 2
+Parent ->  Child    (props)
+Child  ->  Parent   (callback function)
+Siblings  (Lift State Up - Shared State in Common Parent)
 
 
 Child To Parent:	
 1. Define a function in parent which takes the data as a parameter.	
 2. Pass that function as a prop to the child.	
-3. Call the function using this.props.[callback] in the child, pass in the data as the argument.	
+3. Call the function using props.Function_name in the child, pass in the data as the argument.	
 
 
 
