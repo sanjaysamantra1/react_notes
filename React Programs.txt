@@ -135,6 +135,48 @@ export default function Footer() {
 
 
 
+Categories
+==========
+<div className='container'>
+    <div className="row">
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/fashion.svg" alt="" />
+        <div>Fashion</div>
+      </div>
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/mobiles.svg" alt="" />
+        <div>Mobiles</div>
+      </div>
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/electronics.svg" alt="" />
+        <div>Electronics</div>
+      </div>
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/home.svg" alt="" />
+        <div>Home</div>
+      </div>
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/tv.svg" alt="" />
+        <div>Appliances</div>
+      </div>
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/furniture.svg" alt="" />
+        <div>Furnitures</div>
+      </div>
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/food.svg" alt="" />
+        <div>Food</div>
+      </div>
+      <div className="col">
+        <img src="https://static-assets-web.flixcart.com/apex-static/images/svgs/L1Nav/auto-new.svg" alt="" />
+        <div>2 wheeler</div>
+      </div>
+      <hr/>
+    </div>
+  </div>
+
+
+
 
 program-9: Data Binding
 ***********************
@@ -1858,7 +1900,7 @@ export default function Demo() {
       <button onClick={() => setA(15)}>
         update A
       </button>
-      <button onClick={() => setB(25)}>
+      <button onClick={() => setB(25)} className="mx-2">
         update B
       </button>
       <button onClick={() => setC(35)}>
@@ -1867,6 +1909,31 @@ export default function Demo() {
     </>
   );
 }
+
+
+
+
+Program: DigitalClock using UseEffect() 
+**************************************
+import { useEffect, useState } from "react";
+export default function DigitalClock() {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    console.log("Component is initialized, plz add logic");
+    const timerId = setInterval(() => {
+      console.log("I am set interval");
+      setTime(new Date());
+    }, 1000);
+    return () => {
+      console.log("Component is about to be destroyed, plz clean everything");
+      clearInterval(timerId);
+    };
+  }, []);
+
+  return <h2>{time.toLocaleTimeString()}</h2>;
+}
+
 
 
 
@@ -1894,7 +1961,7 @@ export default function UserDetails() {
         <option value={2}>User 2</option>
         <option value={3}>User 3</option>
       </select>
-      <div className="card h-100">
+      <div className="card h-100 col-sm-3">
         <div className="card-body">
           <p>{user?.id}</p>
           <p>{user?.name}</p>
@@ -1908,33 +1975,6 @@ export default function UserDetails() {
 }
 
 
-
-program: 62  componentWillUnmount in functional component
-*****************************************************
-import React, { useEffect, useState } from "react";
-
-export default function Demo3() {
-  const [color, setColor] = useState("red");
-  useEffect(() => {
-    console.log("use effect called while mounting/updating");
-    return () => {
-      console.log("use effect called while unmounting");
-    };
-  }, []);
-  return (
-    <div>
-      <p id="para1">This is a paragraph</p>
-      <button
-        onClick={() => {
-          setColor("red");
-        }}
-      >
-        click me
-      </button>
-      <h2>color value is {color}</h2>
-    </div>
-  );
-}
 
 
 
@@ -2087,6 +2127,70 @@ export default FancyButton;
 
 
 
+
+
+program: Product Search with useMemo
+*************************************
+import { useMemo, useState } from 'react';
+import products from '../list/product_data';
+
+export default function ProductSearch() {
+  const [count, setCount] = useState(0);
+  const [query, setQuery] = useState('');
+
+  const filteredProducts = useMemo(() => {
+    console.log('Filtering products data...');
+    return products.filter(product =>
+      product.description.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [query]);
+  
+  /* const filteredProducts = products.filter(product =>{
+      console.log('Filtering products data...');
+      return product.description.toLowerCase().includes(query.toLowerCase())
+   }); */
+  return (
+    <>
+      <h3 className="text-center">Product List with Search Functionality</h3>
+      <div className="row">
+        <div className="col-sm-6">
+          <input value={query} onChange={e => setQuery(e.target.value)} type="search" placeholder="Search by category..." className="form-control" />
+          <p>Searched Text: <strong>{query}</strong></p>
+          <p>Products Found: <strong>{filteredProducts.length}</strong></p>
+        </div>
+        <div className="col-sm-2">
+          <p>Count: {count} &nbsp;
+            <button onClick={() => setCount(count + 1)}>Increment</button>
+          </p>
+        </div>
+      </div>
+      <div className="row">
+        {filteredProducts.map(product => (
+          <div className="col-3 my-2" key={product.id}>
+            <div className="card">
+              <img src={product.image} className="card-img-top" alt={product.title} height={250} />
+              <div className="card-body text-center">
+                <h5 className="card-title">{product.category}</h5>
+                <p className="card-text text-truncate">{product.title}</p>
+                <p className="card-text text-truncate">{product.description}</p>
+                <p className="card-text">Rs {product.price}</p>
+                <p className="card-text">{product.rating.rate} ⭐</p>
+                <a href="#" className="btn btn-primary">Details</a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+
+
+
+
+
+
 Program : Search Filter with Deferred Value  (useState, useDeferredValue, useMemo)
 ============================================
 import { useState, useDeferredValue, useMemo } from "react";
@@ -2119,6 +2223,11 @@ export default function SearchFilter() {
     </div>
   );
 }
+
+
+
+
+
 
 
 
@@ -3753,7 +3862,6 @@ export default counterSlice.reducer;
 
 
 5. Add Counter Component
-
 import { useDispatch, useSelector } from "react-redux";
 import { increment,decrement, reset } from "../../features/counter/counterSlice";
 
@@ -3779,11 +3887,11 @@ export default function CounterWithRedux() {
 
 
 Program-95: Redux ToDo example
-********************************
+******************************
 1. create a new project 
    npx create-react-app <projectName>
    
-2. install react-redux
+2. install react-redux And @reduxjs/toolkit
    npm install @reduxjs/toolkit react-redux
 
 3. Create Folders & Files for actions, reducers, store and components
@@ -3791,18 +3899,8 @@ Program-95: Redux ToDo example
 	 features/todo --> todoSlice.js
 	 components--> ToDoList.js , ToDo.js, AddToDo.js 
 	 
-4. Create a Redux Store
-    import { configureStore } from '@reduxjs/toolkit'
-	export const store = configureStore({
-		reducer: {todoReducer:todoReducer}
-	})
+4. Create a Redux "slice" reducer with createSlice , Export the generated slice reducer and action creators	
 
-5. Provide the Redux Store to React(index.js)
-    <Provider store={myStore}>
-      <App />
-    </Provider>
-	
-6. Create a Redux "slice" reducer with createSlice , Export the generated slice reducer and action creators	
 	import { createSlice } from '@reduxjs/toolkit';
 	const initialState = {
 		todoList: [
@@ -3843,6 +3941,20 @@ Program-95: Redux ToDo example
 	export const { addToDo, deleteToDo, toggleToDo } = todoSlice.actions; // Action Creators
 	export default todoSlice.reducer;
    
+   
+5. Create/Update Redux Store
+    import { configureStore } from '@reduxjs/toolkit';
+	import todoReducer from "../features/todo/todoSlice";
+	export const store = configureStore({
+		reducer: {todoReducer:todoReducer}
+	})
+
+6. Provide the Redux Store to React(index.js/main.tsx)
+    <Provider store={myStore}>
+      <App />
+    </Provider>
+   
+   
 7. Read data from the store with the useSelector hook (ToDoList.js)
     import { useSelector } from 'react-redux'
 	import ToDo from './ToDo';
@@ -3870,7 +3982,8 @@ Program-95: Redux ToDo example
 
 9. ToDo.js
 	import { useDispatch } from 'react-redux'
-	import { deleteToDo, toggleToDo } from '../features/todo/todoSlice';
+	import { deleteToDo, toggleToDo } from '../../features/todo/todoSlice';
+	
 	export default function ToDo({ todoObj }) {
 		const dispatch = useDispatch();
 		const deleteMyTodo = (id) => {

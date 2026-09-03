@@ -23,7 +23,7 @@ Syllabus
 -Http - Axios
 -Interceptors
 -Routing
--Context API
+-Context APIprops
 -REDUX  (State Management)
 -Unit Testing (JEST / vitest)
 -EsLint
@@ -227,6 +227,7 @@ Why Virtual DOM?
 -React uses the Virtual DOM to efficiently update the UI.
 
 
+
 What is Virtual DOM?
 ====================
 -The Virtual DOM is a lightweight JavaScript representation of the real DOM.
@@ -236,19 +237,6 @@ What is Virtual DOM?
 -After identifying the changes, React updates only the required parts of the real DOM.
 -This process is called Reconciliation.
 -The Virtual DOM helps React optimize rendering performance.
-
-
-
-Virtual DOM Benefits
-====================
-1. Improved Performance
-   - Reduces expensive direct DOM manipulations.
-2. Optimized Updates
-   - React updates only the changed elements instead of re-rendering the entire page.
-3. Faster Rendering
-   - Minimizes browser reflow and repaint operations.
-4. Simplified UI Development
-   - Developers work with declarative UI instead of manually manipulating the DOM.
 
 
 
@@ -265,6 +253,8 @@ How Does React Work? (Virtual DOM)
 
 5. Real DOM Update : React updates only the changed parts of the real DOM instead of re-rendering the entire page, resulting in faster UI updates.
 
+
+User clicks → Event handler runs → setCount() schedules a state update → Component re-renders → New React element tree is created → React reconciles old and new trees → Required DOM changes are identified → Commit phase updates the DOM → Browser displays the updated UI.
 
 
 
@@ -291,23 +281,27 @@ Key Difference
 
 
 
+What Causes a React Component to Re-render
+==========================================
+-A React component is generally re-rendered when React needs to calculate its UI again.
+	Its state changes
+	Its parent re-renders
+	A context value it consumes changes
 
-ReactDOM
-========
--ReactDOM is the glue between React and the DOM.
--React creates a virtual representation of your User Interface (what we call a Virtual DOM) and then ReactDOM is the library that efficiently updates the DOM based on the Virtual DOM.
--The reason why the Virtual DOM exists is to figure out which parts of the UI need to be updated and then batch these changes together. 
--ReactDOM receives those instructions from React and then efficiently updates the DOM.
+State Changed  --> React schedules an update --> Comonent function executes again --> React calculates the new UI -->
+React compares the result -->  Only necessary DOM changes are committed
+
+Note: Re-render ≠ DOM Update (Component Function Executes ≠ Real DOM Must Change)
 
 
 
-
-Web Browser Workflow
-====================
-Parsing HTML to construct DOM tree --> Render Tree construction --> Layout of the Render tree -->
- -->painting the render tree.
- 
-
+Render Phase vs Commit Phase
+=============================
+-React updates can be understood using two major phases. (render & commit)
+-React Update  -->  Render Phase  --> Commit Phase  --> Browser UI
+-Render Phase : What should the UI look like now? Calculates UI
+-Commit Phase : After React has determined the necessary changes, it performs the commit phase.               
+-What Should Not Happen During Rendering: API calls , Timers, DOM manipulation, Modifying external variables
 
 
 React Reconciliation 
@@ -324,24 +318,24 @@ Stack Reconciler < React-16
 -works like a stack
 -cann't be interrupted
 
+
+
 Fiber Reconciler
 ================
--Fiber is the new reconciliation engine or re-implementation of core algorithm in React v16.
--React Fiber reconciler makes it possible to divide the work into multiple units of work(incremental rendering).
--It sets the priority of each work, and makes it possible to pause, reuse, and abort the unit of work.
--Fiber is Asynchronous.
--reconciliation and rendering to the DOM weren't separated, and React couldn't pause 
- its traversal to jump to other renders in between. This often resulted in lagging inputs.
--Fiber allows the reconciliation and rendering to the DOM to be split into two separate phases:
- Phase 1: render(processing)
- -----------------------
- -React creates a list of all changes to be rendered in the UI 
- -Once the list is fully computed, React will schedule these changes to be executed in the next phase.
- -React doesn't make any actual changes in this phase. 
- Phase 2: Commit
- ----------------
- -React tells the DOM to render the changes that was created in the previous phase.
- -the Reconciliation phase can be interrupted, the Commit phase cannot.
+-Architecture for scheduling and managing rendering work
+
+Phase 1: render(processing)
+-----------------------
+-React creates a list of all changes to be rendered in the UI 
+-Once the list is fully computed, React will schedule these changes to be executed in the next phase.
+-React doesn't make any actual changes in this phase. 
+ 
+Phase 2: Commit
+----------------
+-React tells the DOM to render the changes that was created in the previous phase.
+-the Reconciliation phase can be interrupted, the Commit phase cannot.
+
+
 
 
 
@@ -1026,196 +1020,52 @@ Assignment
 
 
 
-forceUpdate()
-=============
--React components normally re-render when there are changes to state or props.
--Updating normal class variables or function variables does not trigger a re-render.
--In rare cases, forceUpdate() can be used to force a component to re-render.
--forceUpdate() is available only in class components.
-
-Example:
----------
-this.forceUpdate();
--React recommends avoiding forceUpdate() in most situations.
--Instead of using forceUpdate(), state updates should be preferred.
--Common use cases for non-state variables:
-    • Storing timeout/interval IDs
-    • Storing frequently used values
-    • Referencing DOM elements
-    • Mutable values that do not affect UI
--Normally, render() should depend only on:
-    • this.props
-    • this.state
-
--Functional components do not have a forceUpdate() method.
--In functional components, re-rendering is triggered using:
-    • useState()
-    • useReducer()
--useRef() can store mutable values without causing re-renders.
-
-
-
-
 Props
 =====
--Props stands for Properties. Props are inputs to components.
--Props are used to pass data and methods from a parent component to a child component.
+-Props stands for Properties. 
+-Props are inputs passed to components.
+-Props are mainly used to pass data and functions from a parent component to a child component.
+-When parent data changes, updated props are automatically passed to child components.
 -Attributes passed to components are received as an object called props.
 -Props help make components reusable and dynamic.
--Data passed using props flows in one direction (Parent → Child). This is called unidirectional data flow.
--We can pass props to components similar to HTML attributes.
+-Data flows in one direction: Parent → Child. This is called unidirectional (one-way) data flow.
+-Props are passed to components similarly to HTML attributes.
+
 
 Example:
 ---------
-<ChildComponent name="John" age={25} />
--Boolean props passed without a value are treated as true.
-	<MyComponent showTitle={true} />
-	<MyComponent showTitle />
-
--Props can be accessed as shown below:
-	Class Component: this.props.propName
-	Functional Component: props.propName
-
-
-Important Points
-================
-1. Props are immutable.
-   -Child components should not modify props received from parent components.
-
-2. Props support unidirectional data flow.
-   -Data flows only from Parent → Child.
-
-3. Props help create reusable components.
-
-4. When parent data changes, updated props are automatically passed to child components.
+<Component
+  name="John"                        // String
+  age={25}                           // Number
+  isActive={true}                    // Boolean
+  user={{ id: 1, name: "John" }}     // Object
+  skills={["React", "JavaScript"]}   // Array
+  onClick={handleClick}              // Function
+/>
 
 
 
 Props De-structuring
 ====================
 -Destructuring is a JavaScript feature used to extract values from objects or arrays.
--Props destructuring improves readability.
--It helps avoid repeatedly writing props or this.props.
-
-Functional Component:
----------------------
-	export default function Greet({ name, msg }) {
-	}
-
-Class Component:
-----------------
-	render() {
-	   let { pId, name, price } = this.props.product;
-	}
-
-
-
-PropTypes
-=========
--React supports runtime prop validation using the prop-types package.
--PropTypes help validate the data received by a component.
--Warnings are shown in the browser console if invalid prop types are passed.
--PropTypes are checked only in development mode.
-
-import PropTypes from 'prop-types';
-
-Syntax:
--------
-ComponentName.propTypes = {
-   variableName: PropTypes.string
-};
-
-Common Validators
-=================
-optionalArray: PropTypes.array,
-optionalBool: PropTypes.bool,
-optionalFunc: PropTypes.func,
-optionalNumber: PropTypes.number,
-optionalObject: PropTypes.object,
-optionalString: PropTypes.string,
-optionalSymbol: PropTypes.symbol,
-optionalElement: PropTypes.element,
-optionalEnum: PropTypes.oneOf(['News', 'Photos']),
-optionalArrayOf: PropTypes.arrayOf(PropTypes.number),
-optionalObjectWithShape: PropTypes.shape({
-   color: PropTypes.string,
-   fontSize: PropTypes.number
-}),
-
-
-
-Requiring Props
-===============
--If a prop is not passed to a component, its value becomes undefined.
--isRequired ensures that a prop must be provided.
-
-Example:
----------
-Student.propTypes = {
-   name: PropTypes.string.isRequired,
-   age: PropTypes.number
-};
-
-
-
-Default Props
-=============
--Default props allow setting default values for props.
-
-Example:
----------
-Greet.defaultProps = {
-   msg: 'this is my default message'
-}
-
-Functional Component:
----------------------
-export default function Greet({ name, msg = 'good morning' }) {
-}
-
+-Props destructuring improves readability and avoids repeatedly writing props.propName.
 
 
 Props.children
 ==============
 -props.children represents the content placed between the opening and closing tags of a component.
 -props.children can contain text, JSX, single elements, or multiple elements.
--props.children is available in every component.
-
-Example:
----------
-<Welcome>Hello world!</Welcome>
-
-Class Component:
-----------------
-class Welcome extends React.Component {
-   render() {
-      return <p>{this.props.children}</p>;
-   }
-}
-
-
-
-Ensuring Single Child
-=====================
--PropTypes.element ensures that only one child element is passed to a component.
--Passing multiple child elements will show a warning.
-
-Example:
----------
-Greet.propTypes = {
-   children: PropTypes.element
-};
+-Children.only() is used to verify only 1 element is sent from parent
+ import { Children } from "react";
+ {Children.only(children)}
 
 
 
 Passing Functions as Props
 ==========================
 -Functions can also be passed as props from parent to child components.
--This helps child components communicate with parent components.
-
-Example:
----------
-<Child onDelete={deleteUser} />
+-used when a child component needs to notify its parent about an event.
+-example: <Child onDelete={deleteUser} />
 
 
 
@@ -1224,6 +1074,17 @@ Props Drilling
 -Props drilling means passing props through multiple intermediate components to reach deeply nested child components.
 -It can make component structures difficult to maintain.
 -Context API/REDUX is commonly used to avoid props drilling.
+
+
+
+		Props        		  vs 					State
+=======================================================================
+1. Props are immutable.					1. State is mutable/modifiable.
+2. pass data from parent component 		2. contains own data & changes over time
+   to child component
+3. communicate between components		3. rendering dynamic changes
+4. props - Functional Comp				4. useState()      - Functional Comp
+   this.props - class comp		  		   this.state={}   - Class Comp
 
 
 
@@ -1238,30 +1099,6 @@ Props Assignment
 
 
 
-	
-
-		Props        		  vs 					State
-=======================================================================
-1. Props are immutable.					1. State is mutable/modifiable.
-2. pass data from parent component 		2. contains own data & changes over time
-   to child component
-3. communicate between components		3. rendering dynamic changes
-4. props - Functional Comp				4. useState()      - Functional Comp
-   this.props - class comp		  		   this.state={}   - Class Comp
-
-
-
-Assignments: 
-1. Have a paragraph & a toggle button, on click of the button control the visibility(Show/Hide) of the paragraph
-2. Create a text-area with maxLength=100, as the user keeps typing display updated Remaining characters.
-3. Create dropdown with state names, when user changes dropdown value, print the selected (stateName)dropdown value in a div
-4. have 2 inputBoxes, and a dropdown(+,-,*,/) and perform arithmetic operations
-5. create a input box, toggle the type of that input box to (text/password)
-6. create a counter example with 3 controls(increment,decrement,reset)
-7. Have a toggle button and control Dark/Light theme of a page.
-8. Temperature Converter (celcius to fahrenheit)
-
-
 
 
 How to use React-icons
@@ -1271,9 +1108,11 @@ How to use React-icons
 2. import react-icons in component
    import { FaEdit, FaTrash } from 'react-icons/fa';
    import { BsFillCalendarDateFill,BsFillClockFill } from 'react-icons/bs';
+   import { BiRupee } from 'react-icons/bi';
 3. use the Icons
    <FaEdit /> 
    <FaTrash color='red' />
+   
 
 
 
@@ -1332,10 +1171,13 @@ How to use react-modal
 How to use react-bootstrap modal
 ================================
 1. npm install react-bootstrap bootstrap  
-2. import Modal from 'react-bootstrap/Modal';
+2. import {Modal,Button} from 'react-bootstrap';
+
 3. const [show, setShow] = useState(false);
    const handleClose = () => setShow(false);
    const handleShow = () => setShow(true);
+   
+   <Button onClick={handleShow}>click me</Button>
    
    <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -1351,7 +1193,7 @@ How to use react-bootstrap modal
           </Button>
         </Modal.Footer>
     </Modal>
-	<Button onClick={handleShow}>click me</Button>
+	
 
 
 Search
@@ -1398,6 +1240,7 @@ Assignment
 4. add pagination 
 5. Add 2 buttons to sort the products by price(asc,desc)
 6. crate a filter dropdown with category values(clothing/electronics), display the products of selected category only
+
 
 
 
@@ -1486,7 +1329,18 @@ React Events
     <p>Hello, {name}</p>
   </>
 
-	
+-Single Handler for multiple input fields 
+ const handleChange = (event) => {
+    const { name, value } = event.target;
+    setEmployee({
+      ...employee,
+      [name]: value
+    });
+  };
+ 
+ 
+ 
+ 
 
 SyntheticEvent
 ==============
@@ -1541,22 +1395,15 @@ Child To Parent:
 
 Assignment
 ==========
-1. create 1 EmployeeCRUD component
-2. display list of employees in a table(data comes from an array)
-3. user should be able to delete Employee (ask user confirmation) 
-4. view the details of each employee in a modal (bootstrap Modal)
-5. add a new employee to the table (insert a new record to the array)
-   use SnackBar to display message ('Employ Added Successfully' - message should be maintained in a constant file)
+-Create a component(EmployeeCRUD), which holds array of employees.
+-Create 2 Child Components(EmployeeTable , EmployeeAdd)
+-Pass data from EmployeeCRUD to EmployeeTable, EmployeeTable should display the data in table
+-all the logic/functions should be present in Parent Component(EmployeeCRUD)
+-have delete button against every employee(row) to perform delete operation
+-EmployeeAdd component should have form & adds a new employee to the table (insert a new record to the array)
+  use SnackBar to display message ('Employ Added Successfully' - message should be maintained in a constant file)
 
 
-
-Assignment
-==========
-Todo CRUD Component with below functionalities
-1. Add Todo : User types a todo and clicks “Add” , add the item to the todo list
-2. Toggle Completion : User checks a checkbox to mark as completed or not completed
-3. Delete Todo : Each todo item should have a delete button to remove it from the list.
-4. Completed Count : Show the number of completed todos (e.g., 3 out of 5 tasks completed)
  
 
 
@@ -1575,15 +1422,17 @@ Component vs PureComponent
 -PureComponent checks previous State and new State , if nothing changed , it skips re-rendering
    const [name, setName] = useState("pavan");
    const updateName = () => {setName("pavan")};
+-React uses Object.is() comparison, which compare objects by reference, not by their contents/value.
+ Object.is(user1, user2);  // false
+ Although both objects contain the same data, they are two different objects in memory
   
 
 
 
 React.memo()
 ============
--Introduced in React v16.6.
+-React.memo() prevents a child component from re-rendering when its props are not changed
 -React.memo() is a Higher-Order Component (HOC).
--It is used to improve performance by preventing unnecessary re-renders.
 -It is used with child components that receive props.
 -When a component is wrapped with React.memo(), React re-renders it only when its props change.
 -React.memo() performs a shallow comparison of props. If the props are unchanged, React reuses the previous rendered result.
@@ -1633,7 +1482,7 @@ const filteredProducts = useMemo(() => {
 
 useCallback()
 =============
--useCallback() is a React Hook that returns a memoized version of a function.
+-useCallback() returns a memoized version of a function.
 -It helps prevent unnecessary re-creation of functions during component re-renders.
 -It is used when passing functions as props to child components.
 -It preserves the same function reference between parent renders unless its dependencies change.
@@ -1841,34 +1690,23 @@ useLayoutEffect
 
 
 
-Refs (Template Reference Variable)
-==================================
--Refs are mainly used when we need to work with the DOM directly instead of using React state.
--Refs provide a way to access DOM nodes or React elements.
--Managing focus, text selection , animations.
--ex: this.myRef1 = React.createRef();  (class component)
-     const myRef1 = useRef();          (function component)
-	 const myRef1 = useRef<HTMLInputElement>(null);
-     
+useRef
+======
+-useRef stores a value that persists between renders without causing a re-render when it changes.
+-example:
+	const inputRef = useRef(null)
+	<input ref={inputRef} />
+	
+-its value is available in .current 
+      console.log(inputRef.current);
+	  
+-Common UseCases:
+		-Access DOM Elements ( input, video, div )
+		-Focus, Scroll
+		-Store Interval, timeout Ids
+		-Store Previous state value
 
--React supports another way to set refs called “callback refs”, 
- which gives more fine-grain control over normal refs when refs are set and unset.
- ex: <input ref={x => inputRef1=x} />
-     alert(inputRef1.value)
-	 
--'Ref forwarding' is a feature that lets some components take a ref they receive,and pass/forward it further down to a child.
-
-
-Q. How to display previous State & Current State data in functional Component using ref.
-
-
-
-
-	State           		 Ref                                   
-----------------------------------------------
- -Causes re-render     -Does not cause re-render              
- -Used for UI data     -Used for DOM access or mutable values 
- -Reactive             -Non-reactive                          
+                        
 
 
 
