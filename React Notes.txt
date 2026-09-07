@@ -1700,7 +1700,7 @@ useLayoutEffect
 -This runs synchronously immediately after React has performed all DOM mutations.
 -useLayoutEffect(callBack, dependencies?)
 -useLayoutEffect: If you need to mutate the DOM inside the effect()
-
+-When a search page opens, the cursor is automatically placed in the search box
 
 
 
@@ -1721,7 +1721,16 @@ useRef
 		-Store Interval, timeout Ids
 		-Store Previous state value
 
-                        
+callback Ref:
+	-A callback ref is a function passed to ref instead of using useRef.
+	-whenever this DOM element is available, call this function and give me the element.
+	-Callback ref = a function that React calls with the DOM element when the element is attached (and with null when it is detached).
+
+
+React Ref Forwarding:
+  -Ref forwarding means allowing a parent component to access a DOM element that is inside a child component.
+  -Ref forwarding = passing a parent's ref through a child component to reach a DOM element inside that child.
+  -create a reusable Input component, but the parent needs to focus the input.
 
 
 
@@ -1796,6 +1805,15 @@ NPM Libraries for Form Handling
 1. https://www.npmjs.com/package/react-hook-form
 2. https://www.npmjs.com/package/formik
 3. https://www.npmjs.com/package/yup
+
+
+
+useActionState
+===============
+useActionState → manage the state/result of an action
+
+For form submit → server/action → result + pending state → useActionState.
+
 
 
 
