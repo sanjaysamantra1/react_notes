@@ -13,17 +13,17 @@ Syllabus
 -Lists & keys
 -Props : de-structuring,requiring props, proptypes,default props
 -State 
+-Events : Synthetic Event
 -React Hooks (useState, useEffect, useRef, useMemo, useCallback,useReducer)
 -Component Lifecycle using useEffect
 -Pure Component
 -Memo Component
--HigherOrder Component
--Events : Synthetic Event
 -Form
 -Http - Axios
 -Interceptors
 -Routing
--Context APIprops
+-HigherOrder Component
+-Context API
 -REDUX  (State Management)
 -Unit Testing (JEST / vitest)
 -EsLint
@@ -1133,7 +1133,10 @@ https://sweetalert2.github.io/#examples
 How to Use SnackBar
 ====================
 1. npm i awesome-snackbar
-2. import Snackbar from 'awesome-snackbar'
+
+2. import SnackbarModule from 'awesome-snackbar' 
+   const Snackbar = SnackbarModule.default || SnackbarModule
+	
 3. on button click call a function, function should have the below code	
 	new Snackbar('Helloooo, Good Morning',
       { position: 'top-center', theme: 'light', timeout: 5000, actionText: 'X' }
@@ -1171,6 +1174,7 @@ How to use react-modal
 How to use react-bootstrap modal
 ================================
 1. npm install react-bootstrap bootstrap  
+
 2. import {Modal,Button} from 'react-bootstrap';
 
 3. const [show, setShow] = useState(false);
@@ -1213,6 +1217,11 @@ Search
 	   
 
 
+
+
+
+
+
 Pagination
 ==========
 1. npm install react-paginate  
@@ -1236,10 +1245,9 @@ Assignment
 1. create products.json with list of products. 
    https://fakestoreapi.com/products
 2. display the products as cards
-3. add a Search bar to search products
-4. add pagination 
-5. Add 2 buttons to sort the products by price(asc,desc)
-6. crate a filter dropdown with category values(clothing/electronics), display the products of selected category only
+3. add a Search bar to search products 
+4. Add 2 buttons to sort the products by price(asc,desc)
+5. add pagination
 
 
 
@@ -1261,7 +1269,7 @@ React Events
 	
 -React passes an event object as the first arguement to the event handler function
 	const increment = (event) => {
-        console.log(`Event Type:${event.type} , Target: ${event.target}`)
+        console.log(event.type , event.target)
     }
 
 -React Event has 2 things: event.target , event.currentTarget
@@ -1303,13 +1311,14 @@ React Events
 -To register an event handler for the capture phase, append Capture to the event name.
   <button onClick={f1}>click me</button>  // bubbling
   <button onClickCapture={f1}>click me</button>  // capturing
-  <div onClickCapture={() => console.log('div clicked')}>
-            div <br/>
-            <span onClickCapture={() => console.log('span clicked')}>
-                Span <br/>
-                <button onClickCapture={() => console.log('button clicked')}>button</button>
-            </span>
-	</div>
+  
+  <div onClickCapture={()=>console.log("Div clicked...")}>
+      <p onClickCapture={()=>console.log("Paragraph clicked...")}>
+        <button onClickCapture={()=>console.log("Button clicked...")}>
+          <span onClickCapture={()=>console.log("Span clicked...")}>Click Me</span>
+        </button>
+      </p>
+    </div>
  
 -use stopPropagation() when we do not want the parent event handler to run.
  event.stopPropagation();
@@ -1480,6 +1489,8 @@ const filteredProducts = useMemo(() => {
 
 
 
+
+
 useCallback()
 =============
 -useCallback() returns a memoized version of a function.
@@ -1631,7 +1642,6 @@ LifeCycle hooks in Functional Component
 -lifecycle behaviour is handled with hooks , primarily useEffect()
 
 
-
 useEffect()
 ----------
 -useEffect() is a React hook that allows to execute some code after the component is initially rendered & when state change happens.
@@ -1679,9 +1689,14 @@ const ComponentExample => () => {
 Note: When the state is updated, the component gets re-rendered, Hence the component gets unmounted and gets rendered again.
 
 
+
+
+
+
 useLayoutEffect
 ===============
 -useLayoutEffect is a version of useEffect that fires before the browser repaints the screen.
+-useEffect runs After browser paint, useLayoutEffect runs Before browser paint
 -This runs synchronously immediately after React has performed all DOM mutations.
 -useLayoutEffect(callBack, dependencies?)
 -useLayoutEffect: If you need to mutate the DOM inside the effect()
@@ -1711,9 +1726,10 @@ useRef
 
 
 
-Forms
-=====
+React Forms
+===========
 -Forms are used to collect User Data.
+-For larger forms, store all fields in one object.
 -control the values of more than one input field by adding a name attribute to each element.
 -get the field value by using the 'event.target.value', 
  get the field name by using 'event.target.name'
@@ -1784,23 +1800,40 @@ NPM Libraries for Form Handling
 
 
 
+
+Communicating with backend services 
+===================================
+-React applications need to communicate with a BackEnd Server to Fetch or Send data from/to database.
+-React applications communicate with BackEnd Server using fetch() / axios 
+
+
 HTTP Methods
 ============
-GET - Retrieve a resource/Retrieve data from DB
-	  search
+GET - Fetch Data from the server (ex: search products)
+      Doesn't change Data
+	  Safe, Idempotent, No Request Body
 	  
-POST - to send data to server  ( sign up ) 
-       (create a resource/create a new record in DB)
-	   to fetch data securly    (send params in body not in URL)
+POST - Send Data to create a new resource( sign up )
+	   while fetching the Data if client wants to send parameters in Request body not in Request URL
+	   Not Idempotent, Request Body
 
-PUT - update data/create or replace a resource  
-	  update user's profile information 
-	  
-PATCH - update/modify a particular resource(partial update)
-        update user password
+PUT - Replace an existing resource completely
+      Idempotent, Full Update , Complete Object in Request Body
+	    
+PATCH - Update only specific fields of a resource
+		update password/mobile 
+		Idempotent, Partial Update , More Efficient than PUT, Request Body
 
-DELETE - Remove a resource/delete a record from DB 
-		 Delete naukri account
+DELETE - remove a resource/delete a record from DataBase
+		 Delete an account
+		 Idempotent, No Body
+		 
+HEAD - Get Headers only	, Same as GET but no response body
+       Used For Checking existance, performance checks
+	   
+OPTIONS - Returns Supported HTTP Methods
+          Used in CORS
+          Browser preflight requests	
 		 
 
 PUT vs POST
@@ -1833,10 +1866,8 @@ http status codes
 
 POSTMAN
 =======
--Application, used to Test REST APIs. (chrome://apps/)
+-Application, used to Test REST APIs. 
 -Send requests, get responses, and easily debug REST APIs.
--Browser Extension / Application
- https://www.postman.com/downloads/
 -Thunder Client(VSCode Extension) is an alternate to postman
 
 
@@ -1920,22 +1951,22 @@ HTTP with axios
   
 
 
-Fetch API 
-=========
+Fetch()
+======
 -Built into modern browsers and Node.js (no installation required).
--Request body usually needs JSON.stringify().
--Requires response.json() to parse JSON responses.
--Supports request cancellation via AbortController, but no built-in timeout.
+-Request body often needs to be converted to JSON using JSON.stringify()
+-Requires response.json() to parse JSON responses
+-Supports request cancellation via AbortController, but does not have a built-in timeout option.
 -No native support for interceptors.
 
 
 Axios
 =====
 -Requires installation (npm install axios).
--Automatically serializes request data and parses JSON responses.
--Supports request cancellation and built-in timeout configuration.
+-Automatically converts JavaScript objects to JSON when sending requests and parses JSON responses
+-Supports request cancellation and built-in timeout configuration
 -Supports request and response interceptors.
--Automatically rejects promises for HTTP errors (4xx/5xx), simplifying error handling                                                       
+-Automatically rejects the Promise for HTTP error status codes such as 4xx and 5xx, making error handling  simpler.                                                     
 
 
 
@@ -1944,7 +1975,9 @@ Create an Axios Instance
 1. Create a separate file named api.js(can be anything) and add the below code
 	import axios from 'axios';
 	const client = axios.create({
-	  baseURL: `http://jsonplaceholder.typicode.com/`
+	  baseURL: `http://jsonplaceholder.typicode.com/`,
+	  timeout: 10000,
+      headers: { accept: "Application/json" }
 	});
 	export default client;
 	
@@ -1954,11 +1987,35 @@ Create an Axios Instance
 
 
 
+
+make a API call with Query Params
+=================================
+let response = await axios.get('https://dummyjson.com/products', {
+        params: {
+          category: 'groceries',
+          inStock: true
+        }
+      })
+
+
+axios POST call
+===============
+axios.post(url , data, config)
+	 (OR)
+axios({
+	method : "post",
+	url : "https://dummyjson.com/products",
+	data : {name:"sanjay",email:"sanjay@gmail.com"}
+})
+
+
+
+
 Making multiple requests with axios.all() 
 ========================================
 -Executes multiple requests in parallel, not sequentially.
 -Similar to Javascript's Promise.all()
--Total execution time depends on the slowest request.
+-Total execution time depends on the trequest that takes the maximum time to complete.
 -If one request fails, Promise.all()/axios.all() fails immediately.
 
 ex:
@@ -1976,78 +2033,59 @@ ex:
 
 Http Interceptors
 =================
--Interceptors allow us to intercept/modify HTTP requests or responses before they are sent to the server or before they are processed by then() / catch().
- 
- Client Sends httpRequest ----> Interceptor ----> ModifiedRequest ----> Backend Server
- Client receives ModifiedResponse<---- Interceptor <---- httpResponse <---- Backend Server
- 
- 
-Why Interceptors:
--Centralized request/response handling.
--Attach authentication tokens automatically.
--Handle errors globally.
--Refresh expired tokens.
--Avoid duplicate code across API calls.
+-An Interceptor is a function which is executed automatically for every request.
+
+-There are 2 places to intercept:
+	a. Before a request is sent to server (Request Interceptor)
+	   client.interceptors.request.use(...)
+	b. After a response is received from server (Response Interceptor)
+	   client.interceptors.response.use(...)
+
+ Client --> httpRequest ----> Interceptor ----> ModifiedRequest ----> Backend Server
+ Client <-- ModifiedResponse <---- Interceptor <---- httpResponse <---- Backend Server
  
  
- 
+Request Interceptors: Runs before the request is sent
+	-Attach Access Token 
+	-Add Common Headers
+	-Log the Request
 
-Request interceptor use cases:
--Validate the presence of authentication tokens before sending requests.
--Redirect users to login if authentication information is missing.
-
-export function myInterceptor() {
-  axios.interceptors.request.use((req) => {
-    req.headers.authorization = "my secret token";
-    return req;
-  });
-}
--call the above function in app.js
-
-
-response interceptor use cases:
--Handle 401 Unauthorized responses globally.
--Redirect users to login page.
--Refresh expired access tokens.
--Centralized error handling.
- 
-Backend Server --> response --> interceptor --> modifiedResponse --> component
-
-axios.interceptors.response.use(
-  res => res,
-  err => {
-    if (err.response.status === 404) {
-      throw new Error(`${err.config.url} not found`);
-    }
-    throw err;
-  }
-);
-
-
-Run interceptor only for few APIs
----------------------------------
-axios.interceptors.request.use((req) => {
-    console.log(req);
-    if (req.url.includes("users")) {
-      req.headers.authorization = "my secret token";
-    }
-    return req;
- });
-
-
-remove an interceptor
----------------------
-const myInterceptor = axios.interceptors.request.use(function () {/*...*/});
-axios.interceptors.request.eject(myInterceptor);
+Response Interceptors: Runs after API Responsds
+	-Retry Http Call
+	-Global Error Handling
 
 
 
-add interceptors to a custom instance of axios
------------------------------------------------
-const client = axios.create();
-client.interceptors.request.use((req) => { 
-	// Logic
-});
+
+How to Run Interceptor for few APIs
+===================================
+-We can write condition to control for which all APIs interceptor will run & for whicll all APIs interceptor will not run.
+
+await client.get('/products',{skipAuthInterceptor:true});
+
+condition:
+	if(config.skipAuthInterceptor){
+		return config;
+	}
+
+
+
+
+How to handle million of products/data in React App
+===================================================
+1. Server-side Pagination 
+		/api/products?limit=50&offset=100
+		
+2. fetch data incrementally in react : infinite loading 
+
+3. Virtualize the rendered List 
+   even if you fetch thousands of products over time, do not keep thousands of product card mounted in the DOM
+   
+4. move filter, sort, search to backend 
+
+5. lazy-load large product images and use optimized thumbnails
+
+
 
 
 
