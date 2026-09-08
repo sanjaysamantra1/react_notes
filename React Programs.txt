@@ -3177,11 +3177,38 @@ Program-74: graphQL
    
 
 
+Design Question-1 : Star Rating
+*********************************
+import { useState } from "react";
+export default function StarRating() {
+    const [rating, setRating] = useState(0);
+    const [hover, setHover] = useState(0);
+    return <div className="text-center mt-5">
+        <h5>Rate this product</h5>
+        <div>
+            {[1, 2, 3, 4, 5].map(star => (
+                <span
+                    key={star}
+                    className={star <= (hover || rating)
+                        ? "text-warning"
+                        : "text-secondary"}
+                    style={{ fontSize: 38, cursor: "pointer" }}
+                    onMouseEnter={() => setHover(star)}
+                    onMouseLeave={() => setHover(0)}
+                    onClick={() => setRating(star)}
+                >
+                    ★
+                </span>
+            ))}
+        </div>
+        <div className="text-muted mt-1">
+            {rating ? `${rating} / 5` : "Click to rate"}
+        </div>
+    </div>
+}
 
 
-
-
-Design Question-1 : Folder Explorer
+Design Question-2 : Folder Explorer
 ************************************
 import React, { useState } from "react";
 export default function Folder({ folderInfo }) {
@@ -3212,7 +3239,45 @@ export default function Folder({ folderInfo }) {
 }
 
 
-Design Question-2 : Traffic Light
+
+
+Design Question-3 : Autocomplete
+*********************************
+import { useEffect, useState } from "react";
+const countries = [
+    "India", "Indonesia", "Ireland", "Iceland", "Australia", "Austria",
+    "Argentina", "Brazil", "Belgium", "Canada", "China", "Chile",
+    "Denmark", "Egypt", "France", "Germany", "Greece", "Japan",
+    "Mexico", "Nepal", "Netherlands", "Singapore", "South Africa",
+    "Spain", "United Kingdom", "United States"
+];
+export default function Autocomplete() {
+    const [search, setSearch] = useState(""), [suggestions, setSuggestions] = useState([]);
+    useEffect(() => {
+        const timer = setTimeout(() =>
+            setSuggestions(search ? countries.filter(c =>
+                c.toLowerCase().includes(search.toLowerCase())) : []), 500);
+        return () => clearTimeout(timer);
+    }, [search]);
+    return (
+        <div className="w-50 mx-auto mt-5">
+            <input className="form-control" placeholder="Search country..."
+                value={search} onChange={e => setSearch(e.target.value)} />
+            {suggestions.length > 0 && <ul className="list-group">
+                {suggestions.map(country =>
+                    <li key={country} className="list-group-item"
+                        onClick={() => { setSearch(country); setSuggestions([]); }}>
+                        {country}
+                    </li>
+                )}
+            </ul>}
+        </div>
+    );
+}
+
+
+
+Design Question-4 : Traffic Light
 *********************************
 import React, { useEffect, useState } from 'react';
 import './TrafficLight.css';
@@ -3277,7 +3342,72 @@ export default function TrafficLight() {
 
 
 
-Design Question-3 : OTP Handling
+
+Design Question-5 : Shopping Cart
+*********************************
+import { useState } from "react";
+const products = [
+    { id: 1, name: "Laptop", price: 60000 },
+    { id: 2, name: "Phone", price: 30000 },
+    { id: 3, name: "Headphones", price: 5000 }
+];
+export default function ShoppingCart() {
+    const [cart, setCart] = useState([]);
+    const add = p => setCart(c => {
+        const item = c.find(x => x.id === p.id);
+        return item
+            ? c.map(x => x.id === p.id ? { ...x, qty: x.qty + 1 } : x)
+            : [...c, { ...p, qty: 1 }];
+    });
+    const remove = id => setCart(c => c.filter(x => x.id !== id));
+    const qty = (id, n) =>
+        setCart(c => c.map(x => x.id === id ? { ...x, qty: x.qty + n } : x));
+
+    const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+    return <div className="container mt-4">
+        <h3>🛒 Shopping Cart</h3>
+        <div className="row">
+            <div className="col-md-7">
+                <h5>Products</h5>
+                {products.map(p => (
+                    <div className="card p-3 mb-2" key={p.id}>
+                        <div className="d-flex justify-content-between">
+                            <span><b>{p.name}</b> — ₹{p.price}</span>
+                            <button className="btn btn-primary btn-sm"
+                                onClick={() => add(p)}>Add</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="col-md-5">
+                <div className="card p-3">
+                    <h5>Cart</h5>
+                    {cart.map(x => (
+                        <div className="d-flex justify-content-between border-bottom py-2"
+                            key={x.id}>
+                            <span>{x.name} — ₹{x.price * x.qty}</span>
+                            <span>
+                                <button className="btn btn-sm btn-light"
+                                    onClick={() => x.qty > 1 && qty(x.id, -1)}>−</button>
+                                <b className="mx-2">{x.qty}</b>
+                                <button className="btn btn-sm btn-light"
+                                    onClick={() => qty(x.id, 1)}>+</button>
+                                <button className="btn btn-sm btn-danger ms-2"
+                                    onClick={() => remove(x.id)}>Remove</button>
+                            </span>
+                        </div>
+                    ))}
+                    <h5 className="mt-3">Total: ₹{total}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+Design Question-6 : OTP Handling
 ********************************
 import { useRef, useState } from "react";
 export default function OTP() {
@@ -3350,3 +3480,63 @@ const styles = {
   otpContainer: { display: "flex", justifyContent: "center", gap: "10px", margin: "20px 0" },
   input: { width: "45px", height: "50px", fontSize: "22px", textAlign: "center", border: "1px solid #ccc", borderRadius: "8px", outline: "none" }
 };
+
+
+
+
+Design Question-7 : Virtualized List
+************************************
+Virtualized List — Steps
+1. Create employee data.
+2. Create a fixed-height, scrollable container and define row height.
+3. Track the first visible row using scroll position.
+4. Get only visible employees using slice().
+5. Create the full virtual height for the scrollbar.
+6. Render and position only the visible rows.
+7. Verify that only visible rows are rendered in the DOM.
+--------------------------------
+import { useState } from "react";
+
+const employees = Array.from({ length: 1000 }, (_, i) => ({
+    id: 1001 + i,
+    name: ["Sanjay", "Deepak", "Ranjan", "Manoj", "Rahul"][i % 5],
+    role: ["Developer", "Manager", "Tester", "Designer"][i % 4],
+    department: ["IT", "HR", "Finance", "Sales"][i % 4],
+    salary: 40000 + (i % 6) * 10000
+}));
+
+export default function EmployeeList() {
+    const [start, setStart] = useState(0);
+    const visible = employees.slice(start, start + 10);
+    return (
+        <div className="container mt-4">
+            <h3>Employee List</h3>
+            <div
+                className="border"
+                style={{ height: 350, overflow: "auto" }}
+                onScroll={e => setStart(Math.floor(e.target.scrollTop / 45))}
+            >
+                <div style={{ height: employees.length * 45, position: "relative" }}>
+                    {visible.map((emp, i) => (
+                        <div
+                            key={emp.id}
+                            className="d-flex border-bottom px-3 align-items-center"
+                            style={{
+                                height: 45,
+                                position: "absolute",
+                                top: (start + i) * 45,
+                                width: "100%"
+                            }}
+                        >
+                            <div style={{ width: "10%" }}>{emp.id}</div>
+                            <div style={{ width: "20%" }}>{emp.name}</div>
+                            <div style={{ width: "20%" }}>{emp.role}</div>
+                            <div style={{ width: "20%" }}>{emp.department}</div>
+                            <div style={{ width: "20%" }}>₹{emp.salary}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
