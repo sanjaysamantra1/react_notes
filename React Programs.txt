@@ -2071,91 +2071,62 @@ const [message, submitAction, isPending] = useActionState(
 
 Program-54: Auth Interceptor
 ****************************
-client.interceptors.request.use((request) => {
-    console.log('interceptor called...')
+export function authInterceptor(request) {
+    console.log('Auth interceptor called...')
     // const token = localStorage.getItem('accessToken');
     const token = 'ABCDEF-123456'; // token received from backend during login
-    if(token){
+    if (token) {
         request.headers.Authorization = `bearer ${token}`;
     }
     return request;
-})
+}
+client.interceptors.request.use(authInterceptor)
 
 
 
 Program-55: Error Interceptor
 ******************************
-client.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        console.log('Error Interceptor called...')
-        const status = error.response?.status;
-        if (status === 401) {
-            window.location.assign('/login');
-        }
-        if (status === 403) {
-            console.error('You do not have Permission for this action')
-        } else if (status >= 500) {
-            console.error('Server Error, Please try again later.')
-        } else if (status >= 500) {
-            console.error('Server Error, Please try again later.')
-        } else if (!error.response) {
-            console.error('Network Error or Request timed out')
-        }
-        return Promise.reject(error);
+export function errorHandler(error) {
+    console.log('Error Interceptor called...')
+    const status = error.response?.status;
+    if (status === 401) {
+        window.location.assign('/login');
     }
-);
+    if (status === 403) {
+        console.error('You do not have Permission for this action')
+    } else if (status >= 500) {
+        console.error('Server Error, Please try again later.')
+    } else if (status >= 500) {
+        console.error('Server Error, Please try again later.')
+    } else if (!error.response) {
+        console.error('Network Error or Request timed out')
+    }
+    return Promise.reject(error);
+}
+client.interceptors.response.use(response=>response , errorHandler);
 
 
 
 Program-56: Retry Interceptor
 ******************************
-client.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-        const config = error.config;
-        config.retryCount = config.retryCount || 0;
-        const isServerError = error.response?.status >= 500;
-        const isNetworkError = !error.response;
-        // if ((isServerError || isNetworkError) && config.retryCount < 2) {
-        if ( config.retryCount < 2) {
-            config.retryCount++;
-            // wait 1 sec before trying again
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            return client(config)
-        }
-        return Promise.reject(error);
+import client from "./client";
+export async function retry(error) {
+    const config = error.config;
+    config.retryCount = config.retryCount || 0;
+    const isServerError = error.response?.status >= 500;
+    const isNetworkError = !error.response;
+    // if ((isServerError || isNetworkError) && config.retryCount < 2) {
+    if (config.retryCount < 2) {
+        config.retryCount++;
+        // wait 1 sec before trying again
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return client(config)
     }
-);
-
-
-
-
-
-Program-57: HOC For Logging
-***************************
-import React, { useState, useEffect, useRef } from 'react';
-const LoggerHOC = (InputComponent) => {
-    const EnhancedComponent = (props) => {
-		const isFirstRender = useRef(true);
-        useEffect(() => {
-            console.log(`${InputComponent.name} Mounted`);
-            return () => {
-                console.log(`${InputComponent.name} UnMounted`);
-            }
-        }, []);
-        useEffect(() => { // To Make sure this effect gets called only on update not on mount
-            if (isFirstRender.current) {
-                isFirstRender.current = false;
-            } else {
-                console.log(`${InputComponent.name} Updated`);
-            };
-        });
-        return <InputComponent {...props} />
-    }
-    return EnhancedComponent;
+    return Promise.reject(error);
 }
-export default LoggerHOC;
+
+client.interceptors.response.use(response=>response , retry);
+
 
 
 
@@ -2191,7 +2162,6 @@ export default function HoverCounter() {
 
 Program-59: With HOC
 *********************
-
 withcounter.js
 --------------
 import React, { useState } from "react";
@@ -2236,30 +2206,21 @@ export default CounterHOC(HoverCounterWithHOC);
 
 Program-60: Logging using HOC
 ******************************
-const withLogger = (WrappedComponent) => {
-  const WithLogger = (props) => {
-    useEffect(() => {
-      // Log data on component mount
-      console.log(`Component ${WrappedComponent.name} mounted.`);
-      return () => {
-        // Log data on component unmount
-        console.log(`Component ${WrappedComponent.name} unmounted.`);
-      };
-    }, []);
-
-    useEffect(() => {
-      // Log data on component update
-      console.log(`Component ${WrappedComponent.name} updated.`);
-    });
-
-    return <WrappedComponent {...props} />;
-  };
-
-  WithLogger.displayName = `withLogger(${WrappedComponent.displayName || WrappedComponent.name})`;
-  return WithLogger;
-};
-
-export default withLogger;
+export default function WithLogger(InputComponent) {
+    return function EnhancedComponent(props) {
+        useEffect(() => {
+            console.log(`Component ${InputComponent.name} mounted.`);
+            return () => {
+                console.log(`Component ${InputComponent.name} unmounted.`);
+            };
+        }, []);
+        useEffect(() => {
+            console.log(`Component ${InputComponent.name} updated.`);
+        });
+        console.log(`${InputComponent.name} rendered`);
+        return <InputComponent {...props} />;
+    };
+}
 
 
 

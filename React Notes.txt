@@ -1990,7 +1990,7 @@ Axios
 
 Create an Axios Instance
 ========================
-1. Create a separate file named api.js(can be anything) and add the below code
+1. Create a separate file named client.js(can be anything) and add the below code
 	import axios from 'axios';
 	const client = axios.create({
 	  baseURL: `http://jsonplaceholder.typicode.com/`,
@@ -2000,7 +2000,7 @@ Create an Axios Instance
 	export default client;
 	
 2. Once the default instance is set up, it can then be used anywhere
-   import client from 'api.js'
+   import client from 'client.js'
    client.get('/users')
 
 
@@ -2073,6 +2073,10 @@ Response Interceptors: Runs after API Responsds
 	-Global Error Handling
 
 
+Ex: axios.interceptors.request.use(authInterceptor)
+    client.interceptors.request.use(authInterceptor)
+
+
 
 
 How to Run Interceptor for few APIs
@@ -2113,8 +2117,11 @@ React Higher Order Components (HOCs)
 -Higher Order Components  are used for reusing component logic across multiple components without duplicating code.
 -A Higher Order Component is a JavaScript function that accepts a component as an argument and returns a new enhanced component.
 	EnhancedComponent = higherOrderComponent(OriginalComponent)
+	Original Component --> Higher Order Component (Wrapper)  -->  Enhanced Component
 -HOCs do not modify the original component. Instead, they wrap the originalcomponent and provide additional functionality.
--Benefits:	1. Code Reusability, 2.Centralized Logic
+-Benefits:	
+	1. Code Reusability
+	2.Centralized Logic
 
 -HOCs are generally used for:
     * Authentication and Authorization
@@ -2125,13 +2132,7 @@ React Higher Order Components (HOCs)
     * Permission Management
 
 
-How HOC Works
--------------
-Original Component
-        ↓
-Higher Order Component (Wrapper)
-        ↓
-Enhanced Component
+
 
 
 Example:
@@ -2164,6 +2165,7 @@ export default withLogger(MyCounter);   // with Logging
 
 Routing
 =======
+-React Routing means showing different UI pages based on the browser URL.
 -Single Page Applications (SPAs) load a single HTML page and dynamically update content without reloading the entire page.
 -Only the required portion of the page is updated, resulting in a faster and smoother user experience.
 -Routing enables navigation between different views or components within an SPA.
@@ -2199,15 +2201,18 @@ https://application.com/#/dashboard   // HashRouter (IE<9)
 
 Steps for Routing
 =================
-1. Install  React Router DOM
-   npm install react-router-dom   
+1. Install  React Router package
+   npm install react-router  
+   
 2. Create Pages/Components
-   create components like - (Home,About,Contact,Careers,NotFound)   
+   create components like - (Home,Aboutus,Careers,ContactUs,NotFound)   
+   
 3. set up the application to work with React Router. (index.js / main.tsx)
-   import { BrowserRouter } from 'react-router-dom';	
+   import { BrowserRouter } from 'react-router';	
    <BrowserRouter>
         <App />
    </BrowserRouter>	
+   
 4. add the <Routes> element (ensures that only one component is rendered at a time)
    and add <Route> to create the link between components    (Body.js)
     <Routes>
@@ -2217,6 +2222,7 @@ Steps for Routing
         <Route exact path="/products" element={<Products />} />
         <Route path="*" element={<NotFound />} /> (No Match Route)
     </Routes>	
+	
 5. Add a Link for each component and use to="URL" to link them.
 		<ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
