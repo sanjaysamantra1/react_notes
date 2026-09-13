@@ -2236,7 +2236,7 @@ import { BrowserRouter } from 'react-router-dom';
    </BrowserRouter>	
 	
 	
-center.js
+body.js
 ---------
 import { Route, Routes } from "react-router";
 <Routes>
