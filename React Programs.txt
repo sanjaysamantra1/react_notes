@@ -2272,7 +2272,7 @@ nav.js
 program-62: Path param
 **********************
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 
 function UserDetail() {
   const { id } = useParams();
@@ -2308,7 +2308,7 @@ program-63: Protected Route
         } />		
 ---------------------------------------------------
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router";
 export default function ProtectedRoute({ children }) {
   const role = "student";
   if (role === "student") {
@@ -2334,59 +2334,54 @@ const ProductList = React.lazy(() => import("./components/list/product_list"));
 
 
 
-program-64 custom Hook
+program-64 custom Hook - useApi
 ***********************
-fetchHook.js
-------------
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function useFetch(url) {
-  const [data, setData] = useState([]);
-  
-  useEffect(async () => {
-    const response = await fetch(url);
-    const data = await response.json();
-    setData(data);
-  }, []);
+const useApi = (url) => {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await axios.get(url);
+                setData(response.data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [url]);
+    return { data, loading, error };
+};
+export default useApi;
 
-  return data;
+
+
+
+program-: useClock Custom Hook
+*****************************
+import { useEffect, useState } from 'react'
+export default function useClock() {
+    const [time, setTime] = useState(new Date());
+    useEffect(() => {
+        const id = setInterval(() => { setTime(new Date()) }, 1000);
+        return () => {
+            clearInterval(id); 
+        }
+    }, []);
+    return time;
 }
 
 
-test.js
--------
-import React, { useState, useEffect } from 'react'
-import useFetch from '../customhook/fetchHook';
 
-export default function Test() {
-    let users = useFetch('https://jsonplaceholder.typicode.com/users')
-    return (
-        <div>
-            <table className='table table-bordered table-striped table-responsive'>
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>name</th>
-                        <th>email</th>
-                        <th>phone</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user, ind) => {
-                        return (
-                            <tr>
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>{user.phone}</td>
-                            </tr>
-                        )
-                    })}
-                </tbody>
-            </table>
-        </div>
-    );
-}
+
 
 
 program-65: Context Example
@@ -2404,6 +2399,9 @@ export const UserProvider = ({ children }) => {
         {children}
     </UserContext.Provider>
 }
+
+
+
 
 ThemeContext.js
 ---------------
@@ -2449,97 +2447,9 @@ export default Dashboard;
 
 
 
-Program-66: Redux Counter WithOut @reduxjs/toolkit
-**************************************************
-1. create a new project 
-   npx create-react-app counter-app
-   
-2. install redux & react-redux
-   npm install redux react-redux @reduxjs/toolkit
-
-3. Create Folders & Files for actions, reducers, store and components
-    store-->store.js
-	actions-->actions.js
-	reducers-->reducers.js
-	components-->counter.js
-	
-4. Create Actions (actions.js)
-    export const increment = () => { // Action Creator function
-		return { type: 'INCREMENT' } // action object
-	}
-	export const decrement = () => {
-		return { type: 'DECREMENT' } 
-	}
-	export const reset = () => { 
-		return { type: 'RESET' } 
-	}
-
-5. Add Reducer Code 
-	const counterReducer = (state = 1, action) => {
-	  switch (action.type) {
-		case "INCREMENT":
-		  return state + 1;
-		case "DECREMENT":
-		  return state - 1;
-		case "RESET":
-		  return (state = 0);
-		default:
-		  return state;
-	  }
-	};
-	export default counterReducer;
-	
-6. create Store (store.js)   
-    import { configureStore } from '@reduxjs/toolkit';
-	import counterReducer from '../reducers/counter_reducer';
-	const myStore = configureStore({
-		reducer: {
-			counter: counterReducer
-		}
-	});
-	export default myStore;
-
-	
-7. Provide Store (index.js)
-	import { Provider } from 'react-redux';	
-	import mystore from './store/store'
-	
-	const root = ReactDOM.createRoot(document.getElementById("root"));
-	root.render(
-	  <React.StrictMode>
-		<Provider store={mystore}>
-		  <App />
-		</Provider>
-	  </React.StrictMode>
-	);
-
-8. Import and Dispatch the Actions(Counter.js)
-
-	import { useDispatch, useSelector } from 'react-redux';
-	import { decrement, increment, reset } from '../actions/actions'
-	export default function Counter() {
-		const count = useSelector((state) => state.counter)
-		const dispatch = useDispatch();
-		return <>
-			<h3 className='text-center'>Counter Example Using REDUX</h3>
-			<div className='col-md-4 offset-md-4'>
-				<div className='m-3 p-3 border border-3 rounded-3 text-center'>
-					<h4>Count is: {count}</h4>
-
-					<button class="btn btn-secondary" onClick={() => dispatch(decrement())}>Decrement</button>
-					<button class="btn btn-danger mx-2" onClick={() => dispatch(reset())}>Reset</button >
-					<button class="btn btn-primary" onClick={() => dispatch(increment())}> Increment</button >
-				</div>
-			</div >
-		</>
-	}
-
-
-
-
 
 Program-67: Redux Counter With @reduxjs/toolkit
-**********************************************
+***********************************************
 1. install below packages
    npm install react-redux @reduxjs/toolkit
    
@@ -2556,7 +2466,7 @@ Program-67: Redux Counter With @reduxjs/toolkit
 		decrement: (state) => {
 		  return state - 1;
 		},
-		reset: (state) => {
+		reset: () => {
 		  return 0;
 		},
 	  },
@@ -2753,85 +2663,58 @@ Program-68: Redux ToDo example
 
 Program-69: useReducer hook
 ***************************
-import React, { useReducer, useRef } from "react";
-const initialTodos = [
-  { id: 1, title: "Todo 1", complete: false },
-  { id: 2, title: "Todo 2", complete: true },
+import { useReducer, useRef } from "react";
+const initialTasks = [
+    { id: 1, title: "Complete Javascript Assignment", complete: false },
+    { id: 2, title: "Learn React Redux", complete: true },
+    { id: 3, title: "Learn Java SpringBoot", complete: true },
 ];
 const reducer = (state, action) => {
-  switch (action.type) {
-    case "ADD":
-      return [...state, action.payload];
-    case "DELETE":
-      return state.filter((todo) => todo.id !== action.id);
-    case "TOGGLE":
-      return state.map((todo) => {
-        if (todo.id === action.id) {
-          return { ...todo, complete: !todo.complete };
-        } else {
-          return todo;
-        }
-      });
-    default:
-      return state;
-  }
+    switch (action.type) {
+        case "ADD":    return [...state, action.payload];
+        case "DELETE": return state.filter(task => task.id !== action.id);
+        case "TOGGLE": return state.map(task =>
+            task.id === action.id ? { ...task, complete: !task.complete } : task
+        );
+        default:       return state;
+    }
 };
-
-let nextTodoId = 3;
-export default function UseReducerDemo() {
-  const [todos, dispatch] = useReducer(reducer, initialTodos);
-  const myref1 = useRef();
-
-  const addNewTodo = (title) => {
-    const actionObj = {
-      type: "ADD",
-      payload: {
-        id: nextTodoId++,
-        title: title,
-        complete: false,
-      },
-    };
-    dispatch(actionObj);
-  };
-  const handleComplete = (todo) => {
-    dispatch({ type: "TOGGLE", id: todo.id });
-  };
-  const deleteTodo = (id) => {
-    dispatch({ type: "DELETE", id: id });
-  };
-  return (
-    <>
-      <h3>Add ToDo</h3>
-      <input ref={myref1} />
-      <button onClick={() => addNewTodo(myref1.current.value)}>Add todo</button>
-      <hr />
-      {todos.map((todo) => (
-        <div key={todo.id}>
-          <label>
-            <input
-              type="checkbox"
-              checked={todo.complete}
-              onChange={() => handleComplete(todo)}
-            />
-            <span
-              style={{
-                textDecoration: todo.complete ? "line-through" : "none",
-              }}
-            >
-              {todo.title}
-              <button onClick={() => deleteTodo(todo.id)}>DELETE</button>
-            </span>
-          </label>
+export default function ToDoList() {
+    const [taskArr, dispatch] = useReducer(reducer, initialTasks);
+    const taskRef = useRef();
+	
+    const addTask = title => dispatch({
+        type: "ADD",
+        payload: { id: taskArr.length + 1, title, complete: false }
+    });
+	
+    const toggleTask = (id) => dispatch({ type: "TOGGLE", id });
+    const deleteTask = (id) => dispatch({ type: "DELETE", id });
+	
+    return (
+        <div className="container mt-4" style={{ maxWidth: "650px" }}>
+            <h3 className="text-center mb-4">Task List using useReducer</h3>
+            <div className="d-flex mb-4">
+                <input ref={taskRef} className="form-control me-2" placeholder="Enter task" />
+                <button className="btn btn-primary" onClick={() => addTask(taskRef.current.value)}>
+                    Add Task
+                </button>
+            </div>
+            {taskArr.map(task => (
+                <div key={task.id} className="d-flex align-items-center border rounded p-2 mb-2">
+                    <input className="form-check-input me-2" type="checkbox"
+                        checked={task.complete} onChange={() => toggleTask(task.id)} />
+                    <span className={`flex-grow-1 ${task.complete ? "text-decoration-line-through" : ""}`}>
+                        {task.title}
+                    </span>
+                    <button className="btn btn-sm btn-danger" onClick={() => deleteTask(task.id)}>
+                        Delete
+                    </button>
+                </div>
+            ))}
         </div>
-      ))}
-    </>
-  );
+    );
 }
-
-
-
-
-
 
 
 

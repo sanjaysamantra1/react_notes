@@ -22,11 +22,14 @@ Syllabus
 -Http - Axios
 -Interceptors
 -Routing
+-Lazy Loading
 -HigherOrder Component
+-EsLint
+-Unit Testing (JEST / vitest)
 -Context API
 -REDUX  (State Management)
--Unit Testing (JEST / vitest)
--EsLint
+-GraphQL
+
 
 
 
@@ -295,13 +298,22 @@ Note: Re-render ≠ DOM Update (Component Function Executes ≠ Real DOM Must Ch
 
 
 
+
+
 Render Phase vs Commit Phase
 =============================
 -React updates can be understood using two major phases. (render & commit)
 -React Update  -->  Render Phase  --> Commit Phase  --> Browser UI
--Render Phase : What should the UI look like now? Calculates UI
--Commit Phase : After React has determined the necessary changes, it performs the commit phase.               
--What Should Not Happen During Rendering: API calls , Timers, DOM manipulation, Modifying external variables
+
+-Render Phase : React is calculating what the UI should Look Like 
+			    it must be pure, no subscriptions , Timers, DOM writes, fetches, state changes 
+				React can run the render phase multiple times, pause it, restart it , abandon it
+				anything written directly inside the component function runs during render phase
+				
+-Commit Phase : React is actually applying changes and running effects
+                effects run after commit phase for side effects           
+
+
 
 
 React Reconciliation 
@@ -673,24 +685,17 @@ Fragments
  That element can have children but we have to ensure that we are only returning 1 element at a time, or else we will get a syntax error. (ex: a function can return 1 value)
 -Fragments are way to render multiple elements without using a wrapper element.
 -Fragment acts as a wrapper without adding unnecessary divs to the DOM. 
--We can use it directly from the React import, or deconstruct it.
-	  import React from 'react';
-	  <React.Fragment>
-        <div>I am an element!</div>
-        <button>I am another element</button>
-      </React.Fragment>
--// Deconstructed
-	import { Fragment } from 'react';
-	<Fragment>
-        <div>I am an element!</div>
-        <button>I am another element</button>
-     </Fragment>
+-Preserves layout integrity , valid HTML output, Performance & memory efficiency.
 -React version 16.2 simplified this process further, allowing for empty JSX tags to be interpreted as Fragments
    <>
 		<div>I am an element!</div>
 		<button>I am another element</button>
    </>
- 
+-the shorthand syntax cannot accept any attributes or props, the full syntax is required
+-full/explicit syntax
+ items.map(item=>(
+	<React.fragment key={item.id> </react.fragment>
+ ))
  
  
 
@@ -1455,6 +1460,10 @@ function UserCard({ name }) {
 export default React.memo(UserCard);
  
 
+Note: React.memo() adds prop comparision cost and only helps when components are expensive 
+      React.memo() is less helpful for simple components, changing props, inline objects/functions
+
+
 
 
 
@@ -2117,11 +2126,10 @@ React Higher Order Components (HOCs)
 -Higher Order Components  are used for reusing component logic across multiple components without duplicating code.
 -A Higher Order Component is a JavaScript function that accepts a component as an argument and returns a new enhanced component.
 	EnhancedComponent = higherOrderComponent(OriginalComponent)
-	Original Component --> Higher Order Component (Wrapper)  -->  Enhanced Component
 -HOCs do not modify the original component. Instead, they wrap the originalcomponent and provide additional functionality.
 -Benefits:	
 	1. Code Reusability
-	2.Centralized Logic
+	2. Centralized Logic
 
 -HOCs are generally used for:
     * Authentication and Authorization
@@ -2174,21 +2182,6 @@ Routing
 -Browser Back and Forward buttons work seamlessly, just like in traditional websites.
 -It connects application navigation with browser navigation features such as the address bar, history stack, and navigation buttons.
 -React Router allows us to display specific components based on the current URL (route) that matches the requested path.
-
-
-
-Types of routes:
-================
-React Router provides two different kind of routes:
-1. BrowserRouter (builds classic URLs)
-2. HashRouter (builds URLs with the hash)
-
-https://application.com/dashboard     // BrowserRouter  ( IE>9 (OR) any other browser )
-https://application.com/#/dashboard   // HashRouter (IE<9)
-
--Which routes to use is mainly decided by the browsers we want to support. 
--BrowserRouter uses the History API, which is relatively recent, and not supported in IE9 and below. 
--If we don’t have to worry about older browsers, BrowserRouter is the recommended one to use.
 
 
 
@@ -2266,7 +2259,7 @@ Navigate from one Route to another Route
 Navigating Programatically
 ========================== 
 1. Import useNavigate hook
-   import { useNavigate } from 'react-router-dom';
+   import { useNavigate } from 'react-router';
    
 2. Create navigate object
    const navigate = useNavigate();
@@ -2289,13 +2282,13 @@ const navigate = useNavigate();
 
 Route Params
 ============
-1. Path params    (userdetails/1)
-2. Query Params   (search?name=sachin&age=25)
+1. Path params    (products/1)
+2. Query Params   (products?category=electronics&inStock=true)
 
 
 Path Params
 -----------
-1. configure the route
+1. Create UserDetails Component and configure a route 
    <Route path="/userdetails/:id" element={<UserDetails />} />
    
 2. create a link to that route (UserList - for Every User)
@@ -2309,7 +2302,7 @@ Path Params
    
 Query params
 ------------
-1. configure the route
+1. Create ProductDetails Component and configure a route 
    <Route path="/productdetails" element={<ProductDetails />} />
    
 2. create a link & navigation logic (ProductList page)
@@ -2324,7 +2317,7 @@ Query params
               navigateHandler(title, price);
             }}>details</button>
 
-3. collect params data and display
+3. collect params data and display (productDetails page)
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
     const title = searchParams.get("title");
@@ -2342,9 +2335,13 @@ Note: To get all the query params as object, below code can be used
       productObj = Object.fromEntries([...searchParams]);
   
   
+  
+  
+  
 Nested Routing
 ==============
--nested routing is used so that a parent component has control over its child component at the route level.
+-A child/Nested route is basically a route within a route. 
+
 -Route: Careers (nested Routes: PermanentJobs, ContractJobs)
 		<Route path="/careers" element={<Careers />}>
             <Route path="/careers/permanent" element={<PermanentJobs />} />
@@ -2407,24 +2404,33 @@ Replace
 
 Code Splitting/Lazy Loading
 ===========================
--Eager Loading: Components are loaded when the application starts.
--Lazy Loading: Components are loaded only when they are required.
+-Lazy Loading splits our javascript into smaller chunks and downloads a component's chunk file only when it is needed.
+-Lazy Loading improves initial-load performance.
+
 
 -Faster initial page load, Loads components only when needed
 -React.lazy() is used to load a component dynamically.
 
-  Eager Import: import OtherComponent from './OtherComponent';
-  Lazy Import : const OtherComponent = React.lazy(() => import('./OtherComponent'));
+Eager Import: import OtherComponent from './OtherComponent';
+Lazy Import : const OtherComponent = React.lazy(() => import('./OtherComponent'));
 
 Suspense
 --------
 -A lazy-loaded component must be wrapped inside Suspense.
 -Suspense displays fallback content while the component is being loaded.
 
-<Suspense fallback={<div>Loading...</div>}>
-    <OtherComponent />
-</Suspense>
+
  
+
+Lazy Loading
+=============
+Step-1: Use Dynamic import for the component 
+		const Products = lazy(()=>import('../list/Products'))
+		
+Step-2: A lazy-loaded component must be wrapped inside Suspense
+        <Suspense fallback={<div>Loading...</div>}>
+			<OtherComponent />
+		</Suspense>		
 
 
 
@@ -2637,7 +2643,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 export default [
   {
-    files: ['**/*.js', '**/*.jsx'],
+    files: ['src/*.js', 'src/*.jsx'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -2654,6 +2660,7 @@ export default [
     }
   },
 ];
+
 
 
 
@@ -2679,6 +2686,8 @@ https://create-react-app.dev/docs/adding-custom-environment-variables/
 
 
 
+
+
 Context API
 ===========
 -React context API helps to avoid the problem of props drilling & share global state easily.
@@ -2688,7 +2697,7 @@ Context API
 -ex: current authenticated user, theme, or preferred language.
 
 -There are 3 main steps to use the React context:
-1. Create context using the React.createContext({}) method.
+1. Create context using the React.createContext({}) method
 	export const MyContext = React.createContext(defaultValue);
 	
 2. Create a Provider that supplies the data to components
@@ -2701,28 +2710,27 @@ Context API
 	<div>Context Data is: {myContextObj}</div>
 			
 	   
-		
-Read Context data in Class Component
----------------------------------------
-<MyContext.Consumer>
-	{value => /* render something based on the context value */}
-</MyContext.Consumer>
+
+
+
 
  
  
 Redux
 =====
--Redux is a state management library.
--Redux stores the state of our application.
+-Redux is a global state management library.
 -With Redux the state is maintained outside the React component,not in a particular component.
--Redux 1.0 August 2015
--React-Redux is the library that provides binding to use React and Redux together in an application.
--In a typical Redux app there will be a single store & Root-reducer.
--As Your app grows, you split the Root Reducer in to smaller reducers 
- independently operating on the different parts of the state tree.
+-Redux is used for shared state used across components: loggedInUser, cart , app setting, notification
+-State is stored in one central place called Store.
+-Components read the state with useSelector()
+-Components update the state with useDispatch()
+-State Update happens through Actions and Reducers.
+-Prefer Redux Toolkit ( @redux/tooltik ) over traditional Redux - Redux Toolkit reduces boilerplate code.
 
 
-View/UI-----> Action --> Reducer --> Store/State --> View
+
+Store ----> View/UI -----> Action ----> Reducer ---> Store/State --> View
+
 
 
 3 Core Concepts in Redux
@@ -2944,6 +2952,8 @@ Custom Hook
 
 
 
+
+
 Unit Testing
 ============
 -Unit testing is a great discipline which can lead to 40%-80% reductions in production bug density.
@@ -2973,12 +2983,16 @@ vitest
 ======
 1. install vitest
    npm install -D vitest@latest @vitest/coverage-v8@latest 
+   
 2. create a script in package.json
     "test": "vitest"
+	"test:ui": "vitest --ui"
 	"test:coverage": "vitest run --coverage"
+	
 3. Run tests
    npm run test
    npm run test:coverage
+   
 4. create vitest.config.ts
    import { defineConfig } from 'vitest/config'
 	export default defineConfig({
@@ -3027,8 +3041,8 @@ expect()
  
 
 
-Jest Matchers
-=============
+Matchers
+=========
 toBe()           // primitives
 not.toBe()
 toEqual() 		// object/ array
@@ -3046,31 +3060,40 @@ toMatch(regex)
 toContain()
 
 
-Jest Global Functions
-=====================
-beforeAll()       - Before All the Testcases (1)
-beforeEach()      - Before Each Test case    (n)
-afterEach()		  - After Each Test case     (n)
-afterAll()        - After all the testcases  (1)
+Setup & TearDown
+================
+-we need to do some work before tests run (initialize data, connect to a database, start a server) and clean up after the test runs.
+-Rather than duplicating code in every test, Vitest provides lifecycle hooks that run automatically at the right time.
 
 
-describe.skip() - skip this test suite and execute other test suites
-describe.only() - execute only this test suite and don't execute other test suites
-it.skip()    - skips this test case, executes other test cases
-it.only()    - executes only this test case, skips other testcases
-
-https://create-react-app.dev/docs/debugging-tests/
+beforeAll()      Before All the Testcases (1 Time)
+beforeEach()     Before Each Test case    (n times)
+afterEach()		 After Each Test case     (n times)
+afterAll()       After all the testcases  (1 Time)
 
 
-Snapshot Testing
-----------------
--Snapshot tests are a very useful tool whenever you want to make sure your UI does not change unexpectedly.
 
--if the component name is 'button',create a folder '__test__' inside button folder add test file 'button.test.js' or 'button.spec.js'
--snapshot testing adds a __snapshots__ folder inside __test__ folder
- if any accidental change happens, testcase will fail
- Press u to update failing snapshots.
- 
+
+Test a Component
+================
+1. npm install -D vitest jsdom @testing-library/react @testing-library/user-event @testing-library/jest-dom
+
+2. Create a Setup File add below content(vitest.setup.js)
+   import '@testing-library/jest-dom/vitest';
+    
+3. update vitest.config file
+   import react from '@vitejs/plugin-react'
+	// https://vite.dev/config/
+	export default defineConfig({
+	  plugins: [react()],
+	  test: {
+		environment: 'jsdom',
+		globals:true,
+		setupFiles: ['./vitest.setup.js'], 
+	  },
+	})
+
+
  
 
  
