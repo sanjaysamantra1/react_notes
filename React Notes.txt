@@ -2698,16 +2698,16 @@ Context API
 
 -There are 3 main steps to use the React context:
 1. Create context using the React.createContext({}) method
-	export const MyContext = React.createContext(defaultValue);
+   export const ThemeContext = createContext('light');
 	
 2. Create a Provider that supplies the data to components
-	<MyContext.Provider value={/* some value */}>
+	<ThemeContext value="dark">
 	    <ComponentX />
-	<MyContext.Provider>
+	<ThemeContext.Provider>
 	   
 3. Consume the context value. 
-	const myContextObj = useContext(myContext);
-	<div>Context Data is: {myContextObj}</div>
+	const themeContext = useContext(ThemeContext);
+	<div>Context Data is: {themeContext}</div>
 			
 	   
 
@@ -3095,8 +3095,15 @@ Test a Component
 
 
  
+ 
+describe.only() - focused describe. If it exists, jasmine will run only fdescribe spec and ignore other type of describe (describe and xdescribe).
+describe.skip() - disabled describe. It will never be executed.
+it.only() - focused it()
+it.skip() - disabled it()
 
  
+
+
 
 Server Side Rendering
 =====================
