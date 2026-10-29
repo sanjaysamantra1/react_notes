@@ -29,6 +29,7 @@ Syllabus
 -Context API
 -REDUX  (State Management)
 -GraphQL
+-Deployment
 
 
 
@@ -40,45 +41,31 @@ React Local Setup
 1. download Nodejs and install
    https://nodejs.org/en/download/
 
-2. check if nodejs is installed? (open cmd and run the below command)
+2. check if nodejs & npm are installed? (open cmd and run the below command)
    node -v 
+   npm -v
 
-3. check if NPM is installed? (NPM-Node Package Manager)
-   npm -v    
-   
-4.  go to the folder where you want to create project(d:/sanjay/react)& run the below command	
-	npx create-react-app react_project1 (npx-node package executer)
+      
+3.  go to a folder & create a project(d:/sanjay/react)	
+	Option-1 : vite
+			   npm create vite@latest react_project1  
+			   cd react_project_1
+			   npm run dev
+			   
+
+	Option-2 : create-react-app
+			   npx create-react-app react_project1 (npx-node package executer)
+			   cd react_project1
+			   npm start
 	
-                 
-5. go to the created project folder(project1) and start your React application
-   cd react_project1
-   npm start 
-  
-6. A new browser window will pop up with your newly created React App! 
-   open a browser tab and type 'http://localhost:3000/' if browser doesn't open automatically.
+
+4. Open a browser tab and open application URL
+   http://localhost:5173
+   http://localhost:3000
    
-   set PORT=3001 && npm start
   
   
   
-React Project with Typescript
-=============================
--Create React App supports TypeScript out of the box.
--To create a new project with TypeScript support, run the below command
- npx create-react-app my-app --template typescript
--To add TypeScript to an existing Create-React-App project, install the below things
- npm install --save typescript @types/node @types/react @types/react-dom @types/jest
-
- 
-
-create-react-app
-================
--It is a React application boilerplate generator created by Facebook. 
--This CLI tool installs React,ReactDOM & other libraries required for a react project.
--It provides a development environment configured for ease-of-use with minimal setup.
--It creates a frontend build pipeline. Under the hood, it uses Babel and webpack.
-
-
 
 NPX
 ===
@@ -87,28 +74,28 @@ NPX
 -It can execute any package that you want from the npm registry without even installing that package.
  ex: npx create-react-app my-app
  
-
-
+ 
 
 React app with Vite
 ===================
 -Vite.js is a build tool and development server that is designed to optimize the development experience for modern web applications.
 -It includes built-in support for TypeScript, CSS preprocessors.
+ npm create vite@latest react_project1 -- --template react
+ npm create vite@latest react_project1 -- --template react-ts
+ 
 
-1. download Nodejs and install
-   https://nodejs.org/en/download/
-   
-2. Create a vite project
-	npm create vite@latest
-		(OR)
-	npm create vite@latest my-app -- --template react  
-		(OR)
-	npm create vite@latest my-app -- --template react-ts
-	
-3. Go to the crated Project, install , and serve the application
-	cd my-app
-	npm install
-	npm run dev
+
+
+create-react-app
+================
+-It is a React application boilerplate generator created by Facebook. 
+-This CLI tool installs React,ReactDOM & other libraries required for a react project.
+-It provides a development environment configured for ease-of-use with minimal setup.
+-It creates a frontend build pipeline. Under the hood, it uses Babel and webpack.
+-To create a new project with TypeScript support, run the below command
+ npx create-react-app my-app --template typescript
+-To add TypeScript to an existing Create-React-App project, install the below things
+ npm install --save typescript @types/node @types/react @types/react-dom @types/jest
 
 
 
@@ -3058,13 +3045,13 @@ toBeLessThan()
 toBeLessThanOrEqual()
 toMatch(regex)
 toContain()
+toBeInstanceOf()
 
 
 Setup & TearDown
 ================
 -we need to do some work before tests run (initialize data, connect to a database, start a server) and clean up after the test runs.
 -Rather than duplicating code in every test, Vitest provides lifecycle hooks that run automatically at the right time.
-
 
 beforeAll()      Before All the Testcases (1 Time)
 beforeEach()     Before Each Test case    (n times)
@@ -3076,7 +3063,7 @@ afterAll()       After all the testcases  (1 Time)
 
 Test a Component
 ================
-1. npm install -D vitest jsdom @testing-library/react @testing-library/user-event @testing-library/jest-dom
+1. npm install -D vitest jsdom @testing-library/react  @testing-library/jest-dom
 
 2. Create a Setup File add below content(vitest.setup.js)
    import '@testing-library/jest-dom/vitest';
@@ -3120,15 +3107,50 @@ Server Side Rendering
 
 
 
+
+
 GraphQL
 =======
+-GraphQL is a query language for APIs developed by Facebook.
 -GraphQL overcomes major shortcomings of REST.
--A query language for your API.
--in REST, the client makes an HTTP request and data is sent as an HTTP Response.
+-in REST for each resource we define multiple endpoints (GET,POST PUT,PATCH,DELETE)
+-Instead of multiple endpoints, we expose a single /graphql endpoint where clients ask exactly for what they need
 -in GraphQL,the client Requests the data with queries.
--it allows the client to query only the data that they need.
 
--The most popular  GraphQL library is Apollo Client.
+
+
+How It Works
+============
+-Clients send a query specifying exactly which fields and nested relationships they want.
+-The server returns just that data in a single response.
+-Strongly typed schema defines all possible queries and data types.
+
+Advantages
+=========
+-No over-fetching or under-fetching: Clients get only what they ask for.
+-Single request for complex nested data: Reduces network chatter.
+-Strongly typed schema: Great for auto-generating documentation, validation, and tooling.
+-Easier to evolve APIs: Adding fields doesn’t break clients.
+
+-The most popular  GraphQL library is Apollo Client.  
+
+
+| Feature               REST                        GraphQL                        
+| ------------------- | -------------------------- | -----------------------------------|
+| Endpoints           | Multiple per resource      | Single `/graphql` endpoint         |
+| Data Fetching       | Fixed responses            | Flexible queries                   |
+| Over/Under Fetching | Common                     | Rare                               |
+| Versioning          | Usually via URL/versioning | Often avoided via schema evolution |
+| Tooling             | Mature and simple          | Powerful but more complex          |
+| Caching             | HTTP cache friendly        | Needs custom caching strategies    |
+| Learning Curve      | Easier                     | Steeper                            |
+
+
+
+Free GraphQL APIs
+==================
+https://countries.trevorblades.com/graphql (https://github.com/trevorblades/countries)
+https://studio.apollographql.com/public/countries/variant/current/explorer
 
 
 

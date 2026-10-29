@@ -490,6 +490,21 @@ export default function TaskList() {
 
 
 
+Counter Example
+===============
+export default function CounterDemo1() {
+    const [count, setCount] = useState(0);
+    return <div className='col-sm-4 offset-4 border border-3 rounded-3 p-3'>
+        <h3>Counter Example</h3>
+
+        <button className="btn btn-danger" onClick={() => setCount(count - 1)}>Decrement</button>
+        <h2 className='mx-2'>Count:{count}</h2>
+        <button className="btn btn-primary" onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+}
+
+
+
 Program-22  asynchronous state & Batch update
 *********************************************
 import { useState } from "react";
@@ -2519,20 +2534,17 @@ export default function CounterWithRedux() {
 
 
 
-Program-68: Redux ToDo example
-******************************
-1. create a new project 
-   npx create-react-app <projectName>
-   
-2. install react-redux And @reduxjs/toolkit
+Program-68: Redux TaskList/ToDoList Example
+********************************************
+1. install react-redux And @reduxjs/toolkit
    npm install @reduxjs/toolkit react-redux
 
-3. Create Folders & Files for actions, reducers, store and components
+2. Create Folders & Files for actions, reducers, store and components
      store-->store.js
 	 features/todo --> todoSlice.js
 	 components--> ToDoList.js , ToDo.js, AddToDo.js 
 	 
-4. Create a Redux "slice" reducer with createSlice , Export the generated slice reducer and action creators	
+3. Create a Redux "slice" reducer with createSlice , Export the generated slice reducer and action creators	
 
 	import { createSlice } from '@reduxjs/toolkit';
 	const initialState = {
@@ -2575,20 +2587,20 @@ Program-68: Redux ToDo example
 	export default todoSlice.reducer;
    
    
-5. Create/Update Redux Store
+4. Create/Update Redux Store
     import { configureStore } from '@reduxjs/toolkit';
 	import todoReducer from "../features/todo/todoSlice";
 	export const store = configureStore({
 		reducer: {todoReducer:todoReducer}
 	})
 
-6. Provide the Redux Store to React(index.js/main.tsx)
+5. Provide the Redux Store to React(index.js/main.tsx)
     <Provider store={myStore}>
       <App />
     </Provider>
    
    
-7. Read data from the store with the useSelector hook (ToDoList.js)
+6. Read data from the store with the useSelector hook (ToDoList.js)
     import { useSelector } from 'react-redux'
 	import ToDo from './ToDo';
 	import AddToDo from './AddToDo';
@@ -2596,14 +2608,14 @@ Program-68: Redux ToDo example
 		const todoArr = useSelector((state) => state.todoReducer.todoList);
 		const CompletedToDos = todoArr.filter(todo => todo.isCompleted);
 		return <>
-			<div className='col-sm-4 offset-4'>
+			<div className='col-sm-6 offset-3'>
 				<div className='p-3 m-3 border border-3 rounded-3'>
 					<h2 className='text-center'>ToDo List Using REDUX</h2>
 					<hr />
 					<AddToDo />
 					<hr/>
-					{todoArr.map((todoObj, ind) => {
-						return <ToDo todoObj={todoObj} ind={ind} />
+					{todoArr.map((todoObj) => {
+						return <ToDo todoObj={todoObj} key={todoObj.id} />
 					})}
 					<hr />
 					{CompletedToDos.length}/{todoArr.length} are completed
@@ -2613,7 +2625,7 @@ Program-68: Redux ToDo example
 	}
 
 
-9. ToDo.js
+7. ToDo.js
 	import { useDispatch } from 'react-redux'
 	import { deleteToDo, toggleToDo } from '../../features/todo/todoSlice';
 	
@@ -2639,7 +2651,7 @@ Program-68: Redux ToDo example
 	}
 
 
-10. AddToDo.js
+8. AddToDo.js
 	import React, { useRef } from 'react'
 	import { useDispatch } from 'react-redux';
 	import { addToDo } from '../features/todo/todoSlice';
@@ -2679,11 +2691,11 @@ const reducer = (state, action) => {
         default:       return state;
     }
 };
-export default function ToDoList() {
+export default function TaskList() {
     const [taskArr, dispatch] = useReducer(reducer, initialTasks);
     const taskRef = useRef();
 	
-    const addTask = title => dispatch({
+    const addTask = (title) => dispatch({
         type: "ADD",
         payload: { id: taskArr.length + 1, title, complete: false }
     });
@@ -2691,8 +2703,7 @@ export default function ToDoList() {
     const toggleTask = (id) => dispatch({ type: "TOGGLE", id });
     const deleteTask = (id) => dispatch({ type: "DELETE", id });
 	
-    return (
-        <div className="container mt-4" style={{ maxWidth: "650px" }}>
+    return  <div className="container mt-4" style={{ maxWidth: "650px" }}>
             <h3 className="text-center mb-4">Task List using useReducer</h3>
             <div className="d-flex mb-4">
                 <input ref={taskRef} className="form-control me-2" placeholder="Enter task" />
@@ -2713,7 +2724,6 @@ export default function ToDoList() {
                 </div>
             ))}
         </div>
-    );
 }
 
 
@@ -2883,6 +2893,34 @@ Program-72:  Portals
 
 
 
+
+Program: Unit testing - Counter
+===============================import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import CounterDemo1 from "../../src/components/counter/CounterDemo1";
+describe("CounterDemo1", () => {
+    it("should display initial count as 0", () => {
+        render(<CounterDemo1 />);
+        expect(screen.getByText("Count:0")).toBeInTheDocument();
+    });
+    it("should increment and decrement correctly", () => {
+        render(<CounterDemo1 />);
+        const incrementButton = screen.getByRole("button", { name: "Increment" });
+        const decrementButton = screen.getByRole("button", { name: "Decrement" });
+        fireEvent.click(incrementButton);
+        expect(screen.getByText("Count:1")).toBeInTheDocument();
+        fireEvent.click(incrementButton);
+        expect(screen.getByText("Count:2")).toBeInTheDocument();
+        fireEvent.click(decrementButton);
+        expect(screen.getByText("Count:1")).toBeInTheDocument();
+        fireEvent.click(decrementButton);
+        expect(screen.getByText("Count:0")).toBeInTheDocument();
+    });
+});
+
+
+
+
 Program-73:  Unit testing
 **************************
 import { render, screen, waitFor } from '@testing-library/react';
@@ -2915,6 +2953,30 @@ describe('Test Suite For Http Demo 2 Component', () => {
         expect(global.fetch).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/users');
     })
 })
+---------------------------------
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import UserList from "../../src/components/userlist/UserList";
+
+describe("UserList", () => {
+    it("fetches and displays users", async () => {
+        const users = [
+            { id: 1, name: "Leanne Graham", email: "leanne@example.com" },
+            { id: 2, name: "Ervin Howell", email: "ervin@example.com" }
+        ];
+        vi.spyOn(globalThis, "fetch").mockResolvedValue({
+            ok: true,
+            json: async () => users
+        });
+        render(<UserList />);
+        expect(await screen.findByText("Leanne Graham")).toBeInTheDocument();
+        expect(await screen.findByText("leanne@example.com")).toBeInTheDocument();
+        expect(fetch).toHaveBeenCalledWith("https://jsonplaceholder.typicode.com/users");
+    });
+});
+
+
+
 
 
 Unit Testing Axios Code
@@ -2981,6 +3043,28 @@ describe("UserService API calls", () => {
   });
 
 });
+-------------------------------
+import axios from "axios";
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import UserList from "./UserList";
+
+vi.mock("axios");
+describe("UserList", () => {
+    it("fetches and displays users", async () => {
+        axios.get.mockResolvedValue({
+            data: [
+                { id: 1, name: "Leanne Graham", email: "leanne@example.com" },
+                { id: 2, name: "Ervin Howell", email: "ervin@example.com" }
+            ]
+        });
+        render(<UserList />);
+        expect(await screen.findByText("Leanne Graham - leanne@example.com")).toBeInTheDocument();
+        expect(axios.get).toHaveBeenCalledWith(
+            "https://jsonplaceholder.typicode.com/users"
+        );
+    });
+});
 
 
 
@@ -2990,12 +3074,15 @@ Program-74: graphQL
 1. install apollo-client and graphQL
    npm install @apollo/client graphql
    
-2. Initialize ApolloClient (index.js)
-    import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';	
-    const client = new ApolloClient({
-	  uri: 'http://localhost:5000/',
-	  cache: new InMemoryCache()
+2. Initialize ApolloClient (index.js/main.js)
+    import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+	import { ApolloProvider } from "@apollo/client/react";
+
+	const client = new ApolloClient({
+	  link: new HttpLink({ uri: "https://countries.trevorblades.com/graphql/" }),
+	  cache: new InMemoryCache(),
 	});
+
 
 3. Connect your Apollo-client to React / Set Up ApolloProvider
   <ApolloProvider client={client}>
@@ -3003,22 +3090,125 @@ Program-74: graphQL
   </ApolloProvider>
   
 4. Fetch data with useQuery
-   import { gql, useQuery } from '@apollo/client';
+   import { gql } from '@apollo/client';
+   import { useQuery } from '@apollo/client/react';
    
-   const GET_COMMENTS_QUERY = gql`
-    query comments {
-      comments {
-        id
-        name
-		email
-      }
+   const GET_COUNTRIES_QUERY = gql`
+	  query {
+		countries {
+		  code
+		  name
+		  capital
+		  currency
+		}
+	  }
+	`;
+   const { loading, error, data } = useQuery(GET_COUNTRIES_QUERY);
+   
+   
+   
+EmployeeList Graphql with Mutations
+***********************************
+import React, { useState } from 'react';
+import { gql } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client/react';
+
+const GET_EMPLOYEES = gql`query Employees { employees { id name sal gender } }`;
+const ADD_EMPLOYEE = gql`
+    mutation AddEmployee($name: String!, $sal: Int!, $gender: String!) {
+        addEmployee(name: $name, sal: $sal, gender: $gender) {
+            id name sal gender
+        }
     }
-  `;
-   const { loading, error, data } = useQuery(GET_COMMENTS_QUERY);
-   
-   
-   
-   
+`;
+const DELETE_EMPLOYEE = gql`
+    mutation DeleteEmployee($id: Int!) {
+        deleteEmployee(id: $id) {
+            id name sal gender
+        }
+    }
+`;
+
+export default function EmployeeList_GraphQL() {
+    const [employee, setEmployee] = useState({ name: '', sal: '', gender: 'male' });
+    const { loading, error, data, refetch } = useQuery(GET_EMPLOYEES);
+    const [addEmployee, { loading: adding }] = useMutation(ADD_EMPLOYEE);
+    const [deleteEmployee, { loading: deleting }] = useMutation(DELETE_EMPLOYEE);
+
+    const handleChange = (e) => setEmployee({ ...employee, [e.target.name]: e.target.value });
+
+    const handleAddEmployee = async (e) => {
+        e.preventDefault();
+        try {
+            await addEmployee({ variables: { ...employee, sal: Number(employee.sal) } });
+            setEmployee({ name: '', sal: '', gender: 'male' });
+            refetch();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleDeleteEmployee = async (id) => {
+        try {
+            await deleteEmployee({ variables: { id } });
+            refetch();
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    if (loading) return <h1>Loading...</h1>;
+    if (error) return <h1>Something went wrong...</h1>;
+
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-sm-8">
+                    <h3 className="text-center">Employee List</h3>
+                    <table className="table table-bordered">
+                        <thead>
+                            <tr><th>Id</th><th>Name</th><th>Gender</th><th>Salary</th><th>Action</th></tr>
+                        </thead>
+                        <tbody>
+                            {data.employees.map(employee => <tr key={employee.id}>
+                                <td>{employee.id}</td><td>{employee.name}</td><td>{employee.gender}</td><td>{employee.sal}</td>
+                                <td><button className="btn btn-danger btn-sm" onClick={() => handleDeleteEmployee(employee.id)} disabled={deleting}>Delete</button></td>
+                            </tr>)}
+                        </tbody>
+                    </table>
+                </div>
+                <div className="col-sm-4">
+                    <h3 className="text-center">Add Employee</h3>
+                    <form onSubmit={handleAddEmployee} className="border border-2 rounded p-3">
+                        <div className="mb-3">
+                            <label className="form-label">Name</label>
+                            <input type="text" name="name" className="form-control" value={employee.name} onChange={handleChange} required />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Salary</label>
+                            <input type="number" name="sal" className="form-control" value={employee.sal} onChange={handleChange} required />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">Gender</label>
+                            <select name="gender" className="form-select" value={employee.gender} onChange={handleChange}>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <button type="submit" className="btn btn-primary" disabled={adding}>{adding ? 'Adding...' : 'Add Employee'}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+
+
+
+
+
 
 
 Design Question-1 : Star Rating
