@@ -11,6 +11,17 @@ Diffing = The algorithm React uses to compare old and new Virtual DOM trees and 
 Reconciliation = Finding differences + updating only the changed parts of the Real DOM.
 
 
+Q. Render Phase vs Commit Phase
+-React updates can be understood using two major phases. (render & commit)
+-React Update  -->  Render Phase  --> Commit Phase  --> Browser UI
+-Render Phase : React is calculating what the UI should Look Like 
+			    it must be pure, no subscriptions , Timers, DOM writes, fetches, state changes 
+				React can run the render phase multiple times, pause it, restart it , abandon it
+				anything written directly inside the component function runs during render phase			
+-Commit Phase : React is actually applying changes and running effects
+                effects run after commit phase for side effects 
+
+
 3. Difference between Props and State.
 Props:
 -Passed from Parent to Child components.
