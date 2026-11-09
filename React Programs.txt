@@ -278,24 +278,53 @@ export default DashedBox;
 
 Program-13 conditional CSS
 **************************
-export default function Demo1() {
-    let num = 5;
-    let style1 = { color: 'blue' }
-    let style2 = { color: 'red' }
+export default function ConditionalCss() {
+    const [state, setState] = useState({
+        isActive: true,
+        success: true,
+        darkMode: false,
+        large: false,
+        show: true,
+        error: false,
+        name: "",
+        disabled: false,
+        loading: false
+    });
+    const handleChange = (e) => {
+        const { name, type, checked, value } = e.target;
+        setState({ ...state, [name]: type === "checkbox" ? checked : value });
+    };
     return (
-        <>
-		  <div style={num % 2 === 0 ? { color: "green" } : { color: "red" }}>
-			Number {num} is {num % 2 === 0 ? "even" : "odd"}
-		  </div>
-		  <div style={num % 2 === 0 ? style1 : style2}>
-			Number {num} is {num % 2 === 0 ? "even" : "odd"}
-		  </div>
-		  <button className={`btn btn-lg ${num % 2 === 0 ? "btn-success" : "btn-danger"}`}>
-			add a class dynamically
-		  </button>
-		</>
-    )
+        <div>
+            {Object.keys(state).filter(k => k !== "name").map(k => (
+                <label key={k} className="mx-2">
+                    <input type="checkbox" name={k} checked={state[k]} onChange={handleChange} />
+                    {k}
+                </label>
+            ))}
+            <h1 style={{ color: state.isActive ? "green" : "red" }}>Status</h1>
+            <h1 className={state.success ? "success" : "error"}>Message</h1>
+            <div style={{ backgroundColor: state.darkMode ? "black" : "white" }}>
+                Theme
+            </div>
+            <p style={{ fontSize: state.large ? "30px" : "16px" }}>React Text</p>
+            <div style={{ display: state.show ? "block" : "none" }}>Content</div>
+            <input style={{ border: state.error ? "2px solid red" : "2px solid green" }} />
+            <input name="name" value={state.name} onChange={handleChange} placeholder="Enter name" />
+            <button disabled={state.name === ""}>Submit</button>
+            <div className={state.isActive ? "box active" : "box"}>Card</div>
+            <img src="image.png" alt="Demo" style={{ opacity: state.disabled ? 0.5 : 1 }} />
+            <button style={{ cursor: state.loading ? "not-allowed" : "pointer" }}>
+                Save
+            </button>
+        </div>
+    );
 }
+------------
+.success { color: green; }
+.error { color: red; }
+.box { padding: 20px; border: 1px solid gray; }
+.active { background: lightgreen; }
 
    
    
@@ -587,15 +616,24 @@ export default function Demo() {
 
 Program-25 : Remaining Character
 ********************************
-export default function RemainingChar() {
-  const [remaining, setRemaining] = useState(100);
-  const keyUpHandler = (e) => {
-    const msg = e.target.value;
-    setRemaining(100-msg.length)
-  };
-  return <>
-      <textarea onKeyUp={keyUpHandler} maxLength={100} className="m-1"></textarea>
-      <p>remaining char: {remaining}</p>
+export default function StateAssignment7() {
+    const [msg, setMessage] = useState('Hello');
+    const charCount = msg.length;
+    const wordCount = msg.split(' ').length;
+    const remainingChar = 100 - msg.length;
+
+    const updateMessage = (event) => {
+        const newMessage = event.target.value;
+        setMessage(newMessage);
+    }
+    return <>
+        <h3>Create a textarea with maxLength = 100; as the user keeps typing, count and display how many words and how many characters are typed and  also display remaining characters.</h3>
+
+        <textarea maxLength={100} value={msg} onInput={updateMessage}></textarea>
+        <div>{msg}</div>
+        <h4>charCount:{charCount}</h4>
+        <h4>wordCount:{wordCount}</h4>
+        <h4>remainingChar:{remainingChar}</h4>
     </>
 }
 
@@ -658,16 +696,42 @@ export default function ThemeDemo() {
 
 Program-28: Addition 
 ********************
-export default function Addition() { 
-  const [num1 ,setNum1] = useState(null);
-  const [num2 ,setNum2] = useState(null);
-  return <>
-    <h3>Add 2 numbers using state variables</h3>
-    <p>Number-1: <input type="number" value={num1} onChange={(e)=>setNum1(e.target.value)} /></p>
-    <p>Number-2: <input type="number" value={num2} onChange={(e)=>setNum2(e.target.value)} /></p>
-    <p>Addition of {num1} and {num2} is {+num1 + +num2}</p>
-  </>
- }
+export default function StateAssignment8() {
+    const [num1, setNum1] = useState(10);
+    const [num2, setNum2] = useState(20);
+    const [operator, setOperator] = useState('+');
+    const [result, setResult] = useState('');
+
+    const updateNum1 = (event) => {
+        setNum1(event.target.value);
+    }
+    const calculate = ()=>{
+        switch(operator){
+            case '+' : setResult(num1 + num2); break;
+            case '-' : setResult(num1 - num2); break;
+            case '*' : setResult(num1 * num2); break;
+            case '/' : setResult(num1 / num2); break;
+        }
+    }
+
+    return <>
+        <h3 style={{color:"purple",border:"3px dotted green"}}>Create two input boxes and a dropdown (+ , - , * , /) and perform arithmetic operations based on the selected operator.</h3>
+
+        <input type="number" name="num1" value={num1} onInput={updateNum1} />
+        <input type="number" name="num2" value={num2} onInput={(e) => setNum2(e.target.value)} className="mx-2" />
+
+        <select className="mx-2" onChange={(e)=>setOperator(e.target.value)}>
+            <option>+</option>
+            <option>-</option>
+            <option>*</option>
+            <option>/</option>
+        </select>
+        <button className="btn btn-primary" onClick={calculate}>Result</button>
+
+        <div>Num1:{num1} , Num2:{num2}, Operator:{operator}</div>
+        <div>Result:{result} </div>
+    </>
+}
 
 
 

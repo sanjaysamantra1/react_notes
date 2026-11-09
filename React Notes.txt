@@ -80,6 +80,7 @@ React app with Vite
 ===================
 -Vite.js is a build tool and development server that is designed to optimize the development experience for modern web applications.
 -It includes built-in support for TypeScript, CSS preprocessors.
+ npm create vite@latest react_project1
  npm create vite@latest react_project1 -- --template react
  npm create vite@latest react_project1 -- --template react-ts
  
@@ -108,8 +109,7 @@ What React is
 -It was created and is maintained by Meta (formerly Facebook).
 -React is used to build Single Page Applications (SPAs).
 -React allows us to create reusable UI components.
--It supports unidirectional data flow (data flows from parent to child components).
--React uses JSX (JavaScript XML) to write UI in a syntax similar to HTML inside JavaScript.
+-React uses JSX  to write UI in a syntax similar to HTML inside JavaScript.
 
 
 
@@ -126,7 +126,7 @@ Let's take an example:
  (It handles Dependency Injection, CSS encapsulation, httpClient, Form validation, routing etc.)
 
 
-	Framework										Library
+		Framework										Library
 =========================================================================
 -group of libraries to make your work easier	-performs specific, well-defined operations
 -provides ready to use tools,standards			-provides reusable functions for our code
@@ -160,7 +160,6 @@ React Features
 -JSX for writing UI in JavaScript
 -Virtual DOM for efficient updates
 -Unidirectional data flow
--Hooks for state and lifecycle management
 -High performance with optimized rendering
 -Strong ecosystem and community support
 
@@ -203,53 +202,6 @@ DOM (Document Object Model)
 
 
 
-
-
-Why Virtual DOM?
-================
--Frequent direct DOM manipulations are expensive and can impact performance.
--Every time the real DOM changes, the browser may need to:
-    • Recalculate CSS
-    • Perform layout (reflow)
-    • Repaint the screen
--Updating the real DOM repeatedly is slower compared to updating JavaScript objects in memory.
--To improve performance, React minimizes direct manipulation of the real DOM using the Virtual DOM.
--React uses the Virtual DOM to efficiently update the UI.
-
-
-
-What is Virtual DOM?
-====================
--The Virtual DOM is a lightweight JavaScript representation of the real DOM.
--It is a tree of JavaScript objects representing UI elements, their attributes, and content.
--Whenever state or props change, React creates a new Virtual DOM tree.
--React compares the new Virtual DOM with the previous Virtual DOM using a process called Diffing.
--After identifying the changes, React updates only the required parts of the real DOM.
--This process is called Reconciliation.
--The Virtual DOM helps React optimize rendering performance.
-
-
-
- 
-How Does React Work? (Virtual DOM)
-==================================
-1. Initial Render : When the application loads, React creates a Virtual DOM tree based on the Real DOM.
-
-2. State or Props Change : Whenever state or props change (such as user input or API response), React creates a new Virtual DOM tree with the updated data.
-
-3. Diffing : React compares the new Virtual DOM with the previous Virtual DOM tree to identify what has changed.
-
-4. Reconciliation : Based on the diffing result, React determines the minimum changes required in the real DOM.
-
-5. Real DOM Update : React updates only the changed parts of the real DOM instead of re-rendering the entire page, resulting in faster UI updates.
-
-
-User clicks → Event handler runs → setCount() schedules a state update → Component re-renders → New React element tree is created → React reconciles old and new trees → Required DOM changes are identified → Commit phase updates the DOM → Browser displays the updated UI.
-
-
-
-
-
 Shadow DOM
 ----------
 -Shadow DOM is a browser technology used in Web Components.
@@ -271,15 +223,71 @@ Key Difference
 
 
 
-What Causes a React Component to Re-render
-==========================================
--A React component is generally re-rendered when React needs to calculate its UI again.
-	Its state changes
-	Its parent re-renders
-	A context value it consumes changes
 
-State Changed  --> React schedules an update --> Comonent function executes again --> React calculates the new UI -->
-React compares the result -->  Only necessary DOM changes are committed
+
+Why Virtual DOM?
+================
+-Frequent direct DOM manipulations are expensive and can impact performance.
+-Every time the real DOM changes, the browser may need to:
+    • Recalculate CSS
+    • Perform layout (reflow)
+    • Repaint the screen
+-Updating the real DOM repeatedly is slower compared to updating JavaScript objects in memory.
+-To improve performance, React minimizes direct manipulation of the real DOM.
+-React uses the Virtual DOM to efficiently update the UI.
+
+
+
+What is Virtual DOM?
+====================
+-The Virtual DOM is a lightweight JavaScript representation of the real DOM.
+-It is a tree of JavaScript objects representing UI elements, their attributes, and content.
+-Whenever state or props change, React creates a new Virtual DOM tree.
+-React compares the new Virtual DOM with the previous Virtual DOM using a process called Diffing.
+-After identifying the changes, React updates only the required parts of the real DOM.
+-This process is called Reconciliation.
+-The Virtual DOM helps React optimize rendering performance.
+
+
+
+ 
+How Does React Work? (Virtual DOM)
+==================================
+1. Initial Render : When the application loads, React executes the root component and creates a React Element Tree (Virtual DOM representation) based on the component structure and its data.
+
+2. State or Props Change : Whenever a component's state or props change, React schedules an update and re-renders the affected component to create a new React Element Tree.
+
+3. Diffing : React compares the new Virtual DOM with the previous Virtual DOM tree to identify what has changed.
+
+4. Reconciliation : React uses its reconciliation algorithm to determine what changes are required in the UI based on the differences between the previous and new trees.
+
+5. Render Phase : Calculates How the new UI should look like
+
+6. Commit Phase (DOM Update) : React applies the necessary changes to the actual DOM during the commit phase instead of recreating the entire DOM tree.
+
+7. Browser Paint : The browser processes the DOM and CSS changes and displays the updated UI to the user.
+
+
+User clicks → Event handler runs → setCount() schedules a state update → Component re-renders → New React element tree is created → React reconciles old and new trees → Required DOM changes are identified → Commit phase updates the DOM → Browser displays the updated UI.
+
+
+
+
+React Rendering Model
+=====================
+-The React Rendering Model describes how React processes updates and renders UI changes.
+-React rendering is triggered by:
+  -Initial application rendering.
+  -State updates.
+  -Props changes.
+  -Context value changes.
+  -Parent component re-rendering.
+-React divides the rendering process into two major phases:
+  -Render Phase.
+  -Commit Phase.
+-React uses Fiber Architecture to manage rendering work.
+-React uses batching to group multiple state updates.
+-React supports concurrent rendering to improve UI responsiveness.
 
 Note: Re-render ≠ DOM Update (Component Function Executes ≠ Real DOM Must Change)
 
@@ -292,23 +300,37 @@ Render Phase vs Commit Phase
 -React updates can be understood using two major phases. (render & commit)
 -React Update  -->  Render Phase  --> Commit Phase  --> Browser UI
 
--Render Phase : React is calculating what the UI should Look Like 
-			    it must be pure, no subscriptions , Timers, DOM writes, fetches, state changes 
-				React can run the render phase multiple times, pause it, restart it , abandon it
-				anything written directly inside the component function runs during render phase
+-Render Phase : Calculate what the UI should look like.
+		Executes component functions and creates React Elements.
+		Performs reconciliation to identify required changes.
+		Must be pure (no side effects, No DOM manipulation,No timers, subscriptions, or fetch calls).
+		Can run multiple times, pause, restart, or be abandoned in concurrent rendering.
+		Anything written directly inside the component function executes during this phase.
 				
--Commit Phase : React is actually applying changes and running effects
-                effects run after commit phase for side effects           
+-Commit Phase : Apply changes to the actual DOM.
+		React applies the changes calculated during the Render Phase.
+		React performs the necessary DOM mutations.
+		React schedules effects (useEffect) after the commit.
+		The Commit Phase cannot be interrupted midway.
+
+Phase 1: render(processing)
+-----------------------
+-React creates a list of all changes to be rendered in the UI 
+-Once the list is fully computed, React will schedule these changes to be executed in the next phase.
+-React doesn't make any actual changes in this phase. 
+ 
+Phase 2: Commit
+----------------
+-React tells the DOM to render the changes that was created in the previous phase.
+-The Reconciliation phase can be interrupted, the Commit phase cannot.
 
 
 
 
 React Reconciliation 
 ====================
--Reconciliation is the process through which React updates the DOM.
- (syncing the Virtual DOM to the actual DOM)
--Reconciliation is the mechanism that tracks changes in a component state and renders the updated state to the screen.
--It's a step that happens between the render() function being called and the displaying of elements on the screen. This entire process is called reconciliation.
+-Reconciliation is the mechanism that tracks changes in a component - what changed in a component
+-It's a step that happens between the render function being called and the displaying of elements on the screen. This entire process is called reconciliation.
 
 
 Stack Reconciler < React-16
@@ -323,16 +345,8 @@ Fiber Reconciler
 ================
 -Architecture for scheduling and managing rendering work
 
-Phase 1: render(processing)
------------------------
--React creates a list of all changes to be rendered in the UI 
--Once the list is fully computed, React will schedule these changes to be executed in the next phase.
--React doesn't make any actual changes in this phase. 
- 
-Phase 2: Commit
-----------------
--React tells the DOM to render the changes that was created in the previous phase.
--the Reconciliation phase can be interrupted, the Commit phase cannot.
+
+
 
 
 
@@ -397,13 +411,12 @@ JSX
 -JSX allows us to add the elements in DOM without using createElement() or appendChild() methods.
 -JSX looks similar to HTML but it is not HTML.
 -JSX code we write gets transformed into React.createElement().
--JSX is not part of browser. we need a tool(Babel)(a JavaScript compiler) 
- to transform it to valid JavaScript.
+-JSX is not part of browser. we need a tool(Babel)(a JavaScript compiler) to transform it to valid JavaScript.
 -JSX doesn't support void tags.
  <img>  		invalid
  <img></img>    valid
  <img /> 		valid
--Since JSX is closer to JavaScript than to HTML, React DOM uses camelCase property naming convention instead of HTML attribute names.
+-JSX uses camelCase property naming convention instead of HTML attribute names.
 -ex: class becomes className in JSX, and tabindex becomes tabIndex.
 
 
@@ -411,10 +424,11 @@ JSX
 
 React Without JSX
 =================
--Code written with JSX will be converted to use React.createElement(). 
--we don't have to use React,createElement() when we use JSX. 
-Syntax : React.createElement(type,[props],[...children])
-example: React.createElement(div , {name:'myDiv'},[<p> , <span>])
+-Code written with JSX gets converted to use React.createElement(). 
+-we don't have to use React.createElement() when we use JSX. 
+	Syntax : React.createElement(type,[props],[...children])
+	example: React.createElement(div , {name:'myDiv'},[<p> , <span>])
+	
 -The first argument is the type of element we're creating
 -The second argument is props object.
 -The last argument is the children of that element.
@@ -494,7 +508,7 @@ The React object
 -When we import React,we get a React object that contains methods and properties.
 -React exposes its current version through the version property, here's how we can read that.
  import React from "react"
- console.log(React.version); //"16.9.0" / 18.2.0
+ console.log(React.version); //"16.9.0" / 18.2.0 / 19.3.1
  <h2>React Version is {React.version}</h2>
 -in cmd run the below command 
  npm view react version
@@ -550,11 +564,12 @@ Browser extension
 React.StrictMode
 ================
 -StrictMode is a React development tool used for identifying potential problems in an application.
--It enables additional checks and warnings for its descendant components.
+-It enables additional development checks and warnings to find bugs early.
 -StrictMode checks run only in development mode and do not affect the production build.
 -StrictMode helps with the following:
-    • Identifying unsafe lifecycle methods
+    • Identifying unsafe lifecycle methods- componentWillMount() , componentWillReceiveProps(), componentWillUpdate()
     • Warning about legacy string ref API usage
+	  <input ref="myInput" />  recommended to use useRef()
     • Warning about deprecated findDOMNode() usage
     • Detecting unexpected side effects
     • Detecting legacy context API usage
@@ -582,7 +597,7 @@ Component
 2 types Of Component
 ====================
 1. Functional Component ( stateless/presentational/dumb)
-2. Class Component ( statefull)
+2. Class Component ( statefull )
 
 -The simplest way to define a component in React is to write a JavaScript function:
 function Welcome(props) {
@@ -635,8 +650,8 @@ How to Use Bootstrap in a React application
 1. npm i bootstrap     
   	
 2. add below 2 imports in main.jsx file
-   import "bootstrap/dist/css/bootstrap.min.css";
-   import "bootstrap/dist/js/bootstrap.bundle.min.js";
+	   import "bootstrap/dist/css/bootstrap.min.css";
+	   import "bootstrap/dist/js/bootstrap.bundle.min.js";
    
  
 How to Use Bootstrap in a React application using CDN Link
@@ -705,6 +720,8 @@ export default function StateDemo1() {
     </>
 }
 
+Note: Whenever a component re-renders, React re-executes the entire component function, recreating local variables and recalculating their values.
+
 
 Why State variables
 ===================
@@ -712,8 +729,11 @@ Re-rendering : when state variable changes, React re-renders the component with 
 Persistence : states are persisted accross re-renders
 
 
-States
-======
+
+
+
+State
+=====
 -The State of a component is an object that holds some data that may change over the lifetime of the component.
 -whenever the state object changes,react will re-render the component. 
 -States are Mutable(can be changed), and states are local to the component, cann't be used by other components directly
@@ -752,7 +772,7 @@ State in Functional Component
 =============================
 -State in functional Component can be maintained using useState() hook.
 -useState() is used to declare a state variable in functional component.
--The only argument to the useState() Hook is the initial state.
+-The only argument to the useState()  is the initial state.
 -It returns a pair of values: 
   a. State value
   b. function to update that state value. 
@@ -802,6 +822,7 @@ Ways to Implement Conditional Rendering
 3. Using Ternary Operators
 4. Using Logical && Operator (Short Circuit Evaluation)
 
+
 Examples
 ========
 Ternary Operator :  <div>{flag ? <h1>Hello</h1> : null}</div>
@@ -818,14 +839,24 @@ CSS in React
 ============
 different ways to add CSS:
 1. inline CSS
+   <h3 style={{color:"purple",border:"3px dotted green"}}>Hello Good Morning</h3>
+   
 2. External CSS
+   import "./myStyles.css";
+   
 3. global css(index.css)
-4. CSS Modules
-5. Conditional CSS 
+   No Import required in the component, applies to all the component
+
+4. CSS Modules : CSS that is locally scoped to a component
+
+5. Conditional CSS : Apply different styles based on condition
+ 
 
 
 CSS Modules
 ===========
+-When we dont use CSS module, if 2 css files are imported in 1 jsx file, and the same css class is repsent in both the file
+ css gets applied from the latest import file
 -This approach is designed to fix the problem of the global scope in CSS.
 -A CSS Module is a CSS file in which all class names are scoped locally by default.
 -CSS Modules allow to use the same CSS class name in different files without worrying about naming clashes.
@@ -872,7 +903,7 @@ Assignments:
 4. Create a counter example with three controls: Increment, Decrement, and Reset.
 5. Create an inputBox to enter temperature in celcius, convert temperature from Celsius to Fahrenheit. 
 	formula:  f = (C × (9/5)) + 32
-6. greeting based on time (good mornig, good afternoon, good evening)
+6. greeting based on time (good morning, good afternoon, good evening)
 7. Create a textarea with maxLength = 100; as the user keeps typing, count and display how many words and how many characters are typed and  also display remaining characters.
 8. Create two input boxes and a dropdown (+ , - , * , /) and perform arithmetic operations based on the selected operator.
 9. Create a button that increases font size and another button that decreases font size for a paragraph.
@@ -884,7 +915,8 @@ Assignments:
 
 Lists and Keys
 ==============
--Lists are used to display multiple items dynamically.
+-Lists are used to display multiple items dynamically. 
+-List renders repeated UI from data. ex: product cards, shopping carts, employee table.
 -Arrays are commonly rendered using the map() method.
 -Each item in the list is converted into a JSX element.
 
@@ -932,7 +964,8 @@ Read data from a JSON file (https://jsonplaceholder.typicode.com/users)
 1. create a JSON file & add data (user_data.json) 
    [ {},{},{} ]
    
-2. import userArr from './user_data.json'
+2. import the data from json file to Component/JSX File 
+   import userArr from './user_data.json'
 
 3. use userArr(List data) in JSX
 			{userArr.map((user)=>{
@@ -949,7 +982,8 @@ Read data from a Javascript file (https://fakestoreapi.com/products)
 1. create a javascript file(product_data.js) and export data 
    export default [ {},{},{} ]
    
-2. import productArr from './product_data.ts'
+2. import the data from javascript file to Component/JSX File 
+   import productArr from './product_data.ts'
 
 3. use productArr(List data) in JSX
 	      {productArr.map(product=>{
@@ -962,8 +996,9 @@ Read data from a Javascript file (https://fakestoreapi.com/products)
                   </div>
                 </div>
               </div>
+
             })}
- 
+
 
 
 
@@ -1016,13 +1051,13 @@ Props
 =====
 -Props stands for Properties. 
 -Props are inputs passed to components.
--Props are mainly used to pass data and functions from a parent component to a child component.
+-Props are used to pass data and functions from a parent component to a child component.
 -When parent data changes, updated props are automatically passed to child components.
 -Attributes passed to components are received as an object called props.
--Props help make components reusable and dynamic.
+-Props help to make the components reusable and dynamic.
 -Data flows in one direction: Parent → Child. This is called unidirectional (one-way) data flow.
 -Props are passed to components similarly to HTML attributes.
-
+ <input type='text' id='myInput' value='Sanjay' class='form-control' />
 
 Example:
 ---------
