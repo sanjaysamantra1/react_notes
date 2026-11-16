@@ -11,8 +11,8 @@ Syllabus
 -Component Styling 
 -Conditional rendering
 -Lists & keys
--Props : de-structuring,requiring props, proptypes,default props
 -State 
+-Props : de-structuring,requiring props, proptypes,default props
 -Events : Synthetic Event
 -React Hooks (useState, useEffect, useRef, useMemo, useCallback,useReducer)
 -Component Lifecycle using useEffect
@@ -408,6 +408,7 @@ JSX
 ===
 -JSX (JavaScript Syntax Extension)is a special syntax for React that makes it easier to represent the UI.
 -JSX is used to describe the structure & content of a react component.
+-JSX lets us write HTML-like markup directly inside your JavaScript code to describe user interfaces
 -JSX allows us to add the elements in DOM without using createElement() or appendChild() methods.
 -JSX looks similar to HTML but it is not HTML.
 -JSX code we write gets transformed into React.createElement().
@@ -847,10 +848,11 @@ different ways to add CSS:
 3. global css(index.css)
    No Import required in the component, applies to all the component
 
-4. CSS Modules : CSS that is locally scoped to a component
+4. Conditional CSS : Apply different styles based on condition
 
-5. Conditional CSS : Apply different styles based on condition
+5. CSS Modules : CSS that is locally scoped to a component
  
+
 
 
 CSS Modules
@@ -952,9 +954,8 @@ Tip
 
 Why map() is used instead of forEach()
 ======================================
--map() iterates through each element of the array. For every item, it returns a JSX element. 
--React collects all returned JSX elements and renders them on the screen.
--forEach() does not return anything (returns undefined), so it cannot be used directly inside JSX..
+-map() iterates through each array element and returns a new array of JSX elements, which React can render in the UI.
+-forEach() iterates through each array element but returns undefined, so it cannot be used directly inside JSX for list rendering
  
  
 
@@ -1078,13 +1079,14 @@ Props De-structuring
 -Props destructuring improves readability and avoids repeatedly writing props.propName.
 
 
+
 Props.children
 ==============
 -props.children represents the content placed between the opening and closing tags of a component.
 -props.children can contain text, JSX, single elements, or multiple elements.
 -Children.only() is used to verify only 1 element is sent from parent
  import { Children } from "react";
- {Children.only(children)}
+ {Children.only(props.children)}
 
 
 
@@ -1092,15 +1094,21 @@ Passing Functions as Props
 ==========================
 -Functions can also be passed as props from parent to child components.
 -used when a child component needs to notify its parent about an event.
--example: <Child onDelete={deleteUser} />
+-example: <Child onDelete={deleteUser} /> 
+          <Child deleteUser={deleteUser} />
 
 
 
 Props Drilling
 ==============
--Props drilling means passing props through multiple intermediate components to reach deeply nested child components.
--It can make component structures difficult to maintain.
+-pass data (props) from a parent component to deeply nested child components, even if intermediate components don’t need the data.
+	Code Maintainability: Passing data through multiple layers makes the code messy.
+	Performance Issues: Unnecessary re-renders of components that don’t need the data.
+	Tightly Coupled Components: Makes refactoring difficult, as changes to data affect multiple components.
+
 -Context API/REDUX is commonly used to avoid props drilling.
+
+
 
 
 
@@ -1110,8 +1118,7 @@ Props Drilling
 2. pass data from parent component 		2. contains own data & changes over time
    to child component
 3. communicate between components		3. rendering dynamic changes
-4. props - Functional Comp				4. useState()      - Functional Comp
-   this.props - class comp		  		   this.state={}   - Class Comp
+4. Greet(props)		  		   			4. useState()
 
 
 
@@ -1151,7 +1158,7 @@ https://sweetalert2.github.io/#examples
 2. import Swal from 'sweetalert2'	
 3. on button click call a function & write sweetalert code	
 	const openSweetAlert = ()=>{
-		Swal.fire('Good job!','You clicked the button!',	'success'	)	
+		Swal.fire('Good job!', 'You clicked the button!', 'success')
 	}
 
 
@@ -1242,6 +1249,27 @@ Search
             }))}
           /> 
 	   
+	   
+
+react-js-search
+===============
+1. npm i react-js-search
+
+2. import SearchBarModule from 'react-js-search';
+   const SearchBar = SearchBarModule.default || SearchBarModule;
+
+3. 		
+	const [filteredProducts, setFilteredProducts] = useState(products);
+    const onSearchClick = (searchText) => {
+        const filteredItems = products.filter((product) => JSON.stringify(product).includes(searchText))
+        setFilteredProducts(filteredItems);
+    };
+		<SearchBar
+                    // onSearchTextChange={onSearchTextChange}
+                    onSearchButtonClick={onSearchClick}
+                    placeHolderText={"Search here..."}
+                    data={productArr}
+                />
 
 
 
@@ -1325,6 +1353,7 @@ React Events
     alert('Paste is not allowed in thin input box')
   }
   <input onPaste={handlePaste} type="search" placeholder='Search...' />
+ 
  
 -Event Bubbling : Events bubble from the clicked child element up through the parent elements 
    <div onClick={()=>console.log("Div clicked...")}>
